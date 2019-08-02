@@ -72,7 +72,7 @@ The intent of the experiment was to determine if it would be possible to build a
 
 The expectation would be to create a reliable model that could produce a fairly accurate german translation. Given the size of the dataset used, it is not expected for the system to be able to produce a 100% accurate literal translation. Instead, the focus will be on generating a translation that is close/similar in meaning to the actual translation.
 
-### Methods
+### Methods
 
 The baseline model was trained using the training set and the dev set as a validation set. The model structure is based on an `Encoder-Decoder` architecture. The inputs are encoded using a fixed size word embedding, which is passed to a decoder which decodes it word by word to generate a probaility value for each target word in the prediction.
 
@@ -105,33 +105,26 @@ Some translations were wrong e.g. `just check it` was translated as `kontrollier
 
 ### Findings
 
-The model is fairly accurate on most of the predictions made on the test set and is in line with the expectations set out earlier on dataset of this size. However, it is unable to produce an accurate translation for short phrases in some instances.
-
-The results suggest that perhaps the model does not have the capacity to learn and a deeper model might be required.
+The model is fairly accurate on most of the predictions made on the test set and is in line with the expectations set out earlier on dataset of this size. However, it is unable to produce an accurate translation for short phrases in some instances. The results suggest that perhaps the model does not have the capacity to learn and a deeper model might be required.
 
 
 ## 5. Improvements
 
 ( Describes experimental results for attempts to improve the performance of the better performing models, such as hyperparameter tuning and ensemble methods. )
 
-An improvement to the baseline model is to add an Attention mechanism to the model and build a deeper model to increase the representational capacity of the network. This would allow for larger datasets to be used in training and evaluation.
+An improvement to the baseline model is to add an `Attention` mechanism to the model and build a deeper model to increase the representational capacity of the network. This would allow for larger datasets to be used in training and evaluation.
 
-( The above is currently in progress .... )
-
-## 6. Final Model
+## 6. Final Model
 
 ( Describes the choice of a final model, including configuration and performance. It is a good idea to demonstrate saving and loading the model and demonstrate the ability to make predictions on a holdout dataset. )
 
-TODO
+[IN PROGRESS]
 
-## 7. Extensions
+## 7. Extensions
 
 ( Describes areas that were considered but not addressed in the project that could be explored in the future. )
 
-TODO
-
-## Resources
-
+## 8. Resources
 * [Deep Learning with NLP](https://machinelearningmastery.com/deep-learning-for-nlp/)
 
 * [Sequence Model course from deep learning specialization](https://www.coursera.org/learn/nlp-sequence-models)
