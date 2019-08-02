@@ -82,9 +82,16 @@ All the dataset were loaded from and encoded into sequences using the keras `Tok
 
 ### Results
 
+[training_curve]: artifacts/training_acc_baseline_model.png
+[loss_curve]: artifacts/training_loss_baseline_model.png
+
 After training, the model achieved an accuracy of 88% on the train set and approx. 80% on the validation set.
 
+![baseline model training curve][training_curve]
+
 The validation loss graph suggests that the model starts to overfit around epoch 5 with both the training and validation loss diverging further in later epochs.
+
+![baseline model validation loss][loss_curve]
 
 The model was evaluated against a held out test set, which is run using `evaluate.py`
 
