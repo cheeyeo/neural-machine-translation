@@ -1,0 +1,9 @@
+.DS_Store
+__pycache__
+*.pyc
+*.pkl
+NOTES.md
+test.py
+test.hdf5
+layers/
+models/
