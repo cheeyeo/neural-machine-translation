@@ -24,7 +24,6 @@ The resultant datasets are saved locally in the pickle format.
 
 The code for creating the datasets are in `data-deu.py`. The utility functions for preprocessing the text are in `utils.py`
 
-================================================================================
 
 ## 2. Test harness
 
@@ -44,7 +43,6 @@ While BLEU scores are not deemed to be the best metric for evaluating NLP system
 
 Future work will include looking into and utilizing other NLP evalution metrics.
 
-================================================================================
 
 ## 3. Baseline performance
 
@@ -56,7 +54,6 @@ A data generator was used and the model trained using the `fit_generator` functi
 
 The model was trained for 30 epochs with a batch size of 64. A model callback is implented whereby the model gets saved if the validation loss decreases at the end of each epoch.
 
-================================================================================
 
 ## 4. Experimental Results
 
@@ -106,7 +103,7 @@ A sample of 10 random translations predicted by the model were chosen from the t
 
 Some translations were wrong e.g. `just check it` was translated as `kontrolliert sie einfach` which means `just control it`
 
-## 4.5 Findings
+### 4.5 Findings
 
 The model is fairly accurate on most of the predictions made on the test set and is in line with the expectations set out earlier on dataset of this size. However, it is unable to produce an accurate translation for short phrases in some instances.
 
