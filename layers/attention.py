@@ -56,6 +56,10 @@ class AttentionLayer(Layer):
             # <= batch_size*en_seq_len, latent_dim
             reshaped_enc_outputs = K.reshape(encoder_out_seq, (-1, en_hidden))
             # <= batch_size*en_seq_len, latent_dim
+
+            if en_seq_len.value == None:
+                en_seq_len = 0
+
             W_a_dot_s = K.reshape(K.dot(reshaped_enc_outputs, self.W_a), (-1, en_seq_len, en_hidden))
             if verbose:
                 print('wa.s>',W_a_dot_s.shape)
@@ -91,6 +95,8 @@ class AttentionLayer(Layer):
             return c_i, [c_i]
 
         def create_inital_state(inputs, hidden_size):
+            if hidden_size.value == None:
+                hidden_size = 0
             # We are not using initial states, but need to pass something to K.rnn funciton
             fake_state = K.zeros_like(inputs)  # <= (batch_size, enc_seq_len, latent_dim
             fake_state = K.sum(fake_state, axis=[1, 2])  # <= (batch_size)

@@ -1,5 +1,5 @@
 from utils import load_clean_lines, sentence_length, load_saved_lines, plot_training
-from model import create_tokenizer, baseline_model, create_checkpoint, data_generator, attention_model
+from model import create_tokenizer, baseline_model, create_checkpoint, data_generator
 import numpy as np
 import pickle
 import argparse
@@ -7,7 +7,6 @@ import argparse
 ap = argparse.ArgumentParser()
 ap.add_argument("-e", "--epochs", type=int, required=True, help="Number of epochs to train for")
 args = vars(ap.parse_args())
-
 
 dataset = np.array(load_saved_lines('eng-german-both.pkl'))
 train = np.array(load_saved_lines('eng-german-train.pkl'))
