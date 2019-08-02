@@ -81,8 +81,8 @@ def attention_model(src_vocab, target_vocab, src_timesteps, target_timesteps, un
 
   encoder_lstm = Bidirectional(LSTM(units, return_sequences=True, return_state=True, name='encoder_gru'), name='bidirectional_encoder')
   encoder_out, encoder_fwd_state, encoder_fwd_c, encoder_back_state, encoder_back_c = encoder_lstm(encoder_inputs)
-  encoder_fwd_state = Concatenate()([encoder_fwd_state, encoder_fwd_c])
-  encoder_back_state = Concatenate()([encoder_back_state, encoder_back_c])
+  encoder_fwd_state = Concatenate()([encoder_fwd_state, encoder_back_state])
+  encoder_back_state = Concatenate()([encoder_fwd_c, encoder_back_c])
 
   # decoder
   decoder_lstm = LSTM(units*2, return_sequences=True, return_state=True, name='decoder_lstm')
