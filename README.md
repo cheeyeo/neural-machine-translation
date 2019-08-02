@@ -64,15 +64,15 @@ The model was trained for 30 epochs with a batch size of 64. A model callback is
 4.4 Results: what were the actual results of the experiment?
 4.5 Findings: what do the results mean, how do they relate to expectations, what other experiments do they inspire? )
 
-### 4.1 Intent
+### Intent
 
 The intent of the experiment was to determine if it would be possible to build a neural machine translation system using an Encoder-Decoder architecture which would be able to be trained and translate from enlish to german phrases in an end-to-end manner.
 
-### 4.2 Expectations
+### Expectations
 
 The expectation would be to create a reliable model that could produce a fairly accurate german translation. Given the size of the dataset used, it is not expected for the system to be able to produce a 100% accurate literal translation. Instead, the focus will be on generating a translation that is close/similar in meaning to the actual translation.
 
-### 4.3 Methods
+### Methods
 
 The baseline model was trained using the training set and the dev set as a validation set. The model structure is based on an `Encoder-Decoder` architecture. The inputs are encoded using a fixed size word embedding, which is passed to a decoder which decodes it word by word to generate a probaility value for each target word in the prediction.
 
@@ -80,7 +80,7 @@ The baseline model uses only 256 units in the LSTM layers.
 
 All the dataset were loaded from and encoded into sequences using the keras `Tokenizer`. Each english sentence is used as input and each german sentence is used as output. Each sequence was padded to the longest sentence in its language. The output is further one-hot encoded using `to_categorical`, as the model will predict the probability of each of the target word in the translation during prediction.
 
-### 4.4 Results
+### Results
 
 After training, the model achieved an accuracy of 88% on the train set and approx. 80% on the validation set.
 
@@ -103,14 +103,14 @@ A sample of 10 random translations predicted by the model were chosen from the t
 
 Some translations were wrong e.g. `just check it` was translated as `kontrolliert sie einfach` which means `just control it`
 
-### 4.5 Findings
+### Findings
 
 The model is fairly accurate on most of the predictions made on the test set and is in line with the expectations set out earlier on dataset of this size. However, it is unable to produce an accurate translation for short phrases in some instances.
 
 The results suggest that perhaps the model does not have the capacity to learn and a deeper model might be required.
 
 
-## Improvements
+## 5. Improvements
 
 ( Describes experimental results for attempts to improve the performance of the better performing models, such as hyperparameter tuning and ensemble methods. )
 
@@ -118,13 +118,13 @@ An improvement to the baseline model is to add an Attention mechanism to the mod
 
 ( The above is currently in progress .... )
 
-## Final Model
+## 6. Final Model
 
 ( Describes the choice of a final model, including configuration and performance. It is a good idea to demonstrate saving and loading the model and demonstrate the ability to make predictions on a holdout dataset. )
 
 TODO
 
-## Extensions
+## 7. Extensions
 
 ( Describes areas that were considered but not addressed in the project that could be explored in the future. )
 
