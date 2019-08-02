@@ -1,10 +1,16 @@
-from utils import load_doc, to_pairs, save_clean_lines, clean_pairs, load_saved_lines
+from utils import load_doc, to_pairs, save_clean_lines, clean_pairs, load_saved_lines, add_delimiters_to_lines
 from model import create_tokenizer
 import pickle
 import numpy as np
+import argparse
+
+ap = argparse.ArgumentParser()
+ap.add_argument("-l", "--limit", type=int, required=False, default=15_000, help="Number of sentences to limit to")
+args = vars(ap.parse_args())
 
 # limit to first 15,000 sentences from each language
-n_sentences = 15_000
+n_sentences = args["limit"]
+print('[INFO] Limit dataset to {:d}'.format(n_sentences))
 
 filename = 'data/deu.txt'
 
@@ -16,6 +22,7 @@ print(len(pairs))
 print(pairs[0])
 
 cleaned = clean_pairs(pairs)
+cleaned[:, 1] = add_delimiters_to_lines(cleaned[:, 1])
 
 for i in range(10):
   print('[{}] => [{}]'.format(cleaned[i, 0], cleaned[i, 1]))

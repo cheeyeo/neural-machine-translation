@@ -122,6 +122,12 @@ def load_clean_lines(filename):
     lines.append(new_line)
   return lines
 
+def add_delimiters_to_lines(lines):
+  new_lines = list()
+  for line in lines:
+    new_line = 'startseq ' + line + ' endseq'
+    new_lines.append(new_line)
+  return new_lines
 
 def to_vocab(lines):
   vocab = Counter()
