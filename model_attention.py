@@ -5,24 +5,26 @@ from layers.attention import AttentionLayer
 # from keras.layers import Input
 # from keras.layers import Bidirectional
 # from keras.layers import Concatenate
-from tensorflow.python.keras.layers import Input, LSTM, Dense, Concatenate, TimeDistributed, Bidirectional
+from tensorflow.python.keras.layers import Input, LSTM, Dense, Concatenate, TimeDistributed, Bidirectional, Embedding
 from tensorflow.python.keras.models import Model
 
 def attention_model(src_vocab, target_vocab, src_timesteps, target_timesteps, units):
-  encoder_inputs = Input(shape=(src_timesteps, src_vocab), name='encoder_inputs')
+  encoder_inputs = Input(shape=(src_timesteps, ), name='encoder_inputs')
+
   decoder_inputs = Input(shape=(target_timesteps-1, target_vocab), name='decoder_inputs')
 
-  encoder_lstm = Bidirectional(LSTM(units, return_sequences=True, return_state=True, name='encoder_gru'), name='bidirectional_encoder')
-  encoder_out, encoder_fwd_state, encoder_fwd_c, encoder_back_state, encoder_back_c = encoder_lstm(encoder_inputs)
+  embedding = Embedding(src_vocab, 128, input_length=src_timesteps)(encoder_inputs)
+  encoder_lstm = Bidirectional(LSTM(units, return_sequences=True, return_state=True, name='encoder_lstm'), name='bidirectional_encoder')
+  encoder_out, encoder_fwd_state, encoder_fwd_c, encoder_back_state, encoder_back_c = encoder_lstm(embedding)
+
   encoder_fwd_state = Concatenate()([encoder_fwd_state, encoder_back_state])
   encoder_back_state = Concatenate()([encoder_fwd_c, encoder_back_c])
 
-  # decoder
+  # Decoder
   decoder_lstm = LSTM(units*2, return_sequences=True, return_state=True, name='decoder_lstm')
   decoder_out, decoder_state, _ = decoder_lstm(decoder_inputs, initial_state=[encoder_fwd_state, encoder_back_state])
 
-  # attention
-  # TODO: Issue with tensorflow code in the layer itself!!
+  # Attention
   attn_layer = AttentionLayer(name='attention_layer')
   attn_out, attn_states = attn_layer([encoder_out, decoder_out])
 

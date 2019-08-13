@@ -38,7 +38,7 @@ def data_generator(lines, eng_tokenizer, eng_length, fr_tokenizer, fr_length, vo
 
 
 def create_checkpoint(model_name='model.h5'):
-  return ModelCheckpoint(model_name, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
+  return ModelCheckpoint(model_name, monitor='val_loss', verbose=1, save_best_only=True, mode='min', save_weights_only=True)
 
 def create_tokenizer(lines):
   tokenizer = Tokenizer()
