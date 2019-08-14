@@ -10,6 +10,10 @@ from keras.layers import RepeatVector
 from keras.layers import TimeDistributed
 from keras.callbacks import ModelCheckpoint
 
+def show_model_weights(model):
+  for layer in model.layers:
+    print(layer.get_config(), layer.get_weights())
+
 def data_generator(lines, eng_tokenizer, eng_length, fr_tokenizer, fr_length, vocab_size, batch_size=64):
 
   while 1:
