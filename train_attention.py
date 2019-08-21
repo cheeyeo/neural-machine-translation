@@ -40,11 +40,11 @@ args = vars(ap.parse_args())
 
 dataset = np.array(load_saved_lines('eng-german-both.pkl'))
 train = np.array(load_saved_lines('eng-german-train.pkl'))
-# for i in range(5):
-#   print(train[i])
+for i in range(5):
+  print(train[i])
 dev = np.array(load_saved_lines('eng-german-dev.pkl'))
-# for i in range(5):
-#   print(dev[i])
+for i in range(5):
+  print(dev[i])
 print('[INFO] Training set size: {:d}'.format(len(train)))
 print('[INFO] Dev set size: {:d}'.format(len(dev)))
 
@@ -61,11 +61,11 @@ print('[INFO] Ger Vocab size: {:d}'.format(ger_vocab_size))
 print('[INFO] Ger Max length: {:d}'.format(ger_length))
 
 print('[INFO] Defining model...')
-model, encoder_model, decoder_model = attention_model(eng_vocab_size, ger_vocab_size, eng_length, ger_length, 256)
+model, encoder_model, decoder_model = attention_model(eng_vocab_size, ger_vocab_size, eng_length, ger_length, 384)
 
-plot_model(model, to_file='attention_model.png', show_shapes=True)
-plot_model(encoder_model, to_file='encoder_model.png', show_shapes=True)
-plot_model(decoder_model, to_file='decoder_model.png', show_shapes=True)
+plot_model(model, to_file='artifacts/attention_model.png', show_shapes=True)
+plot_model(encoder_model, to_file='artifacts/encoder_model.png', show_shapes=True)
+plot_model(decoder_model, to_file='artifacts/decoder_model.png', show_shapes=True)
 
 model.summary()
 checkpoint = create_checkpoint(model_name='attention_model.h5')

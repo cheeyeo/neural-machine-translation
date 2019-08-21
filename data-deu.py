@@ -22,15 +22,16 @@ print(len(pairs))
 print(pairs[0])
 
 cleaned = clean_pairs(pairs)
-cleaned[:, 1] = add_delimiters_to_lines(cleaned[:, 1])
 
 for i in range(10):
   print('[{}] => [{}]'.format(cleaned[i, 0], cleaned[i, 1]))
 
 # Split the data
 dataset = cleaned[:n_sentences, :]
+dataset[:, 1] = add_delimiters_to_lines(dataset[:, 1])
 np.random.shuffle(dataset)
 
+# TODO: Remove hard-code values here
 train, dev, test = dataset[:13000], dataset[13000:14000], dataset[14000:15000]
 
 save_clean_lines(dataset, 'eng-german-both.pkl')

@@ -10,7 +10,6 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 def plot_training(H, N, plot_path_loss="training_loss.png", plot_path_acc="training_acc.png"):
-  print(H.history.keys())
   plt.style.use("ggplot")
   plt.figure()
 
@@ -125,7 +124,7 @@ def load_clean_lines(filename):
 def add_delimiters_to_lines(lines):
   new_lines = list()
   for line in lines:
-    new_line = 'startseq ' + line + ' endseq'
+    new_line = 'sos ' + line + ' eos'
     new_lines.append(new_line)
   return new_lines
 

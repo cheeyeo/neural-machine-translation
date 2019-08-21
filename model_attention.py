@@ -7,24 +7,28 @@ from layers.attention import AttentionLayer
 # from keras.layers import Concatenate
 from tensorflow.python.keras.layers import Input, LSTM, Dense, Concatenate, TimeDistributed, Bidirectional, Embedding
 from tensorflow.python.keras.models import Model
+import numpy as np
 
 def attention_model(src_vocab, target_vocab, src_timesteps, target_timesteps, units):
   encoder_inputs = Input(shape=(src_timesteps,), name='encoder_inputs')
 
-  decoder_inputs = Input(shape=(target_timesteps-1, target_vocab), name='decoder_inputs')
+  decoder_inputs = Input(shape=(target_timesteps - 1, target_vocab), name='decoder_inputs')
 
-  embedding = Embedding(src_vocab, 128, input_length=src_timesteps, name='enc_embedding')
+  embedding = Embedding(src_vocab, 512, input_length=src_timesteps, name='enc_embedding')
 
   encoder_lstm = Bidirectional(LSTM(units, return_sequences=True, return_state=True, name='encoder_lstm'), name='bidirectional_encoder')
 
   encoder_out, encoder_fwd_state, encoder_fwd_c, encoder_back_state, encoder_back_c = encoder_lstm(embedding(encoder_inputs))
 
   encoder_fwd_state = Concatenate(axis=-1)([encoder_fwd_state, encoder_back_state])
+
   encoder_back_state = Concatenate(axis=-1)([encoder_fwd_c, encoder_back_c])
+
+  enc_states = [encoder_fwd_state, encoder_back_state]
 
   # Decoder
   decoder_lstm = LSTM(2*units, return_sequences=True, return_state=True, name='decoder_lstm')
-  decoder_out, decoder_state, _ = decoder_lstm(decoder_inputs, initial_state=[encoder_fwd_state, encoder_back_state])
+  decoder_out, decoder_state, _ = decoder_lstm(decoder_inputs, initial_state=enc_states)
 
   # Attention
   attn_layer = AttentionLayer(name='attention_layer')
@@ -69,3 +73,8 @@ def attention_model(src_vocab, target_vocab, src_timesteps, target_timesteps, un
   decoder_model = Model(inputs=[encoder_inf_states, decoder_init_state, decoder_inf_inputs], outputs=[decoder_inf_pred, attn_inf_states, decoder_inf_state])
 
   return model, encoder_model, decoder_model
+
+
+if __name__ == "__main__":
+  m, _, _ = attention_model(3022, 4747, 5, 12, 256)
+  m.summary()
