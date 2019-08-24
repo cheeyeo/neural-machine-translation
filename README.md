@@ -119,7 +119,36 @@ The model is fairly accurate on most of the predictions made on the test set and
 
 ( Describes experimental results for attempts to improve the performance of the better performing models, such as hyperparameter tuning and ensemble methods. )
 
+
+## 5.1 Adding an attention layer
 An improvement to the baseline model is to add an `Attention` mechanism to the model and build a deeper model to increase the representational capacity of the network. This would allow for larger datasets to be used in training and evaluation.
+
+The Attention mechanism is based on a weighted Attention mechanism published by 
+Bahdanau. This is implemented as a custom keras layer.
+
+The new model architecture was trained for 30 epochs with a batch size of 64.
+
+The validation loss shows a better accuracy with a final score of `0.94348` compared to the baseline model's loss values at between 1.0-1.5. The accuracy curves also indicate an improvement on the overall training accuracy score, with the training accuracy rising to 0.95.
+
+However, the gaps between the loss curves indicate overfitting around epoch 10 onwards, with the validation loss rising after 10 epochs and rising above 1.0 from epochs 25 onwards.
+
+The BLEU scores for evaluation are as follows:
+```
+BLEU-1: 0.5894
+BLEU-2: 0.4667
+BLEU-3: 0.3998
+BLEU-4: 0.2440
+```
+
+
+Compared to the BLEU scores for the baseline model, it can be seen that adding an attention mechanism has increased the BLEU-1 to BLEU-4 scores.
+
+## 5.2 Adding beam search
+
+## 5.3 Regularization
+
+Redevelop the attention layer to be independent of TF
+
 
 ## 6. Final Model
 

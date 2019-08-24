@@ -61,7 +61,7 @@ print('[INFO] Ger Vocab size: {:d}'.format(ger_vocab_size))
 print('[INFO] Ger Max length: {:d}'.format(ger_length))
 
 print('[INFO] Defining model...')
-model, encoder_model, decoder_model = attention_model(eng_vocab_size, ger_vocab_size, eng_length, ger_length, 384)
+model, encoder_model, decoder_model = attention_model(eng_vocab_size, ger_vocab_size, eng_length, ger_length, 512)
 
 plot_model(model, to_file='artifacts/attention_model.png', show_shapes=True)
 plot_model(encoder_model, to_file='artifacts/encoder_model.png', show_shapes=True)

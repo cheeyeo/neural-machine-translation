@@ -24,17 +24,17 @@ def cleanup_sentence(sentence):
     sentence = sentence[:index]
   return sentence
 
-def predict_attention_sequence(decoder_model, enc_outs, dec_state, target_tokenizer, target_vocab_size, target_length, onehot_seq):
+def predict_attention_sequence(decoder_model, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, target_vocab_size, target_length, onehot_seq):
   predicted_text = ''
 
   for i in range(target_length):
-    dec_out, attention, dec_state = decoder_model.predict(
-              [enc_outs, dec_state, onehot_seq], verbose=0)
+    dec_out, attention, dec_fwd_state, dec_back_state = decoder_model.predict(
+              [enc_outs, dec_fwd_state, dec_back_state, onehot_seq], verbose=0)
 
     dec_ind = np.argmax(dec_out, axis=-1)[0, 0]
-    print(dec_ind)
+    # print(dec_ind)
     word = word_for_id(dec_ind, target_tokenizer)
-    print('WORD: ', word)
+    # print('WORD: ', word)
 
     if word == None or word == "eos":
       break
@@ -50,20 +50,15 @@ def evaluate_attention_model(enc, dec, sources, raw_dataset, target_tokenizer, t
   actual, predicted = list(), list()
 
   for i, source in enumerate(sources):
-    seq = encode_sequences(target_tokenizer, None, ['sos'])
+    seq = encode_sequences(target_tokenizer, None, ['sos '])
     onehot_seq = np.expand_dims(to_categorical(seq, num_classes=target_vocab_size), 1)
 
     source = source.reshape((1, source.shape[0]))
     enc_outs, enc_fwd_state, enc_back_state = enc.predict(source)
-    print('ENC OUTS: ', enc_outs.shape)
-    print(enc_fwd_state.shape)
-    print(enc_back_state.shape)
 
-    # Joins the fwd and back states to be of shape (2, lstm units) to pass to the decoder.
-    dec_state = np.concatenate([enc_fwd_state, enc_back_state])
-    print(dec_state.shape)
+    dec_fwd_state, dec_back_state = enc_fwd_state, enc_back_state
 
-    translation = predict_attention_sequence(dec, enc_outs, dec_state, target_tokenizer, target_vocab_size, target_length, onehot_seq)
+    translation = predict_attention_sequence(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, target_vocab_size, target_length, onehot_seq)
 
     translation = cleanup_sentence(translation)
 
@@ -83,40 +78,6 @@ def evaluate_attention_model(enc, dec, sources, raw_dataset, target_tokenizer, t
   print('BLEU-2: {:.4f}'.format(bleu2))
   print('BLEU-3: {:.4f}'.format(bleu3))
   print('BLEU-4: {:.4f}'.format(bleu4))
-
-# Try out with beam search = 1 first!
-def sequence_beam_search(dec, tokenizer, max_length, vocab_size, beam_index=1):
-  seq = encode_sequences(tokenizer, None, ['sos'])
-  in_text = [[seq, 0.0]]
-
-  while len(in_text[0][0]) < max_length:
-    temp = []
-    for seq in in_text:
-      preds, _, _ = dec.predict([enc_outs, dec_state, seq[0]], verbose=0)
-
-      top_preds = np.argsort(preds[0])[-beam_index:]
-
-      for w in top_preds:
-        next_seq, prob = seq[0][:], seq[1]
-        next_seq.append(w)
-        prob += preds[0][w]
-        temp.append([next_seq, prob])
-
-      in_text = temp
-      in_text = sorted(in_text, reverse=False, key=lambda l: l[1])
-      in_text = in_text[-beam_index:]
-  in_text = in_text[-1][0]
-  translation_raw = [word_for_id(i, tokenizer) for i in in_text]
-  final_translation = []
-  for w in translation_raw:
-    if w == 'eos':
-      break
-    else:
-      final_translation.append(w)
-  return ' '.join(final_translation) 
-
-
-
 
 
 ap = argparse.ArgumentParser()
@@ -143,10 +104,10 @@ print('[INFO] Ger Max length: {:d}'.format(ger_length))
 
 testX = encode_sequences(eng_tokenizer, eng_length, test[:, 0])
 
-model, encoder_model, decoder_model = attention_model(eng_vocab_size, ger_vocab_size, eng_length, ger_length, 256)
-# model.summary()
-# model.load_weights(args["model"])
+model, encoder_model, decoder_model = attention_model(eng_vocab_size, ger_vocab_size, eng_length, ger_length, 512)
+model.summary()
+model.load_weights(args["model"])
 
-# print('[INFO] Evaluating model {}'.format(args["model"]))
+print('[INFO] Evaluating model {}'.format(args["model"]))
 
-# evaluate_attention_model(encoder_model, decoder_model, testX, test, ger_tokenizer, ger_vocab_size, ger_length)
+evaluate_attention_model(encoder_model, decoder_model, testX, test, ger_tokenizer, ger_vocab_size, ger_length)
