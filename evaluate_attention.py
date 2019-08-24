@@ -8,6 +8,19 @@ import numpy as np
 from sklearn.metrics import classification_report
 from model_attention import attention_model
 from keras.utils import to_categorical
+from heapq import nlargest
+from math import log
+
+def id_for_word(word, tokenizer):
+  for w,index in tokenizer.word_index.items():
+    if w == word:
+      return index
+  return None
+
+def concat_words(source, target):
+  if target == None:
+    target = 'None'
+  return ' '.join([source, target])
 
 def word_for_id(integer, tokenizer):
   for word, index in tokenizer.word_index.items():
@@ -46,11 +59,82 @@ def predict_attention_sequence(decoder_model, enc_outs, dec_fwd_state, dec_back_
 
   return predicted_text
 
+
+def beam_search(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, target_vocab_size, target_length, beam_index=1):
+  
+  hypotheses = dict()
+
+  seq = encode_sequences(target_tokenizer, None, ['sos'])
+  target = np.expand_dims(to_categorical(seq, num_classes=target_vocab_size), 1)
+
+  dec_out, _, dec_fwd_state, dec_back_state = dec.predict(
+          [enc_outs, dec_fwd_state, dec_back_state, target])
+
+  preds = dec_out[0][0]
+
+  norm = 1./12 ** 0.7
+  preds = [norm * log(p) for p in preds]
+
+  firstK = nlargest(beam_index, preds)
+  idx = nlargest(beam_index, range(len(preds)), key=lambda idx: preds[idx])
+  firstKWords = [word_for_id(j, target_tokenizer) for j in idx]
+  hypotheses[1] = [(firstK[ci], concat_words('sos', cw)) for ci, cw in enumerate(firstKWords)]
+  # print('[INFO] First K words: {}'.format(firstKWords))
+  # print('[INFO] Hypotheses: {}'.format(hypotheses))
+
+  for i in range(2, target_length):
+    prev_hyp = hypotheses[i-1]
+    Ct = list()
+
+    for indx, (prev_prob, prev_word) in enumerate(prev_hyp):
+      prev_word, current_word = prev_word.split()
+      target = np.zeros((1, 1, target_vocab_size))
+      id1 = id_for_word(prev_word, target_tokenizer)
+      id2 = id_for_word(current_word, target_tokenizer)
+      target[0][0][id1] = 1.0
+      target[0][0][id2] = 1.0
+      dec_outx, _, dec_fwd_state, dec_back_state = dec.predict(
+              [enc_outs, dec_fwd_state, dec_back_state, target])
+
+      preds = []
+      for pred in dec_outx[0][0]:
+        new_pred = norm * (prev_prob + log(pred))
+        preds.append(new_pred)
+      # preds = dec_outx[0][0]
+
+      candidate_words = [word_for_id(j, ger_tokenizer) for j, _ in enumerate(preds)]
+      merged = list()
+      for ci, cw in enumerate(candidate_words):
+        if cw != None:
+          merged.append((preds[ci], concat_words(current_word, cw)))
+      Ct += merged
+
+    best_scores = nlargest(beam_index, Ct)
+    hypotheses[i] = best_scores
+
+  # print('[INFO]: Hypotheses: ', hypotheses)
+
+  ger_words = []
+  for k, v in hypotheses.items():
+    _, w = max(v)
+    w2 = w.split()
+    # print('W2 IS: ', w2)
+    for w in w2:
+      if w not in ger_words:
+        ger_words.append(w)
+    if 'eos' in w:
+      break
+  translation = ' '.join(ger_words)
+  print('[INFO] Translation: ', translation)
+
+  return translation
+
 def evaluate_attention_model(enc, dec, sources, raw_dataset, target_tokenizer, target_vocab_size, target_length):
   actual, predicted = list(), list()
 
   for i, source in enumerate(sources):
-    seq = encode_sequences(target_tokenizer, None, ['sos '])
+    print('TRANSLATING IDX: ', i)
+    seq = encode_sequences(target_tokenizer, None, ['sos'])
     onehot_seq = np.expand_dims(to_categorical(seq, num_classes=target_vocab_size), 1)
 
     source = source.reshape((1, source.shape[0]))
@@ -58,15 +142,17 @@ def evaluate_attention_model(enc, dec, sources, raw_dataset, target_tokenizer, t
 
     dec_fwd_state, dec_back_state = enc_fwd_state, enc_back_state
 
-    translation = predict_attention_sequence(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, target_vocab_size, target_length, onehot_seq)
+    # translation = predict_attention_sequence(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, target_vocab_size, target_length, onehot_seq)
+
+    translation = beam_search(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, target_vocab_size, target_length, 1)
 
     translation = cleanup_sentence(translation)
 
     raw_src, raw_target = raw_dataset[i]
     raw_target = cleanup_sentence(raw_target)
 
-    if i < 10:
-      print('[INFO] SRC={}, TARGET={}, PREDICTED={}'.format(raw_src, raw_target, translation))
+    print('[INFO] SRC={}, TARGET={}, PREDICTED={}'.format(raw_src, raw_target, translation))
+    print()
 
     actual.append([raw_target.split()])
     predicted.append(translation.split())
@@ -110,4 +196,5 @@ model.load_weights(args["model"])
 
 print('[INFO] Evaluating model {}'.format(args["model"]))
 
+print('[INFO] Evaluation Set: {}'.format(len(test)))
 evaluate_attention_model(encoder_model, decoder_model, testX, test, ger_tokenizer, ger_vocab_size, ger_length)
