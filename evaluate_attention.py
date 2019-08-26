@@ -17,11 +17,6 @@ def id_for_word(word, tokenizer):
       return index
   return None
 
-def concat_words(source, target):
-  if target == None:
-    target = 'None'
-  return ' '.join([source, target])
-
 def word_for_id(integer, tokenizer):
   for word, index in tokenizer.word_index.items():
     if index == integer:
@@ -59,81 +54,64 @@ def predict_attention_sequence(decoder_model, enc_outs, dec_fwd_state, dec_back_
 
   return predicted_text
 
+def beam_search(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, target_vocab_size, target_length, beam_index, sentence_normalization=False):
 
-def beam_search(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, target_vocab_size, target_length, beam_index=1):
-  
-  hypotheses = dict()
+  norm = 1./target_length ** 0.7
 
   seq = encode_sequences(target_tokenizer, None, ['sos'])
-  target = np.expand_dims(to_categorical(seq, num_classes=target_vocab_size), 1)
+  
+  in_text = [[seq[0], 0.0]]
 
-  dec_out, _, dec_fwd_state, dec_back_state = dec.predict(
+  while len(in_text[0][0]) < target_length:
+    print('IN TEXT: ', in_text)
+    tempList = []
+
+    for seq in in_text:
+      target = np.expand_dims(to_categorical(seq[0], num_classes=target_vocab_size), 1)
+      
+      dec_out, _, dec_fwd_state, dec_back_state = dec.predict(
           [enc_outs, dec_fwd_state, dec_back_state, target])
+      preds = dec_out[0][0]
 
-  preds = dec_out[0][0]
+      # top_preds return indices of largest prob values...
+      top_preds = np.argsort(preds)[-beam_index:]
+      print('TOP PREDS: ', top_preds)
+      probs = [preds[i] for i in top_preds]
+      print('PROBS: ', probs)
 
-  norm = 1./12 ** 0.7
-  preds = [norm * log(p) for p in preds]
-
-  firstK = nlargest(beam_index, preds)
-  idx = nlargest(beam_index, range(len(preds)), key=lambda idx: preds[idx])
-  firstKWords = [word_for_id(j, target_tokenizer) for j in idx]
-  hypotheses[1] = [(firstK[ci], concat_words('sos', cw)) for ci, cw in enumerate(firstKWords)]
-  # print('[INFO] First K words: {}'.format(firstKWords))
-  # print('[INFO] Hypotheses: {}'.format(hypotheses))
-
-  for i in range(2, target_length):
-    prev_hyp = hypotheses[i-1]
-    Ct = list()
-
-    for indx, (prev_prob, prev_word) in enumerate(prev_hyp):
-      prev_word, current_word = prev_word.split()
-      target = np.zeros((1, 1, target_vocab_size))
-      id1 = id_for_word(prev_word, target_tokenizer)
-      id2 = id_for_word(current_word, target_tokenizer)
-      target[0][0][id1] = 1.0
-      target[0][0][id2] = 1.0
-      dec_outx, _, dec_fwd_state, dec_back_state = dec.predict(
-              [enc_outs, dec_fwd_state, dec_back_state, target])
-
-      preds = []
-      for pred in dec_outx[0][0]:
-        new_pred = norm * (prev_prob + log(pred))
-        preds.append(new_pred)
-      # preds = dec_outx[0][0]
-
-      candidate_words = [word_for_id(j, ger_tokenizer) for j, _ in enumerate(preds)]
-      merged = list()
-      for ci, cw in enumerate(candidate_words):
-        if cw != None:
-          merged.append((preds[ci], concat_words(current_word, cw)))
-      Ct += merged
-
-    best_scores = nlargest(beam_index, Ct)
-    hypotheses[i] = best_scores
-
-  # print('[INFO]: Hypotheses: ', hypotheses)
-
-  ger_words = []
-  for k, v in hypotheses.items():
-    _, w = max(v)
-    w2 = w.split()
-    # print('W2 IS: ', w2)
-    for w in w2:
-      if w not in ger_words:
-        ger_words.append(w)
-    if 'eos' in w:
+      for word in top_preds:
+        next_seq, prob = seq[0][:], seq[1]
+        next_seq = np.append(next_seq, word)
+        if sentence_normalization is True:
+          new_prob = norm * (prob + np.log(preds[word]))
+          tempList.append([next_seq, new_prob])
+        else:
+          prob += preds[word]
+          tempList.append([next_seq, prob])
+    in_text = tempList
+    in_text = sorted(in_text, reverse=False, key=lambda l: l[1])
+    in_text = in_text[-beam_index:]
+  
+  in_text = in_text[-1][0]
+  final_caption_raw = [word_for_id(i, target_tokenizer) for i in in_text]
+  final_caption = []
+  for word in final_caption_raw:
+    if word=='eos':
       break
-  translation = ' '.join(ger_words)
-  print('[INFO] Translation: ', translation)
+    else:
+      final_caption.append(word)
+  final_caption.append('eos')
+  return ' '.join(final_caption)
 
-  return translation
-
-def evaluate_attention_model(enc, dec, sources, raw_dataset, target_tokenizer, target_vocab_size, target_length):
+def evaluate_attention_model(enc, dec, sources, raw_dataset, target_tokenizer, target_vocab_size, target_length, beam_index):
   actual, predicted = list(), list()
 
+  if beam_index is not None:
+    print('[INFO] Evaluating with beam search of width: {:d}'.format(beam_index))
+    print()
+
   for i, source in enumerate(sources):
-    print('TRANSLATING IDX: ', i)
+    print('[INFO] Translating idx: ', i)
     seq = encode_sequences(target_tokenizer, None, ['sos'])
     onehot_seq = np.expand_dims(to_categorical(seq, num_classes=target_vocab_size), 1)
 
@@ -142,9 +120,10 @@ def evaluate_attention_model(enc, dec, sources, raw_dataset, target_tokenizer, t
 
     dec_fwd_state, dec_back_state = enc_fwd_state, enc_back_state
 
-    # translation = predict_attention_sequence(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, target_vocab_size, target_length, onehot_seq)
-
-    translation = beam_search(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, target_vocab_size, target_length, 1)
+    if beam_index is None:
+      translation = predict_attention_sequence(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, target_vocab_size, target_length, onehot_seq)
+    else:
+      translation = beam_search(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, target_vocab_size, target_length, beam_index, sentence_normalization=args["normalization"])
 
     translation = cleanup_sentence(translation)
 
@@ -168,7 +147,8 @@ def evaluate_attention_model(enc, dec, sources, raw_dataset, target_tokenizer, t
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-m", "--model", type=str, required=True, help="Path to model file for evaluation")
-ap.add_argument("-k", "--beam", type=int, required=False, default=3, help="Beam width for beam search")
+ap.add_argument("-k", "--beam", type=int, required=False, help="Beam width for beam search")
+ap.add_argument("-sl", "--normalization", action="store_true", required=False, help="Turn on sentence normalization for beam search")
 args = vars(ap.parse_args())
 
 dataset = np.array(load_saved_lines('eng-german-both.pkl'))
@@ -197,4 +177,5 @@ model.load_weights(args["model"])
 print('[INFO] Evaluating model {}'.format(args["model"]))
 
 print('[INFO] Evaluation Set: {}'.format(len(test)))
-evaluate_attention_model(encoder_model, decoder_model, testX, test, ger_tokenizer, ger_vocab_size, ger_length)
+
+evaluate_attention_model(encoder_model, decoder_model, testX, test, ger_tokenizer, ger_vocab_size, ger_length, args["beam"])
