@@ -165,7 +165,7 @@ ger_length = sentence_length(dataset[:, 1])
 print('[INFO] Ger Vocab size: {:d}'.format(ger_vocab_size))
 print('[INFO] Ger Max length: {:d}'.format(ger_length))
 
-testX = encode_sequences(eng_tokenizer, eng_length, test[:, 0])
+testX = encode_sequences(eng_tokenizer, eng_length, test[:, 0], padding_type='pre')
 
 model, encoder_model, decoder_model = attention_model(eng_vocab_size, ger_vocab_size, eng_length, ger_length, 512)
 model.summary()

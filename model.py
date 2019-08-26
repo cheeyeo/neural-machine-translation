@@ -49,9 +49,9 @@ def create_tokenizer(lines):
   tokenizer.fit_on_texts(lines)
   return tokenizer
 
-def encode_sequences(tokenizer, length, lines):
+def encode_sequences(tokenizer, length, lines, padding_type='post'):
   X = tokenizer.texts_to_sequences(lines)
-  X = pad_sequences(X, maxlen=length, padding='post')
+  X = pad_sequences(X, maxlen=length, padding=padding_type)
   return X
 
 def encode_output(sequences, vocab_size):

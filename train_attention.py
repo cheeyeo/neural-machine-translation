@@ -21,7 +21,7 @@ def data_generator(lines, eng_tokenizer, eng_length, fr_tokenizer, fr_length, sr
         eng, fr = lines[i]
         input_seq.append(eng)
         output_seq.append(fr)
-      input_seq = encode_sequences(eng_tokenizer, eng_length, input_seq)
+      input_seq = encode_sequences(eng_tokenizer, eng_length, input_seq, padding_type='pre')
       output_seq = encode_sequences(fr_tokenizer, fr_length, output_seq)
       output_seq = encode_output(output_seq, vocab_size)
 
