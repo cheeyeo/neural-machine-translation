@@ -140,7 +140,6 @@ BLEU-3: 0.3998
 BLEU-4: 0.2440
 ```
 
-
 Compared to the BLEU scores for the baseline model, it can be seen that adding an attention mechanism has increased the BLEU-1 to BLEU-4 scores.
 
 ## 5.2 Adding beam search
@@ -151,18 +150,23 @@ Each value represents the presence / absence of a word in the target vocabulary.
 
 The issue with the above approach is it doesn't look beyond the possible list of candidate words for a more probable candidate as its next word in the sequence.
 
-BY using beam search, we are able to enumerate the search space by considering a list of potential candidates by setting a beam width value. A value of 1 means we only consider up to 1 candidate word per input, which is the same as just getting the maximum prob value from a prediction.
+By using beam search, we are able to enumerate the search space by considering a list of potential candidates by setting a beam width value. A value of 1 means we only consider up to 1 candidate word per input, which is the same as just getting the maximum prob value from a prediction.
 
 A value of 2 means we are keeping the top 2 words with the highest probailities as candidates, which we then pass through the decoder to build up the list of next two top candidate words until we reach 'EOS' token to indicate the end of line.
 
-Beam search is computationally expensive for large datasets. The elapsed time for the evaluation process takes slower to run [ NEED TO ADD METRICS ...]
-
-
 Below are the BLEU scores for using beam search...
 
+| Beam Width    | BLEU-1 | BLEU-2 | BLEU-3 | BLEU-4 |
+| ------------- | -------| -------| -------| -------|
+|	1							| 0.5369 | 0.4199 | 0.3551 | 0.1759 |
+|	2							| 0.2792 | 0.0511	| 0.0149 | 0.0000	|
+|	3							| 0.1190 | 0.0125	| 0.0000 | 0.0000	|  
 
+The results indicate that with Beam Search, the overall BLEU scores decrease.
 
+This could be an issue with the actual implementation of beam search algo itself or an issue with the model during prediction.
 
+More analysis would be required to debug the true issue and will be reviisted at a later stage.
 
 
 ## 5.3 Regularization

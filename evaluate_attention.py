@@ -63,7 +63,6 @@ def beam_search(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, 
   in_text = [[seq[0], 0.0]]
 
   while len(in_text[0][0]) < target_length:
-    print('IN TEXT: ', in_text)
     tempList = []
 
     for seq in in_text:
@@ -75,9 +74,7 @@ def beam_search(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, 
 
       # top_preds return indices of largest prob values...
       top_preds = np.argsort(preds)[-beam_index:]
-      print('TOP PREDS: ', top_preds)
       probs = [preds[i] for i in top_preds]
-      print('PROBS: ', probs)
 
       for word in top_preds:
         next_seq, prob = seq[0][:], seq[1]
@@ -96,7 +93,7 @@ def beam_search(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, 
   final_caption_raw = [word_for_id(i, target_tokenizer) for i in in_text]
   final_caption = []
   for word in final_caption_raw:
-    if word=='eos':
+    if word=='eos' or word==None:
       break
     else:
       final_caption.append(word)

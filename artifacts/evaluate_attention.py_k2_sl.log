@@ -1,0 +1,3039 @@
+[INFO] English Vocab size: 3022
+[INFO] English Max length: 5
+[INFO] Ger Vocab size: 4747
+[INFO] Ger Max length: 12
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+encoder_inputs (InputLayer)     (None, 5)            0                                            
+__________________________________________________________________________________________________
+enc_embedding (Embedding)       multiple             1547264     encoder_inputs[0][0]             
+__________________________________________________________________________________________________
+decoder_inputs (InputLayer)     (None, 11, 4747)     0                                            
+__________________________________________________________________________________________________
+bidirectional_encoder (Bidirect multiple             4198400     enc_embedding[0][0]              
+__________________________________________________________________________________________________
+decoder_lstm (LSTM)             multiple             10772480    decoder_inputs[0][0]             
+                                                                 bidirectional_encoder[0][1]      
+                                                                 bidirectional_encoder[0][3]      
+__________________________________________________________________________________________________
+attention_layer (AttentionLayer multiple             1573888     bidirectional_encoder[0][0]      
+                                                                 decoder_lstm[0][0]               
+__________________________________________________________________________________________________
+concatenate (Concatenate)       (None, 11, 1536)     0           decoder_lstm[0][0]               
+                                                                 attention_layer[0][0]            
+__________________________________________________________________________________________________
+time_distributed (TimeDistribut (None, 11, 4747)     7296139     concatenate[0][0]                
+==================================================================================================
+Total params: 25,388,171
+Trainable params: 25,388,171
+Non-trainable params: 0
+__________________________________________________________________________________________________
+[INFO] Evaluating model attention_model.h5
+[INFO] Evaluation Set: 1000
+[INFO] Evaluating with beam search of width: 2
+
+[INFO] Translating idx:  0
+[INFO] SRC=chill out, TARGET=entspann dich, PREDICTED=fantastisch
+
+[INFO] Translating idx:  1
+[INFO] SRC=tom cant talk, TARGET=tom kann nicht reden, PREDICTED=vielleicht kann nicht
+
+[INFO] Translating idx:  2
+[INFO] SRC=tom has a cold, TARGET=tom hat eine erkaltung, PREDICTED=tom ein
+
+[INFO] Translating idx:  3
+[INFO] SRC=grab an umbrella, TARGET=nimm dir einen schirm, PREDICTED=holen ein
+
+[INFO] Translating idx:  4
+[INFO] SRC=its comfortable, TARGET=es ist bequem, PREDICTED=das ist
+
+[INFO] Translating idx:  5
+[INFO] SRC=do you do yoga, TARGET=betreibt ihr yoga, PREDICTED=rauchst ihr
+
+[INFO] Translating idx:  6
+[INFO] SRC=can i sit down, TARGET=darf ich mich setzen, PREDICTED=kann setzen setzen
+
+[INFO] Translating idx:  7
+[INFO] SRC=please go away, TARGET=gehe bitte weg, PREDICTED=bitte dich
+
+[INFO] Translating idx:  8
+[INFO] SRC=im not angry, TARGET=ich bin nicht bose, PREDICTED=ich nicht
+
+[INFO] Translating idx:  9
+[INFO] SRC=youre patient, TARGET=du bist geduldig, PREDICTED=ihr sind
+
+[INFO] Translating idx:  10
+[INFO] SRC=hes my age, TARGET=er hat mein alter, PREDICTED=er mein alter
+
+[INFO] Translating idx:  11
+[INFO] SRC=catch the ball, TARGET=fang den ball, PREDICTED=fangt den
+
+[INFO] Translating idx:  12
+[INFO] SRC=stop fighting, TARGET=hort auf zu kampfen, PREDICTED=stopp auf
+
+[INFO] Translating idx:  13
+[INFO] SRC=sit down, TARGET=setz dich, PREDICTED=setz sie
+
+[INFO] Translating idx:  14
+[INFO] SRC=youre old, TARGET=du bist alt, PREDICTED=sie sind
+
+[INFO] Translating idx:  15
+[INFO] SRC=take a bus, TARGET=nehmt einen bus, PREDICTED=nehmen mit
+
+[INFO] Translating idx:  16
+[INFO] SRC=he put up a flag, TARGET=er hisste die flagge, PREDICTED=er auf
+
+[INFO] Translating idx:  17
+[INFO] SRC=come back here, TARGET=komm wieder her, PREDICTED=komm her
+
+[INFO] Translating idx:  18
+[INFO] SRC=beat it, TARGET=mach ne fliege, PREDICTED=mach
+
+[INFO] Translating idx:  19
+[INFO] SRC=are we safe here, TARGET=sind wir hier in sicherheit, PREDICTED=sind sicher
+
+[INFO] Translating idx:  20
+[INFO] SRC=i like football, TARGET=mir gefallt fuball, PREDICTED=aha mag
+
+[INFO] Translating idx:  21
+[INFO] SRC=get on the horse, TARGET=steigt auf das pferd, PREDICTED=steigen das
+
+[INFO] Translating idx:  22
+[INFO] SRC=im lying, TARGET=ich luge, PREDICTED=ich
+
+[INFO] Translating idx:  23
+[INFO] SRC=i dont see why, TARGET=ich verstehe nicht warum, PREDICTED=mir sehe nicht
+
+[INFO] Translating idx:  24
+[INFO] SRC=it hurts here, TARGET=ich habe hier schmerzen, PREDICTED=es hier
+
+[INFO] Translating idx:  25
+[INFO] SRC=i like tom a lot, TARGET=tom ist mir unglaublich sympathisch, PREDICTED=mir mag viel
+
+[INFO] Translating idx:  26
+[INFO] SRC=i didnt go, TARGET=ich ging nicht, PREDICTED=ich nicht
+
+[INFO] Translating idx:  27
+[INFO] SRC=tom is studious, TARGET=tom ist fleiig, PREDICTED=es ist
+
+[INFO] Translating idx:  28
+[INFO] SRC=good for you, TARGET=schon fur dich, PREDICTED=schon sie
+
+[INFO] Translating idx:  29
+[INFO] SRC=i am going too, TARGET=ich gehe auch, PREDICTED=ich zu
+
+[INFO] Translating idx:  30
+[INFO] SRC=was tom asleep, TARGET=hat tom geschlafen, PREDICTED=beschreibe
+
+[INFO] Translating idx:  31
+[INFO] SRC=tom graduated, TARGET=tom schloss die schule ab, PREDICTED=tom seinen
+
+[INFO] Translating idx:  32
+[INFO] SRC=tom was square, TARGET=tom war ein spieer, PREDICTED=tom verblufft
+
+[INFO] Translating idx:  33
+[INFO] SRC=tomll die, TARGET=tom wird sterben, PREDICTED=wird wird
+
+[INFO] Translating idx:  34
+[INFO] SRC=wait till six, TARGET=warte bis sechs, PREDICTED=moment sie
+
+[INFO] Translating idx:  35
+[INFO] SRC=you cheated, TARGET=du hast gemogelt, PREDICTED=sie weinte
+
+[INFO] Translating idx:  36
+[INFO] SRC=im not a poet, TARGET=ich bin kein poet, PREDICTED=ich kein
+
+[INFO] Translating idx:  37
+[INFO] SRC=tom has to stay, TARGET=tom muss bleiben, PREDICTED=stirb muss
+
+[INFO] Translating idx:  38
+[INFO] SRC=i had fun, TARGET=ich hatte spa, PREDICTED=ich spa
+
+[INFO] Translating idx:  39
+[INFO] SRC=did tom leave, TARGET=ist tom weggegangen, PREDICTED=hat tom
+
+[INFO] Translating idx:  40
+[INFO] SRC=tom is faithful, TARGET=tom ist treu, PREDICTED=stirb ist
+
+[INFO] Translating idx:  41
+[INFO] SRC=she loves cats, TARGET=sie liebt katzen, PREDICTED=sie katzen
+
+[INFO] Translating idx:  42
+[INFO] SRC=i see that, TARGET=ich sehe das, PREDICTED=das sehe
+
+[INFO] Translating idx:  43
+[INFO] SRC=follow that car, TARGET=folgen sie diesem auto, PREDICTED=fahrt diesem
+
+[INFO] Translating idx:  44
+[INFO] SRC=lets fire tom, TARGET=entlassen wir tom, PREDICTED=verklagen tom
+
+[INFO] Translating idx:  45
+[INFO] SRC=tom is immobile, TARGET=tom ist unbeweglich, PREDICTED=stirb ist
+
+[INFO] Translating idx:  46
+[INFO] SRC=im coming too, TARGET=ich komme auch, PREDICTED=das komme
+
+[INFO] Translating idx:  47
+[INFO] SRC=youre ok, TARGET=du bist okay, PREDICTED=sie ist
+
+[INFO] Translating idx:  48
+[INFO] SRC=where is my dog, TARGET=wo ist mein hund, PREDICTED=wo papa
+
+[INFO] Translating idx:  49
+[INFO] SRC=its comfortable, TARGET=das ist bequem, PREDICTED=das ist
+
+[INFO] Translating idx:  50
+[INFO] SRC=what a nice tie, TARGET=was fur ein toller schlips, PREDICTED=wie fur
+
+[INFO] Translating idx:  51
+[INFO] SRC=tom wasnt sure, TARGET=tom war sich unsicher, PREDICTED=es war nicht nicht
+
+[INFO] Translating idx:  52
+[INFO] SRC=is she your mom, TARGET=ist sie deine mutter, PREDICTED=bist sie
+
+[INFO] Translating idx:  53
+[INFO] SRC=dont come, TARGET=kommt nicht, PREDICTED=komm sie
+
+[INFO] Translating idx:  54
+[INFO] SRC=tom called me, TARGET=tom rief mich an, PREDICTED=tom mich
+
+[INFO] Translating idx:  55
+[INFO] SRC=tom saw it, TARGET=tom hat es gesehen, PREDICTED=vielleicht sah
+
+[INFO] Translating idx:  56
+[INFO] SRC=who found them, TARGET=wer hat sie gefunden, PREDICTED=wer sie
+
+[INFO] Translating idx:  57
+[INFO] SRC=tom looked ok, TARGET=tom sah okay aus, PREDICTED=es sah aus
+
+[INFO] Translating idx:  58
+[INFO] SRC=ill go ask tom, TARGET=ich frage tom, PREDICTED=ich tom
+
+[INFO] Translating idx:  59
+[INFO] SRC=give him a break, TARGET=gib ihm eine pause, PREDICTED=lass in
+
+[INFO] Translating idx:  60
+[INFO] SRC=they quarreled, TARGET=sie haben sich gestritten, PREDICTED=sie
+
+[INFO] Translating idx:  61
+[INFO] SRC=its a rule, TARGET=es ist eine regel, PREDICTED=es eine
+
+[INFO] Translating idx:  62
+[INFO] SRC=did tom go, TARGET=ist tom gegangen, PREDICTED=hat tom
+
+[INFO] Translating idx:  63
+[INFO] SRC=i did it for him, TARGET=ich tat es fur ihn, PREDICTED=das habe fur
+
+[INFO] Translating idx:  64
+[INFO] SRC=tom ate dinner, TARGET=tom hat zu abend gegessen, PREDICTED=tom abendessen
+
+[INFO] Translating idx:  65
+[INFO] SRC=tom is coughing, TARGET=tom hustet, PREDICTED=eos
+
+[INFO] Translating idx:  66
+[INFO] SRC=im in your debt, TARGET=ich stehe in deiner schuld, PREDICTED=ich auf
+
+[INFO] Translating idx:  67
+[INFO] SRC=im trapped, TARGET=ich bin gefangen, PREDICTED=das hute
+
+[INFO] Translating idx:  68
+[INFO] SRC=tom is barefoot, TARGET=tom ist barfu, PREDICTED=tom flexibel
+
+[INFO] Translating idx:  69
+[INFO] SRC=leave tom, TARGET=verlassen sie tom, PREDICTED=geh tom
+
+[INFO] Translating idx:  70
+[INFO] SRC=let it be, TARGET=lass es sein, PREDICTED=lass bleiben
+
+[INFO] Translating idx:  71
+[INFO] SRC=its only me, TARGET=ich bins nur, PREDICTED=es nur
+
+[INFO] Translating idx:  72
+[INFO] SRC=dont cheat, TARGET=betruge nicht, PREDICTED=stehenbleiben
+
+[INFO] Translating idx:  73
+[INFO] SRC=tom is sick, TARGET=tom ist krank, PREDICTED=es ist
+
+[INFO] Translating idx:  74
+[INFO] SRC=tom isnt fair, TARGET=tom ist ungerecht, PREDICTED=tom nicht
+
+[INFO] Translating idx:  75
+[INFO] SRC=dont stand up, TARGET=steh nicht auf, PREDICTED=stehen nicht
+
+[INFO] Translating idx:  76
+[INFO] SRC=its a big world, TARGET=es ist eine groe welt, PREDICTED=er welt
+
+[INFO] Translating idx:  77
+[INFO] SRC=tom moaned, TARGET=tom stohnte, PREDICTED=tom
+
+[INFO] Translating idx:  78
+[INFO] SRC=tom is loving, TARGET=tom liebt, PREDICTED=das ist
+
+[INFO] Translating idx:  79
+[INFO] SRC=tom cant sing, TARGET=tom kann nicht singen, PREDICTED=vielleicht kann singen
+
+[INFO] Translating idx:  80
+[INFO] SRC=you better go, TARGET=geh mal lieber, PREDICTED=du gehst
+
+[INFO] Translating idx:  81
+[INFO] SRC=i meant no harm, TARGET=ich habe es nicht bose gemeint, PREDICTED=ich nichts
+
+[INFO] Translating idx:  82
+[INFO] SRC=i see tom, TARGET=ich sehe tom, PREDICTED=ich tom
+
+[INFO] Translating idx:  83
+[INFO] SRC=lets go, TARGET=auf gehts, PREDICTED=lass uns
+
+[INFO] Translating idx:  84
+[INFO] SRC=tom was adamant, TARGET=tom war unnachgiebig, PREDICTED=tom verblufft
+
+[INFO] Translating idx:  85
+[INFO] SRC=im still busy, TARGET=ich bin immer noch beschaftigt, PREDICTED=ich immer beschaftigt
+
+[INFO] Translating idx:  86
+[INFO] SRC=draw a circle, TARGET=zeichne einen kreis, PREDICTED=atmet
+
+[INFO] Translating idx:  87
+[INFO] SRC=ill keep watch, TARGET=ich werde wache halten, PREDICTED=ich aufpassen
+
+[INFO] Translating idx:  88
+[INFO] SRC=i ran upstairs, TARGET=ich lief nach oben, PREDICTED=bin rannte
+
+[INFO] Translating idx:  89
+[INFO] SRC=we were robbed, TARGET=wir sind ausgeraubt worden, PREDICTED=wir verzweifelt
+
+[INFO] Translating idx:  90
+[INFO] SRC=pull me up, TARGET=ziehen sie mich hoch, PREDICTED=zieh hoch
+
+[INFO] Translating idx:  91
+[INFO] SRC=tom is a loser, TARGET=tom ist ein verlierer, PREDICTED=tom ein
+
+[INFO] Translating idx:  92
+[INFO] SRC=watch carefully, TARGET=schauen sie genau hin, PREDICTED=schaut zu
+
+[INFO] Translating idx:  93
+[INFO] SRC=tom was moaning, TARGET=tom stohnte, PREDICTED=tom verblufft
+
+[INFO] Translating idx:  94
+[INFO] SRC=ignore them, TARGET=ignoriert sie, PREDICTED=retten sie
+
+[INFO] Translating idx:  95
+[INFO] SRC=take cover, TARGET=geht in deckung, PREDICTED=ubernimm in
+
+[INFO] Translating idx:  96
+[INFO] SRC=is this ok, TARGET=ist das okay, PREDICTED=gehort das
+
+[INFO] Translating idx:  97
+[INFO] SRC=has tom left yet, TARGET=ist tom schon gegangen, PREDICTED=ist schon
+
+[INFO] Translating idx:  98
+[INFO] SRC=thats a banana, TARGET=das ist eine banane, PREDICTED=das eine
+
+[INFO] Translating idx:  99
+[INFO] SRC=is it that bad, TARGET=ist es schlimm, PREDICTED=ist das
+
+[INFO] Translating idx:  100
+[INFO] SRC=this is my cat, TARGET=das ist meine katze, PREDICTED=das ist
+
+[INFO] Translating idx:  101
+[INFO] SRC=i want to come, TARGET=ich will kommen, PREDICTED=ja will
+
+[INFO] Translating idx:  102
+[INFO] SRC=he will come, TARGET=er wird kommen, PREDICTED=er kommen
+
+[INFO] Translating idx:  103
+[INFO] SRC=forget about tom, TARGET=schlag dir tom aus dem kopf, PREDICTED=vergiss tom
+
+[INFO] Translating idx:  104
+[INFO] SRC=i wrote to tom, TARGET=ich habe tom geschrieben, PREDICTED=das habe nicht
+
+[INFO] Translating idx:  105
+[INFO] SRC=i dislike eggs, TARGET=ich mag keine eier, PREDICTED=ich die
+
+[INFO] Translating idx:  106
+[INFO] SRC=i never do that, TARGET=ich tue das niemals, PREDICTED=ich das
+
+[INFO] Translating idx:  107
+[INFO] SRC=i am sure, TARGET=ich bin sicher, PREDICTED=ich mir
+
+[INFO] Translating idx:  108
+[INFO] SRC=who sent this, TARGET=wer hat die geschickt, PREDICTED=wer den
+
+[INFO] Translating idx:  109
+[INFO] SRC=i was horrified, TARGET=ich war entsetzt, PREDICTED=damals war
+
+[INFO] Translating idx:  110
+[INFO] SRC=i came yesterday, TARGET=ich kam gestern, PREDICTED=nur bin gekommen
+
+[INFO] Translating idx:  111
+[INFO] SRC=she likes him, TARGET=sie mag ihn, PREDICTED=sie ihn
+
+[INFO] Translating idx:  112
+[INFO] SRC=is tom hot, TARGET=ist tom zu hei, PREDICTED=ist hei
+
+[INFO] Translating idx:  113
+[INFO] SRC=i said id do it, TARGET=ich sagte ich wurde es tun, PREDICTED=ich ich
+
+[INFO] Translating idx:  114
+[INFO] SRC=he talks fast, TARGET=er spricht schnell, PREDICTED=niemand spricht
+
+[INFO] Translating idx:  115
+[INFO] SRC=is it poisonous, TARGET=ist es giftig, PREDICTED=hat sie
+
+[INFO] Translating idx:  116
+[INFO] SRC=tom lied to me, TARGET=tom hat mich angelogen, PREDICTED=tom mich
+
+[INFO] Translating idx:  117
+[INFO] SRC=im down here, TARGET=ich bin hier unten, PREDICTED=hier komme
+
+[INFO] Translating idx:  118
+[INFO] SRC=im a happy man, TARGET=ich bin ein glucklicher mann, PREDICTED=ich ein
+
+[INFO] Translating idx:  119
+[INFO] SRC=tom is an adult, TARGET=tom ist erwachsen, PREDICTED=sie ist
+
+[INFO] Translating idx:  120
+[INFO] SRC=tom got lost, TARGET=tom verirrte sich, PREDICTED=tom sich
+
+[INFO] Translating idx:  121
+[INFO] SRC=tell tom why, TARGET=sag tom warum, PREDICTED=sagt tom
+
+[INFO] Translating idx:  122
+[INFO] SRC=i want a lawyer, TARGET=ich will einen anwalt, PREDICTED=i will
+
+[INFO] Translating idx:  123
+[INFO] SRC=i recommend maui, TARGET=ich empfehle die insel maui, PREDICTED=ich gedichte
+
+[INFO] Translating idx:  124
+[INFO] SRC=hes getting old, TARGET=er wird alt, PREDICTED=es wird
+
+[INFO] Translating idx:  125
+[INFO] SRC=tom went out, TARGET=tom ging aus, PREDICTED=stirb ging
+
+[INFO] Translating idx:  126
+[INFO] SRC=im going to bed, TARGET=ich gehe schlafen, PREDICTED=kann gehe
+
+[INFO] Translating idx:  127
+[INFO] SRC=is tom with us, TARGET=ist tom mit uns dabei, PREDICTED=ist bei
+
+[INFO] Translating idx:  128
+[INFO] SRC=i cant do that, TARGET=ich kann das nicht, PREDICTED=ich das
+
+[INFO] Translating idx:  129
+[INFO] SRC=he used to drink, TARGET=er hat fruher alkohol getrunken, PREDICTED=er fruher
+
+[INFO] Translating idx:  130
+[INFO] SRC=i have sinned, TARGET=ich habe gesundigt, PREDICTED=aha habe
+
+[INFO] Translating idx:  131
+[INFO] SRC=whats going on, TARGET=was ist hier los, PREDICTED=na geht
+
+[INFO] Translating idx:  132
+[INFO] SRC=drop the gun, TARGET=lass die waffe fallen, PREDICTED=lassen den
+
+[INFO] Translating idx:  133
+[INFO] SRC=do you know that, TARGET=wissen sie das, PREDICTED=wissen du
+
+[INFO] Translating idx:  134
+[INFO] SRC=tom looked fine, TARGET=tom sah gut aus, PREDICTED=es sah aus
+
+[INFO] Translating idx:  135
+[INFO] SRC=tom was dead, TARGET=tom sei tot, PREDICTED=war war
+
+[INFO] Translating idx:  136
+[INFO] SRC=i prefer black, TARGET=mir ist schwarz lieber, PREDICTED=ich mit
+
+[INFO] Translating idx:  137
+[INFO] SRC=how could it be, TARGET=wie konnte das sein, PREDICTED=wie es
+
+[INFO] Translating idx:  138
+[INFO] SRC=give me the keys, TARGET=geben sie mir die schlussel, PREDICTED=gebt die schlussel
+
+[INFO] Translating idx:  139
+[INFO] SRC=tom is my dad, TARGET=tom ist mein papa, PREDICTED=tom mein
+
+[INFO] Translating idx:  140
+[INFO] SRC=did you hire tom, TARGET=haben sie tom eingestellt, PREDICTED=haben tom
+
+[INFO] Translating idx:  141
+[INFO] SRC=youre weak, TARGET=ihr seid schwach, PREDICTED=sie schwach
+
+[INFO] Translating idx:  142
+[INFO] SRC=where is my car, TARGET=wo ist mein auto, PREDICTED=wo papa
+
+[INFO] Translating idx:  143
+[INFO] SRC=leave now, TARGET=geht jetzt, PREDICTED=gehen
+
+[INFO] Translating idx:  144
+[INFO] SRC=tom fought hard, TARGET=tom hat hart gekampft, PREDICTED=tom schwer
+
+[INFO] Translating idx:  145
+[INFO] SRC=go find tom, TARGET=gehe hin und suche tom, PREDICTED=geh tom
+
+[INFO] Translating idx:  146
+[INFO] SRC=tom is cheating, TARGET=tom schummelt, PREDICTED=tom flexibel
+
+[INFO] Translating idx:  147
+[INFO] SRC=why is tom here, TARGET=warum ist tom hier, PREDICTED=warum tom
+
+[INFO] Translating idx:  148
+[INFO] SRC=are you two ok, TARGET=geht es euch beiden gut, PREDICTED=sind du
+
+[INFO] Translating idx:  149
+[INFO] SRC=i cant fly, TARGET=ich kann nicht fliegen, PREDICTED=das kann nicht
+
+[INFO] Translating idx:  150
+[INFO] SRC=youd better go, TARGET=ihr solltet besser gehen, PREDICTED=sie solltest gehen
+
+[INFO] Translating idx:  151
+[INFO] SRC=tom was home, TARGET=tom war zu hause, PREDICTED=tom nach
+
+[INFO] Translating idx:  152
+[INFO] SRC=its all in here, TARGET=hier ist alles drin, PREDICTED=hier ist
+
+[INFO] Translating idx:  153
+[INFO] SRC=hes new in town, TARGET=er ist neu in der stadt, PREDICTED=da ist
+
+[INFO] Translating idx:  154
+[INFO] SRC=i like this cup, TARGET=mir gefallt diese tasse, PREDICTED=mir mag
+
+[INFO] Translating idx:  155
+[INFO] SRC=im a city girl, TARGET=ich bin ein stadtmadchen, PREDICTED=ich ein
+
+[INFO] Translating idx:  156
+[INFO] SRC=i get the point, TARGET=ich verstehe schon, PREDICTED=ich die namen
+
+[INFO] Translating idx:  157
+[INFO] SRC=tom is generous, TARGET=tom ist grozugig, PREDICTED=tom beruhrt
+
+[INFO] Translating idx:  158
+[INFO] SRC=thatll be fine, TARGET=es wird gut sein, PREDICTED=das schon
+
+[INFO] Translating idx:  159
+[INFO] SRC=i like sushi, TARGET=ich mag gern sushi, PREDICTED=sie mag
+
+[INFO] Translating idx:  160
+[INFO] SRC=he began to cry, TARGET=er begann zu weinen, PREDICTED=er weinen an
+
+[INFO] Translating idx:  161
+[INFO] SRC=he is a tall boy, TARGET=er ist ein groer junge, PREDICTED=er ein
+
+[INFO] Translating idx:  162
+[INFO] SRC=go inside, TARGET=geh rein, PREDICTED=nur rein
+
+[INFO] Translating idx:  163
+[INFO] SRC=can i help you, TARGET=kann ich euch helfen, PREDICTED=darf ich helfen
+
+[INFO] Translating idx:  164
+[INFO] SRC=i was dreaming, TARGET=ich war am traumen, PREDICTED=aha lachelte
+
+[INFO] Translating idx:  165
+[INFO] SRC=i just work here, TARGET=ich arbeite hier nur, PREDICTED=ich hier
+
+[INFO] Translating idx:  166
+[INFO] SRC=do you know this, TARGET=wisst ihr das, PREDICTED=wissen du
+
+[INFO] Translating idx:  167
+[INFO] SRC=tom knows why, TARGET=tom kennt den grund, PREDICTED=vielleicht kennt
+
+[INFO] Translating idx:  168
+[INFO] SRC=i may win, TARGET=vielleicht gewinne ich, PREDICTED=aha kann
+
+[INFO] Translating idx:  169
+[INFO] SRC=eat everything, TARGET=essen sie alles, PREDICTED=esst alles
+
+[INFO] Translating idx:  170
+[INFO] SRC=were trying, TARGET=wir geben uns muhe, PREDICTED=es es
+
+[INFO] Translating idx:  171
+[INFO] SRC=she disappeared, TARGET=sie verschwand, PREDICTED=sie
+
+[INFO] Translating idx:  172
+[INFO] SRC=did tom bite you, TARGET=hat tom dich gebissen, PREDICTED=hat sie
+
+[INFO] Translating idx:  173
+[INFO] SRC=i have proof, TARGET=ich habe beweise, PREDICTED=mir habe
+
+[INFO] Translating idx:  174
+[INFO] SRC=look closely, TARGET=schaut genau hin, PREDICTED=schauen hin
+
+[INFO] Translating idx:  175
+[INFO] SRC=she cooks well, TARGET=sie kocht gut, PREDICTED=sie gut
+
+[INFO] Translating idx:  176
+[INFO] SRC=we need to win, TARGET=wir mussen gewinnen, PREDICTED=wir miteinander
+
+[INFO] Translating idx:  177
+[INFO] SRC=you know enough, TARGET=du weit genug, PREDICTED=ihr wisst
+
+[INFO] Translating idx:  178
+[INFO] SRC=do your best, TARGET=gib dein bestes, PREDICTED=geben ihr
+
+[INFO] Translating idx:  179
+[INFO] SRC=a car drove past, TARGET=ein auto fuhr vorbei, PREDICTED=ein fuhr
+
+[INFO] Translating idx:  180
+[INFO] SRC=im a free man, TARGET=ich bin ein freier mann, PREDICTED=ich ein
+
+[INFO] Translating idx:  181
+[INFO] SRC=i like running, TARGET=ich laufe gern, PREDICTED=ich gerne
+
+[INFO] Translating idx:  182
+[INFO] SRC=get some rest, TARGET=ruhe dich ein wenig aus, PREDICTED=ruhen wenig
+
+[INFO] Translating idx:  183
+[INFO] SRC=i put my hat on, TARGET=ich setzte meinen hut auf, PREDICTED=ich meinen
+
+[INFO] Translating idx:  184
+[INFO] SRC=your times up, TARGET=deine zeit ist um, PREDICTED=deine ist
+
+[INFO] Translating idx:  185
+[INFO] SRC=tom seems tense, TARGET=tom scheint angespannt zu sein, PREDICTED=es scheint zu
+
+[INFO] Translating idx:  186
+[INFO] SRC=he dislikes me, TARGET=er mag mich nicht, PREDICTED=das mag nicht
+
+[INFO] Translating idx:  187
+[INFO] SRC=i kept my word, TARGET=ich habe mein wort gehalten, PREDICTED=ich mein
+
+[INFO] Translating idx:  188
+[INFO] SRC=tom stayed calm, TARGET=tom blieb ruhig, PREDICTED=tom ruhig
+
+[INFO] Translating idx:  189
+[INFO] SRC=even tom smiled, TARGET=selbst tom lachelte, PREDICTED=ignorier tom
+
+[INFO] Translating idx:  190
+[INFO] SRC=give me a ride, TARGET=lasst mich mitfahren, PREDICTED=nimm mich
+
+[INFO] Translating idx:  191
+[INFO] SRC=im not sleepy, TARGET=ich bin nicht mude, PREDICTED=ich nicht
+
+[INFO] Translating idx:  192
+[INFO] SRC=control yourself, TARGET=reiss dich zusammen, PREDICTED=beherrsche
+
+[INFO] Translating idx:  193
+[INFO] SRC=tom may stay, TARGET=tom darf bleiben, PREDICTED=vielleicht kann
+
+[INFO] Translating idx:  194
+[INFO] SRC=what did i miss, TARGET=was habe ich verpasst, PREDICTED=was ich
+
+[INFO] Translating idx:  195
+[INFO] SRC=he ran into debt, TARGET=er machte schulden, PREDICTED=er zum
+
+[INFO] Translating idx:  196
+[INFO] SRC=go to sleep, TARGET=geh schlafen, PREDICTED=gehe schlafen
+
+[INFO] Translating idx:  197
+[INFO] SRC=come and get me, TARGET=komm und hol mich, PREDICTED=komm und mir
+
+[INFO] Translating idx:  198
+[INFO] SRC=drop the gun, TARGET=lassen sie die waffe fallen, PREDICTED=lassen den
+
+[INFO] Translating idx:  199
+[INFO] SRC=im the oldest, TARGET=ich bin der alteste, PREDICTED=mir bin
+
+[INFO] Translating idx:  200
+[INFO] SRC=we ate eggs, TARGET=wir haben eier gegessen, PREDICTED=uns haben
+
+[INFO] Translating idx:  201
+[INFO] SRC=its an order, TARGET=das ist ein befehl, PREDICTED=das ein
+
+[INFO] Translating idx:  202
+[INFO] SRC=we are brothers, TARGET=wir sind bruder, PREDICTED=uns sind
+
+[INFO] Translating idx:  203
+[INFO] SRC=im watching you, TARGET=ich beobachte dich, PREDICTED=ich sie
+
+[INFO] Translating idx:  204
+[INFO] SRC=youre my hero, TARGET=du bist mein held, PREDICTED=sie bist
+
+[INFO] Translating idx:  205
+[INFO] SRC=air is invisible, TARGET=luft ist unsichtbar, PREDICTED=kirschen ist
+
+[INFO] Translating idx:  206
+[INFO] SRC=tom is heroic, TARGET=tom ist heldenhaft, PREDICTED=tom heldenhaft
+
+[INFO] Translating idx:  207
+[INFO] SRC=i like talking, TARGET=ich unterhalte mich gern, PREDICTED=ich joggen
+
+[INFO] Translating idx:  208
+[INFO] SRC=im thirty now, TARGET=ich bin jetzt jahre alt, PREDICTED=ich jetzt
+
+[INFO] Translating idx:  209
+[INFO] SRC=it was too easy, TARGET=es war zu einfach, PREDICTED=es zu
+
+[INFO] Translating idx:  210
+[INFO] SRC=that was ours, TARGET=das war unsre, PREDICTED=der war
+
+[INFO] Translating idx:  211
+[INFO] SRC=tom won, TARGET=tom hat gewonnen, PREDICTED=tom gewonnen
+
+[INFO] Translating idx:  212
+[INFO] SRC=he seems tired, TARGET=er scheint mude zu sein, PREDICTED=es scheint sein
+
+[INFO] Translating idx:  213
+[INFO] SRC=hey wait for me, TARGET=he warte auf mich, PREDICTED=hey wartet mich
+
+[INFO] Translating idx:  214
+[INFO] SRC=i am single, TARGET=ich bin ledig, PREDICTED=habe bin
+
+[INFO] Translating idx:  215
+[INFO] SRC=theyre new, TARGET=sie sind neu, PREDICTED=sie neu
+
+[INFO] Translating idx:  216
+[INFO] SRC=thats hogwash, TARGET=das ist quatsch, PREDICTED=es ist
+
+[INFO] Translating idx:  217
+[INFO] SRC=listen carefully, TARGET=hor gut zu, PREDICTED=gib sie
+
+[INFO] Translating idx:  218
+[INFO] SRC=youre not rich, TARGET=du bist nicht reich, PREDICTED=du nicht
+
+[INFO] Translating idx:  219
+[INFO] SRC=we have a farm, TARGET=wir haben einen bauernhof, PREDICTED=waren haben
+
+[INFO] Translating idx:  220
+[INFO] SRC=i dont like tom, TARGET=ich mag tom nicht, PREDICTED=tom gefallt nicht
+
+[INFO] Translating idx:  221
+[INFO] SRC=i made tea, TARGET=ich habe tee gemacht, PREDICTED=ich tee
+
+[INFO] Translating idx:  222
+[INFO] SRC=he likes to hunt, TARGET=er jagt gerne, PREDICTED=er gerne
+
+[INFO] Translating idx:  223
+[INFO] SRC=im moving, TARGET=ich bewege mich, PREDICTED=ich vor
+
+[INFO] Translating idx:  224
+[INFO] SRC=tom whistled, TARGET=tom pfiff, PREDICTED=eos
+
+[INFO] Translating idx:  225
+[INFO] SRC=i wanted to cry, TARGET=mir war zum weinen zumute, PREDICTED=ich zum
+
+[INFO] Translating idx:  226
+[INFO] SRC=tom was focused, TARGET=tom war konzentriert, PREDICTED=tom verblufft
+
+[INFO] Translating idx:  227
+[INFO] SRC=tom scares easy, TARGET=tom erschreckt sich leicht, PREDICTED=es wird
+
+[INFO] Translating idx:  228
+[INFO] SRC=please relax, TARGET=enspannt euch bitte, PREDICTED=entspannen sie
+
+[INFO] Translating idx:  229
+[INFO] SRC=im out of money, TARGET=ich habe kein geld mehr, PREDICTED=das bin
+
+[INFO] Translating idx:  230
+[INFO] SRC=they dont care, TARGET=sie scheren sich nicht drum, PREDICTED=sie nicht
+
+[INFO] Translating idx:  231
+[INFO] SRC=i like reading, TARGET=ich lese gerne, PREDICTED=ich lesen
+
+[INFO] Translating idx:  232
+[INFO] SRC=i could see that, TARGET=das habe ich schon gemerkt, PREDICTED=ich das
+
+[INFO] Translating idx:  233
+[INFO] SRC=toms brilliant, TARGET=tom ist genial, PREDICTED=es ist
+
+[INFO] Translating idx:  234
+[INFO] SRC=i intend to try, TARGET=ich will es versuchen, PREDICTED=ich es
+
+[INFO] Translating idx:  235
+[INFO] SRC=clean the room, TARGET=reinige das zimmer, PREDICTED=schlie das
+
+[INFO] Translating idx:  236
+[INFO] SRC=get down, TARGET=hinlegen, PREDICTED=mach
+
+[INFO] Translating idx:  237
+[INFO] SRC=send tom to me, TARGET=schickt tom zu mir, PREDICTED=schicken tom mir
+
+[INFO] Translating idx:  238
+[INFO] SRC=yours is worse, TARGET=deiner ist schlechter, PREDICTED=deine ist
+
+[INFO] Translating idx:  239
+[INFO] SRC=tom wanted more, TARGET=tom wollte mehr, PREDICTED=thomas wollte
+
+[INFO] Translating idx:  240
+[INFO] SRC=tom had fun, TARGET=tom hatte spa, PREDICTED=tom spa
+
+[INFO] Translating idx:  241
+[INFO] SRC=tom knows it, TARGET=tom kennt es, PREDICTED=tom es
+
+[INFO] Translating idx:  242
+[INFO] SRC=arent you tired, TARGET=sind sie nicht mude, PREDICTED=sind mude
+
+[INFO] Translating idx:  243
+[INFO] SRC=tom is unafraid, TARGET=tom hat keine angst, PREDICTED=tom flexibel
+
+[INFO] Translating idx:  244
+[INFO] SRC=ill take tom, TARGET=ich ubernehme tom, PREDICTED=ich tom
+
+[INFO] Translating idx:  245
+[INFO] SRC=are you busy, TARGET=sind sie beschaftigt, PREDICTED=sind du
+
+[INFO] Translating idx:  246
+[INFO] SRC=make a list, TARGET=mach eine liste, PREDICTED=mach eine
+
+[INFO] Translating idx:  247
+[INFO] SRC=tom is diligent, TARGET=tom ist fleiig, PREDICTED=es ist
+
+[INFO] Translating idx:  248
+[INFO] SRC=is anybody home, TARGET=ist jemand zu hause, PREDICTED=sind jemand
+
+[INFO] Translating idx:  249
+[INFO] SRC=tom obeyed, TARGET=tom fugte sich, PREDICTED=tom sich
+
+[INFO] Translating idx:  250
+[INFO] SRC=they laughed, TARGET=sie haben gelacht, PREDICTED=sie
+
+[INFO] Translating idx:  251
+[INFO] SRC=were giving up, TARGET=wir geben auf, PREDICTED=wir auf
+
+[INFO] Translating idx:  252
+[INFO] SRC=tom felt sick, TARGET=tom fuhlte sich krank, PREDICTED=es fuhlte nicht
+
+[INFO] Translating idx:  253
+[INFO] SRC=i know it myself, TARGET=ich wei es selbst, PREDICTED=ich es
+
+[INFO] Translating idx:  254
+[INFO] SRC=i read a letter, TARGET=ich las einen brief, PREDICTED=ich ein
+
+[INFO] Translating idx:  255
+[INFO] SRC=why dont i go, TARGET=warum gehe ich nicht, PREDICTED=warum nicht
+
+[INFO] Translating idx:  256
+[INFO] SRC=they are melons, TARGET=das sind melonen, PREDICTED=sie melonen
+
+[INFO] Translating idx:  257
+[INFO] SRC=im in here, TARGET=ich bin hier drin, PREDICTED=bin bin
+
+[INFO] Translating idx:  258
+[INFO] SRC=did tom help, TARGET=hat tom geholfen, PREDICTED=hast tom
+
+[INFO] Translating idx:  259
+[INFO] SRC=i will listen, TARGET=ich werde zuhoren, PREDICTED=aha werde
+
+[INFO] Translating idx:  260
+[INFO] SRC=give me a reason, TARGET=gib mir einen grund, PREDICTED=gib in
+
+[INFO] Translating idx:  261
+[INFO] SRC=breathe normally, TARGET=atmen sie normal, PREDICTED=atmet
+
+[INFO] Translating idx:  262
+[INFO] SRC=fill up the tank, TARGET=full den tank auf, PREDICTED=volltanken
+
+[INFO] Translating idx:  263
+[INFO] SRC=tom is awesome, TARGET=tom ist groartig, PREDICTED=es ist
+
+[INFO] Translating idx:  264
+[INFO] SRC=she smiled, TARGET=sie hat gelachelt, PREDICTED=sie
+
+[INFO] Translating idx:  265
+[INFO] SRC=do it your way, TARGET=mach es auf deine weise, PREDICTED=macht es
+
+[INFO] Translating idx:  266
+[INFO] SRC=seize him, TARGET=fasst ihn, PREDICTED=fass
+
+[INFO] Translating idx:  267
+[INFO] SRC=we want to go, TARGET=wir wollen gehen, PREDICTED=wir gehen
+
+[INFO] Translating idx:  268
+[INFO] SRC=dont tease tom, TARGET=zieh tom nicht auf, PREDICTED=belastige tom
+
+[INFO] Translating idx:  269
+[INFO] SRC=just check it, TARGET=kontrolliers einfach, PREDICTED=kontrollieren einfach
+
+[INFO] Translating idx:  270
+[INFO] SRC=tom got jealous, TARGET=tom wurde eifersuchtig, PREDICTED=tom eifersuchtig
+
+[INFO] Translating idx:  271
+[INFO] SRC=how is tom today, TARGET=wie geht es tom heute, PREDICTED=wie tom
+
+[INFO] Translating idx:  272
+[INFO] SRC=im just shocked, TARGET=ich stehe einfach nur unter schock, PREDICTED=das bin
+
+[INFO] Translating idx:  273
+[INFO] SRC=tom is a misfit, TARGET=tom ist ein eigenbrotler, PREDICTED=es ist
+
+[INFO] Translating idx:  274
+[INFO] SRC=might is right, TARGET=macht geht vor recht, PREDICTED=es recht
+
+[INFO] Translating idx:  275
+[INFO] SRC=that hurts, TARGET=das tut weh, PREDICTED=das weh
+
+[INFO] Translating idx:  276
+[INFO] SRC=tom saw me, TARGET=tom sah mich, PREDICTED=es sah
+
+[INFO] Translating idx:  277
+[INFO] SRC=tom came, TARGET=tom kam, PREDICTED=tom
+
+[INFO] Translating idx:  278
+[INFO] SRC=you worked hard, TARGET=ihr habt hart gearbeitet, PREDICTED=du hart
+
+[INFO] Translating idx:  279
+[INFO] SRC=i couldnt wait, TARGET=ich konnte nicht warten, PREDICTED=ich nicht erwarten
+
+[INFO] Translating idx:  280
+[INFO] SRC=did you sign, TARGET=hast du unterschrieben, PREDICTED=haben ihr
+
+[INFO] Translating idx:  281
+[INFO] SRC=easy does it, TARGET=vorsicht ist die mutter der porzellankiste, PREDICTED=denken sachte
+
+[INFO] Translating idx:  282
+[INFO] SRC=its pretty ugly, TARGET=er ist ganz schon hasslich, PREDICTED=das ist
+
+[INFO] Translating idx:  283
+[INFO] SRC=ill allow it, TARGET=ich werde es zulassen, PREDICTED=ich es
+
+[INFO] Translating idx:  284
+[INFO] SRC=ill be nice, TARGET=ich werde freundlich sein, PREDICTED=ich brav
+
+[INFO] Translating idx:  285
+[INFO] SRC=tom is miserly, TARGET=tom ist geizig, PREDICTED=tom flexibel
+
+[INFO] Translating idx:  286
+[INFO] SRC=wait a sec, TARGET=warte mal kurz, PREDICTED=augenblick
+
+[INFO] Translating idx:  287
+[INFO] SRC=be ruthless, TARGET=seid gnadenlos, PREDICTED=seien sich
+
+[INFO] Translating idx:  288
+[INFO] SRC=i teach spanish, TARGET=ich bin spanischlehrerin, PREDICTED=das unterrichte
+
+[INFO] Translating idx:  289
+[INFO] SRC=i look after tom, TARGET=ich kummere mich um tom, PREDICTED=eventuell schau tom
+
+[INFO] Translating idx:  290
+[INFO] SRC=no one left, TARGET=niemand ist gegangen, PREDICTED=es ist
+
+[INFO] Translating idx:  291
+[INFO] SRC=i was skeptical, TARGET=ich war skeptisch, PREDICTED=mir war
+
+[INFO] Translating idx:  292
+[INFO] SRC=tom did do that, TARGET=tom hat das gemacht, PREDICTED=tom das
+
+[INFO] Translating idx:  293
+[INFO] SRC=were shy, TARGET=wir sind schuchtern, PREDICTED=wir schuchtern
+
+[INFO] Translating idx:  294
+[INFO] SRC=tom is a friend, TARGET=tom ist ein freund, PREDICTED=tom ein
+
+[INFO] Translating idx:  295
+[INFO] SRC=is he american, TARGET=ist er amerikaner, PREDICTED=ist amerikaner
+
+[INFO] Translating idx:  296
+[INFO] SRC=im in danger, TARGET=ich bin in gefahr, PREDICTED=ich in
+
+[INFO] Translating idx:  297
+[INFO] SRC=shes seventeen, TARGET=sie ist jahre alt, PREDICTED=sie durchsetzungsvermogen
+
+[INFO] Translating idx:  298
+[INFO] SRC=i drink to relax, TARGET=ich trinke um mich zu entspannen, PREDICTED=ich mir
+
+[INFO] Translating idx:  299
+[INFO] SRC=its close by, TARGET=es ist in der nahe, PREDICTED=das liegt
+
+[INFO] Translating idx:  300
+[INFO] SRC=tom knows it, TARGET=tom kennt sie, PREDICTED=tom es
+
+[INFO] Translating idx:  301
+[INFO] SRC=were available, TARGET=wir haben zeit, PREDICTED=wir verzweifelt
+
+[INFO] Translating idx:  302
+[INFO] SRC=go have a beer, TARGET=komm trink ein bier, PREDICTED=nur zu
+
+[INFO] Translating idx:  303
+[INFO] SRC=ill be present, TARGET=ich werde anwesend sein, PREDICTED=ich da sein
+
+[INFO] Translating idx:  304
+[INFO] SRC=no one answered, TARGET=niemand hat geantwortet, PREDICTED=kein antwortete
+
+[INFO] Translating idx:  305
+[INFO] SRC=tom looked up, TARGET=tom blickte auf, PREDICTED=tom auf
+
+[INFO] Translating idx:  306
+[INFO] SRC=im a doctor, TARGET=ich bin arzt, PREDICTED=ich ein
+
+[INFO] Translating idx:  307
+[INFO] SRC=youll be fine, TARGET=du wirst schon klarkommen, PREDICTED=es wirst
+
+[INFO] Translating idx:  308
+[INFO] SRC=put on a robe, TARGET=zieh einen bademantel an, PREDICTED=setz dir
+
+[INFO] Translating idx:  309
+[INFO] SRC=are you unhappy, TARGET=bist du unglucklich, PREDICTED=bist sie
+
+[INFO] Translating idx:  310
+[INFO] SRC=we didnt try, TARGET=wir habens nicht versucht, PREDICTED=es vergessen nicht
+
+[INFO] Translating idx:  311
+[INFO] SRC=dont be late, TARGET=verspate dich nicht, PREDICTED=sei nicht
+
+[INFO] Translating idx:  312
+[INFO] SRC=tom staggered, TARGET=tom wankte, PREDICTED=eos
+
+[INFO] Translating idx:  313
+[INFO] SRC=tom answer me, TARGET=tom antworte mir, PREDICTED=tom mich
+
+[INFO] Translating idx:  314
+[INFO] SRC=hes a southpaw, TARGET=er ist linkshander, PREDICTED=er fleischhauer
+
+[INFO] Translating idx:  315
+[INFO] SRC=toms insane, TARGET=tom ist wahnsinnig, PREDICTED=tom bescheuert
+
+[INFO] Translating idx:  316
+[INFO] SRC=it looks great, TARGET=das sieht groartig aus, PREDICTED=es groartig aus
+
+[INFO] Translating idx:  317
+[INFO] SRC=i was there, TARGET=ich war da, PREDICTED=ich da
+
+[INFO] Translating idx:  318
+[INFO] SRC=dont be so sure, TARGET=seien sie sich da nicht so sicher, PREDICTED=seien so nicht
+
+[INFO] Translating idx:  319
+[INFO] SRC=i saw you, TARGET=ich habe dich gesehen, PREDICTED=ich dich
+
+[INFO] Translating idx:  320
+[INFO] SRC=didnt tom sing, TARGET=hat tom nicht gesungen, PREDICTED=tom nicht
+
+[INFO] Translating idx:  321
+[INFO] SRC=tom speaks fast, TARGET=tom redet schnell, PREDICTED=tom schnell
+
+[INFO] Translating idx:  322
+[INFO] SRC=tom understood, TARGET=tom hat verstanden, PREDICTED=tom
+
+[INFO] Translating idx:  323
+[INFO] SRC=thats enough, TARGET=das ist genug, PREDICTED=so reicht
+
+[INFO] Translating idx:  324
+[INFO] SRC=wait a moment, TARGET=warte mal kurz, PREDICTED=augenblick
+
+[INFO] Translating idx:  325
+[INFO] SRC=here is your key, TARGET=hier ist euer schlussel, PREDICTED=hier dein
+
+[INFO] Translating idx:  326
+[INFO] SRC=just try it, TARGET=versuchen sies doch einfach, PREDICTED=versuchs doch
+
+[INFO] Translating idx:  327
+[INFO] SRC=i said shut up, TARGET=ich sagte du sollst den mund halten, PREDICTED=ich steht
+
+[INFO] Translating idx:  328
+[INFO] SRC=i thought so, TARGET=das habe ich mir gedacht, PREDICTED=das ich
+
+[INFO] Translating idx:  329
+[INFO] SRC=lets go by car, TARGET=lasst uns mit dem auto fahren, PREDICTED=lass fahren wagen
+
+[INFO] Translating idx:  330
+[INFO] SRC=he is driven, TARGET=er ist ehrgeizig, PREDICTED=es ist
+
+[INFO] Translating idx:  331
+[INFO] SRC=my foot hurts, TARGET=mein fu tut weh, PREDICTED=mir schmerzt
+
+[INFO] Translating idx:  332
+[INFO] SRC=dont laugh, TARGET=lach nicht, PREDICTED=lachen
+
+[INFO] Translating idx:  333
+[INFO] SRC=i heard a noise, TARGET=ich horte ein gerausch, PREDICTED=ich einen
+
+[INFO] Translating idx:  334
+[INFO] SRC=im taking off, TARGET=ich fliege los, PREDICTED=ich zurecht
+
+[INFO] Translating idx:  335
+[INFO] SRC=thats so rude, TARGET=das ist so unverschamt, PREDICTED=das so
+
+[INFO] Translating idx:  336
+[INFO] SRC=i cant sing, TARGET=ich kann nicht singen, PREDICTED=aha kann erwarten
+
+[INFO] Translating idx:  337
+[INFO] SRC=im ambidextrous, TARGET=ich bin mit beiden handen gleichermaen geschickt, PREDICTED=ich vor
+
+[INFO] Translating idx:  338
+[INFO] SRC=i prefer coffee, TARGET=ich bevorzuge kaffee, PREDICTED=ich lieber
+
+[INFO] Translating idx:  339
+[INFO] SRC=you owe me, TARGET=du schuldest mir was, PREDICTED=du mich
+
+[INFO] Translating idx:  340
+[INFO] SRC=youre to blame, TARGET=du bist schuld, PREDICTED=ihr wirst
+
+[INFO] Translating idx:  341
+[INFO] SRC=tom let me down, TARGET=tom hat mich enttauscht, PREDICTED=tom mich
+
+[INFO] Translating idx:  342
+[INFO] SRC=we have changed, TARGET=wir haben uns geandert, PREDICTED=wir uns
+
+[INFO] Translating idx:  343
+[INFO] SRC=ill be with tom, TARGET=ich werde mit tom zusammen sein, PREDICTED=ich mit tom
+
+[INFO] Translating idx:  344
+[INFO] SRC=here is your bag, TARGET=hier ist deine tasche, PREDICTED=deine ist
+
+[INFO] Translating idx:  345
+[INFO] SRC=is it legal, TARGET=ist das legal, PREDICTED=gibt es
+
+[INFO] Translating idx:  346
+[INFO] SRC=i am tall, TARGET=ich bin gro, PREDICTED=ich langweilig
+
+[INFO] Translating idx:  347
+[INFO] SRC=i must go now, TARGET=ich muss jetzt gehen, PREDICTED=ich jetzt
+
+[INFO] Translating idx:  348
+[INFO] SRC=tom is with us, TARGET=tom ist bei uns, PREDICTED=tom bei
+
+[INFO] Translating idx:  349
+[INFO] SRC=im very tall, TARGET=ich bin sehr gro, PREDICTED=ich sehr
+
+[INFO] Translating idx:  350
+[INFO] SRC=hold your horses, TARGET=nun mal langsam, PREDICTED=halt mit
+
+[INFO] Translating idx:  351
+[INFO] SRC=read it to me, TARGET=lies es mir vor, PREDICTED=lese es
+
+[INFO] Translating idx:  352
+[INFO] SRC=i was impressed, TARGET=ich war beeindruckt, PREDICTED=ich verblufft
+
+[INFO] Translating idx:  353
+[INFO] SRC=he was busy, TARGET=er war beschaftigt, PREDICTED=er beschaftigt
+
+[INFO] Translating idx:  354
+[INFO] SRC=whos sick, TARGET=wer ist krank, PREDICTED=ein ist
+
+[INFO] Translating idx:  355
+[INFO] SRC=tom is foolish, TARGET=tom ist toricht, PREDICTED=war ist
+
+[INFO] Translating idx:  356
+[INFO] SRC=where is an atm, TARGET=wo gibt es einen geldautomaten, PREDICTED=wo ein
+
+[INFO] Translating idx:  357
+[INFO] SRC=why am i going, TARGET=warum gehe ich, PREDICTED=warum ich
+
+[INFO] Translating idx:  358
+[INFO] SRC=im not finished, TARGET=ich bin noch nicht fertig, PREDICTED=ich nicht
+
+[INFO] Translating idx:  359
+[INFO] SRC=am i in your way, TARGET=stehe ich euch im weg, PREDICTED=bin ich
+
+[INFO] Translating idx:  360
+[INFO] SRC=he respects me, TARGET=er respektiert mich, PREDICTED=er mich
+
+[INFO] Translating idx:  361
+[INFO] SRC=i have eyes, TARGET=ich habe augen, PREDICTED=mir habe
+
+[INFO] Translating idx:  362
+[INFO] SRC=just follow them, TARGET=folge ihnen einfach, PREDICTED=folge einfach
+
+[INFO] Translating idx:  363
+[INFO] SRC=i want a divorce, TARGET=ich will die scheidung, PREDICTED=ich einen
+
+[INFO] Translating idx:  364
+[INFO] SRC=did you make it, TARGET=haben sie es gemacht, PREDICTED=hast es
+
+[INFO] Translating idx:  365
+[INFO] SRC=he was very old, TARGET=er war sehr alt, PREDICTED=er sehr
+
+[INFO] Translating idx:  366
+[INFO] SRC=he has long hair, TARGET=er hat langes haar, PREDICTED=er zwolf
+
+[INFO] Translating idx:  367
+[INFO] SRC=wheres it from, TARGET=wo kommt er her, PREDICTED=woher es
+
+[INFO] Translating idx:  368
+[INFO] SRC=wholl go, TARGET=wer wird gehen, PREDICTED=wer
+
+[INFO] Translating idx:  369
+[INFO] SRC=ill be glad to, TARGET=sehr gern, PREDICTED=ich sehr
+
+[INFO] Translating idx:  370
+[INFO] SRC=no taxi stopped, TARGET=kein taxi hielt an, PREDICTED=kein bin
+
+[INFO] Translating idx:  371
+[INFO] SRC=whats my prize, TARGET=was ist mein gewinn, PREDICTED=was mein
+
+[INFO] Translating idx:  372
+[INFO] SRC=take mine, TARGET=nehmen sie meinen, PREDICTED=nehmt
+
+[INFO] Translating idx:  373
+[INFO] SRC=i like it too, TARGET=ich mag es auch, PREDICTED=ich auch
+
+[INFO] Translating idx:  374
+[INFO] SRC=this is a map, TARGET=dies ist eine landkarte, PREDICTED=das eine
+
+[INFO] Translating idx:  375
+[INFO] SRC=i need caffeine, TARGET=ich brauche koffein, PREDICTED=aha brauche
+
+[INFO] Translating idx:  376
+[INFO] SRC=do you like cats, TARGET=magst du katzen, PREDICTED=mogen sie
+
+[INFO] Translating idx:  377
+[INFO] SRC=we have nothing, TARGET=wir haben nichts, PREDICTED=gluck haben
+
+[INFO] Translating idx:  378
+[INFO] SRC=stand at ease, TARGET=ruhrt euch, PREDICTED=mach
+
+[INFO] Translating idx:  379
+[INFO] SRC=tom has rabbits, TARGET=tom hat kaninchen, PREDICTED=tom weg
+
+[INFO] Translating idx:  380
+[INFO] SRC=its unlikely, TARGET=das ist unwahrscheinlich, PREDICTED=das ist
+
+[INFO] Translating idx:  381
+[INFO] SRC=ill miss that, TARGET=das wird mir fehlen, PREDICTED=das werde
+
+[INFO] Translating idx:  382
+[INFO] SRC=he was standing, TARGET=er stand, PREDICTED=herein schlief
+
+[INFO] Translating idx:  383
+[INFO] SRC=did you bring it, TARGET=habt ihr es mitgebracht, PREDICTED=hast ihn
+
+[INFO] Translating idx:  384
+[INFO] SRC=he likes singing, TARGET=er singt gerne, PREDICTED=er gern
+
+[INFO] Translating idx:  385
+[INFO] SRC=he is skating, TARGET=er lauft rollschuh, PREDICTED=es ist
+
+[INFO] Translating idx:  386
+[INFO] SRC=im in a gang, TARGET=ich bin in einer gang, PREDICTED=ich in
+
+[INFO] Translating idx:  387
+[INFO] SRC=i want a family, TARGET=ich will eine familie haben, PREDICTED=ich eine
+
+[INFO] Translating idx:  388
+[INFO] SRC=tom wasnt home, TARGET=tom war nicht zu hause, PREDICTED=tom nicht
+
+[INFO] Translating idx:  389
+[INFO] SRC=try to catch me, TARGET=versuch mich zu fangen, PREDICTED=versucht mich
+
+[INFO] Translating idx:  390
+[INFO] SRC=it works now, TARGET=es funktioniert jetzt, PREDICTED=das funktioniert
+
+[INFO] Translating idx:  391
+[INFO] SRC=i was devastated, TARGET=ich war vollig fertig, PREDICTED=es war zerstort
+
+[INFO] Translating idx:  392
+[INFO] SRC=you run, TARGET=sie laufen, PREDICTED=du
+
+[INFO] Translating idx:  393
+[INFO] SRC=lunch is on, TARGET=mittagessen ist fertig, PREDICTED=zum ist
+
+[INFO] Translating idx:  394
+[INFO] SRC=youre innocent, TARGET=sie sind unschuldig, PREDICTED=du unschuldig
+
+[INFO] Translating idx:  395
+[INFO] SRC=are you tom, TARGET=bist du tom, PREDICTED=hast du
+
+[INFO] Translating idx:  396
+[INFO] SRC=tom won a medal, TARGET=tom hat eine medaille gewonnen, PREDICTED=tom ein
+
+[INFO] Translating idx:  397
+[INFO] SRC=can i see that, TARGET=kann ich das sehen, PREDICTED=darf ich
+
+[INFO] Translating idx:  398
+[INFO] SRC=tom seemed nice, TARGET=tom schien nett zu sein, PREDICTED=es schien
+
+[INFO] Translating idx:  399
+[INFO] SRC=theyre fast, TARGET=sie sind schnell, PREDICTED=sind sind
+
+[INFO] Translating idx:  400
+[INFO] SRC=toms very sad, TARGET=tom ist sehr traurig, PREDICTED=es ist
+
+[INFO] Translating idx:  401
+[INFO] SRC=dont stare, TARGET=starr nicht, PREDICTED=nicht
+
+[INFO] Translating idx:  402
+[INFO] SRC=its too risky, TARGET=das ist zu riskant, PREDICTED=es zu
+
+[INFO] Translating idx:  403
+[INFO] SRC=he is a poet, TARGET=er ist ein dichter, PREDICTED=er ein
+
+[INFO] Translating idx:  404
+[INFO] SRC=shes not here, TARGET=sie ist nicht hier, PREDICTED=sie hier
+
+[INFO] Translating idx:  405
+[INFO] SRC=toms gone, TARGET=tom ist weg, PREDICTED=tom
+
+[INFO] Translating idx:  406
+[INFO] SRC=i need more, TARGET=ich brauche mehr, PREDICTED=aha brauche
+
+[INFO] Translating idx:  407
+[INFO] SRC=is tom nearby, TARGET=ist tom in der nahe, PREDICTED=ist im
+
+[INFO] Translating idx:  408
+[INFO] SRC=thats possible, TARGET=das kann sein, PREDICTED=es kann
+
+[INFO] Translating idx:  409
+[INFO] SRC=youll be sorry, TARGET=das wird dir leidtun, PREDICTED=es wird
+
+[INFO] Translating idx:  410
+[INFO] SRC=how are you tom, TARGET=wie geht es dir tom, PREDICTED=was geht
+
+[INFO] Translating idx:  411
+[INFO] SRC=you need to go, TARGET=sie mussen gehen, PREDICTED=du gehen
+
+[INFO] Translating idx:  412
+[INFO] SRC=he kicked it, TARGET=er hat es getreten, PREDICTED=es hat
+
+[INFO] Translating idx:  413
+[INFO] SRC=it was chilly, TARGET=es war frostig, PREDICTED=es kaputt
+
+[INFO] Translating idx:  414
+[INFO] SRC=tom is annoyed, TARGET=tom ist genervt, PREDICTED=tom verargert
+
+[INFO] Translating idx:  415
+[INFO] SRC=tom stayed cool, TARGET=tom blieb cool, PREDICTED=war blieb
+
+[INFO] Translating idx:  416
+[INFO] SRC=i cant get up, TARGET=ich kann nicht aufstehen, PREDICTED=das kann nicht
+
+[INFO] Translating idx:  417
+[INFO] SRC=i will watch it, TARGET=ich werde es mir ansehen, PREDICTED=ich es
+
+[INFO] Translating idx:  418
+[INFO] SRC=heres your beer, TARGET=hier ist ihr bier, PREDICTED=bier dein
+
+[INFO] Translating idx:  419
+[INFO] SRC=tom is fearless, TARGET=tom ist furchtlos, PREDICTED=tom eingebildet
+
+[INFO] Translating idx:  420
+[INFO] SRC=ive got wine, TARGET=ich habe wein, PREDICTED=ich wein
+
+[INFO] Translating idx:  421
+[INFO] SRC=it takes time, TARGET=das braucht zeit, PREDICTED=es zeit
+
+[INFO] Translating idx:  422
+[INFO] SRC=its what i want, TARGET=es ist das was ich will, PREDICTED=das was
+
+[INFO] Translating idx:  423
+[INFO] SRC=let me hear it, TARGET=lass es mich horen, PREDICTED=lassen mich
+
+[INFO] Translating idx:  424
+[INFO] SRC=tom slept late, TARGET=tom verschlief, PREDICTED=tom auf
+
+[INFO] Translating idx:  425
+[INFO] SRC=what a loser, TARGET=was fur eine null, PREDICTED=wie fur
+
+[INFO] Translating idx:  426
+[INFO] SRC=tom is terrible, TARGET=tom ist schrecklich, PREDICTED=tom abscheulich
+
+[INFO] Translating idx:  427
+[INFO] SRC=its your turn, TARGET=du bist dran, PREDICTED=das ist
+
+[INFO] Translating idx:  428
+[INFO] SRC=i always walk, TARGET=ich gehe immer zu fu, PREDICTED=ich immer
+
+[INFO] Translating idx:  429
+[INFO] SRC=its not a watch, TARGET=es ist keine uhr, PREDICTED=er ist
+
+[INFO] Translating idx:  430
+[INFO] SRC=did you ever try, TARGET=habt ihr es jemals versucht, PREDICTED=hast es
+
+[INFO] Translating idx:  431
+[INFO] SRC=come down here, TARGET=komm herunter, PREDICTED=komm herunter
+
+[INFO] Translating idx:  432
+[INFO] SRC=who removed it, TARGET=wer hat sie weggenommen, PREDICTED=wer es
+
+[INFO] Translating idx:  433
+[INFO] SRC=its very new, TARGET=es ist sehr neu, PREDICTED=das ist
+
+[INFO] Translating idx:  434
+[INFO] SRC=did you do that, TARGET=haben sie das getan, PREDICTED=sagtest du
+
+[INFO] Translating idx:  435
+[INFO] SRC=she plays bach, TARGET=sie spielt bach, PREDICTED=sie sich
+
+[INFO] Translating idx:  436
+[INFO] SRC=she is walking, TARGET=sie geht, PREDICTED=er geht
+
+[INFO] Translating idx:  437
+[INFO] SRC=im hit, TARGET=ich wurde getroffen, PREDICTED=ich
+
+[INFO] Translating idx:  438
+[INFO] SRC=behave yourself, TARGET=benimm dich, PREDICTED=benehmt euch
+
+[INFO] Translating idx:  439
+[INFO] SRC=tom lived there, TARGET=dort hat tom gewohnt, PREDICTED=tom dort
+
+[INFO] Translating idx:  440
+[INFO] SRC=i fell, TARGET=ich bin hingefallen, PREDICTED=aha bin
+
+[INFO] Translating idx:  441
+[INFO] SRC=just keep moving, TARGET=gehen sie einfach weiter, PREDICTED=mach einfach
+
+[INFO] Translating idx:  442
+[INFO] SRC=weve found it, TARGET=wir haben sie gefunden, PREDICTED=hatten haben gefunden
+
+[INFO] Translating idx:  443
+[INFO] SRC=he helps us, TARGET=er hilft uns, PREDICTED=niemand hilft
+
+[INFO] Translating idx:  444
+[INFO] SRC=hello tom, TARGET=hallo tom, PREDICTED=hallo
+
+[INFO] Translating idx:  445
+[INFO] SRC=tom grumbled, TARGET=tom motzte, PREDICTED=tom
+
+[INFO] Translating idx:  446
+[INFO] SRC=we saw tom, TARGET=wir haben tom gesehen, PREDICTED=alle haben
+
+[INFO] Translating idx:  447
+[INFO] SRC=i get by, TARGET=ich komme klar, PREDICTED=ich zurecht
+
+[INFO] Translating idx:  448
+[INFO] SRC=its too easy, TARGET=es ist zu leicht, PREDICTED=es zu
+
+[INFO] Translating idx:  449
+[INFO] SRC=stop doing that, TARGET=lass das sein, PREDICTED=unterlasse das
+
+[INFO] Translating idx:  450
+[INFO] SRC=im a klutz, TARGET=ich bin ein tollpatsch, PREDICTED=ich ein
+
+[INFO] Translating idx:  451
+[INFO] SRC=suit yourself, TARGET=ganz wie du willst, PREDICTED=mach
+
+[INFO] Translating idx:  452
+[INFO] SRC=stop filming, TARGET=hor auf zu filmen, PREDICTED=stopp
+
+[INFO] Translating idx:  453
+[INFO] SRC=tom would agree, TARGET=tom wurde zustimmen, PREDICTED=es wurde
+
+[INFO] Translating idx:  454
+[INFO] SRC=who saw what, TARGET=wer sah was, PREDICTED=niemand hat
+
+[INFO] Translating idx:  455
+[INFO] SRC=im very lazy, TARGET=ich bin uberaus faul, PREDICTED=ich sehr
+
+[INFO] Translating idx:  456
+[INFO] SRC=summer is over, TARGET=der sommer ist vorbei, PREDICTED=der ist
+
+[INFO] Translating idx:  457
+[INFO] SRC=does it look ok, TARGET=sieht es gut aus, PREDICTED=macht es
+
+[INFO] Translating idx:  458
+[INFO] SRC=theyre at home, TARGET=die sind zu hause, PREDICTED=sie zu
+
+[INFO] Translating idx:  459
+[INFO] SRC=get lost, TARGET=verzieh dich, PREDICTED=schwirr
+
+[INFO] Translating idx:  460
+[INFO] SRC=they saw me, TARGET=die haben mich gesehen, PREDICTED=sie mich
+
+[INFO] Translating idx:  461
+[INFO] SRC=dont overdo it, TARGET=treibe es nicht zu weit, PREDICTED=nicht nicht
+
+[INFO] Translating idx:  462
+[INFO] SRC=prices are high, TARGET=die preise sind hoch, PREDICTED=ihre sind
+
+[INFO] Translating idx:  463
+[INFO] SRC=lets go dancing, TARGET=lasst uns tanzen gehen, PREDICTED=lass gehen
+
+[INFO] Translating idx:  464
+[INFO] SRC=that was fast, TARGET=das war schnell, PREDICTED=das schnell
+
+[INFO] Translating idx:  465
+[INFO] SRC=im drunk, TARGET=ich bin betrunken, PREDICTED=ich verblufft
+
+[INFO] Translating idx:  466
+[INFO] SRC=dont leave, TARGET=gehe nicht weg, PREDICTED=nicht
+
+[INFO] Translating idx:  467
+[INFO] SRC=i fell, TARGET=ich sturzte, PREDICTED=aha bin
+
+[INFO] Translating idx:  468
+[INFO] SRC=who found her, TARGET=wer hat sie gefunden, PREDICTED=wen hat
+
+[INFO] Translating idx:  469
+[INFO] SRC=its about time, TARGET=es wird langsam zeit, PREDICTED=die ist
+
+[INFO] Translating idx:  470
+[INFO] SRC=he made me sing, TARGET=er hat mich zum singen gebracht, PREDICTED=er mich
+
+[INFO] Translating idx:  471
+[INFO] SRC=look again, TARGET=schau nochmal hin, PREDICTED=schau doch
+
+[INFO] Translating idx:  472
+[INFO] SRC=i need answers, TARGET=ich benotige antworten, PREDICTED=aha brauche
+
+[INFO] Translating idx:  473
+[INFO] SRC=we want candy, TARGET=wir wollen etwas sues, PREDICTED=wir suigkeiten
+
+[INFO] Translating idx:  474
+[INFO] SRC=i dont want her, TARGET=ich mochte sie nicht, PREDICTED=ich sie
+
+[INFO] Translating idx:  475
+[INFO] SRC=are you happy, TARGET=bist du glucklich, PREDICTED=bist du
+
+[INFO] Translating idx:  476
+[INFO] SRC=ill come by, TARGET=ich werde vorbeikommen, PREDICTED=ich vorbei
+
+[INFO] Translating idx:  477
+[INFO] SRC=are you serious, TARGET=ist das dein ernst, PREDICTED=meinst das
+
+[INFO] Translating idx:  478
+[INFO] SRC=follow my advice, TARGET=folge meinem rat, PREDICTED=folge meinen rat
+
+[INFO] Translating idx:  479
+[INFO] SRC=im going home, TARGET=ich geh nach hause, PREDICTED=ich nach
+
+[INFO] Translating idx:  480
+[INFO] SRC=its all over, TARGET=alles ist vorbei, PREDICTED=so ist
+
+[INFO] Translating idx:  481
+[INFO] SRC=tom is chubby, TARGET=tom ist ein pummel, PREDICTED=tom flexibel
+
+[INFO] Translating idx:  482
+[INFO] SRC=tom passed out, TARGET=tom verlor das bewusstsein, PREDICTED=tom ohnmachtig
+
+[INFO] Translating idx:  483
+[INFO] SRC=youre so young, TARGET=du bist ja so jung, PREDICTED=du so
+
+[INFO] Translating idx:  484
+[INFO] SRC=tom acted drunk, TARGET=tom benahm sich wie ein betrunkener, PREDICTED=tom betrunken
+
+[INFO] Translating idx:  485
+[INFO] SRC=did tom hit you, TARGET=hat tom dich geschlagen, PREDICTED=haben tom
+
+[INFO] Translating idx:  486
+[INFO] SRC=he cant drive, TARGET=er kann nicht fahren, PREDICTED=er nicht
+
+[INFO] Translating idx:  487
+[INFO] SRC=do you do yoga, TARGET=machst du yoga, PREDICTED=rauchst ihr
+
+[INFO] Translating idx:  488
+[INFO] SRC=is this mine, TARGET=ist das meines, PREDICTED=ist das
+
+[INFO] Translating idx:  489
+[INFO] SRC=did tom find you, TARGET=hat tom sie gefunden, PREDICTED=hast tom gefunden
+
+[INFO] Translating idx:  490
+[INFO] SRC=come and help us, TARGET=komm und hilf uns, PREDICTED=komm uns
+
+[INFO] Translating idx:  491
+[INFO] SRC=were objective, TARGET=wir sind objektiv, PREDICTED=fantastisch sind
+
+[INFO] Translating idx:  492
+[INFO] SRC=i had a headache, TARGET=ich hatte kopfschmerzen, PREDICTED=ich ein
+
+[INFO] Translating idx:  493
+[INFO] SRC=theyre crazy, TARGET=die haben sie nicht mehr alle, PREDICTED=sie verruckt
+
+[INFO] Translating idx:  494
+[INFO] SRC=tom didnt come, TARGET=tom ist nicht gekommen, PREDICTED=vielleicht ist
+
+[INFO] Translating idx:  495
+[INFO] SRC=did tom hit mary, TARGET=hat tom maria geschlagen, PREDICTED=ist tom
+
+[INFO] Translating idx:  496
+[INFO] SRC=lets eat now, TARGET=lass uns jetzt essen, PREDICTED=lass wir gehen
+
+[INFO] Translating idx:  497
+[INFO] SRC=show us the way, TARGET=zeigen sie uns wo es langgeht, PREDICTED=zeig uns
+
+[INFO] Translating idx:  498
+[INFO] SRC=i cant hear it, TARGET=ich kann es nicht horen, PREDICTED=ich es
+
+[INFO] Translating idx:  499
+[INFO] SRC=he knows lots, TARGET=er wei eine menge, PREDICTED=er das
+
+[INFO] Translating idx:  500
+[INFO] SRC=get on the bus, TARGET=steigen sie in den bus ein, PREDICTED=steige in
+
+[INFO] Translating idx:  501
+[INFO] SRC=who found you, TARGET=wer hat dich gefunden, PREDICTED=wen hat
+
+[INFO] Translating idx:  502
+[INFO] SRC=toms scared, TARGET=tom hat angst, PREDICTED=tom es
+
+[INFO] Translating idx:  503
+[INFO] SRC=can you hear us, TARGET=kannst du uns horen, PREDICTED=kannst uns
+
+[INFO] Translating idx:  504
+[INFO] SRC=well catch tom, TARGET=wir werden tom fangen, PREDICTED=wir tom
+
+[INFO] Translating idx:  505
+[INFO] SRC=go home quickly, TARGET=geh schnell nach hause, PREDICTED=geh heim
+
+[INFO] Translating idx:  506
+[INFO] SRC=what is a ufo, TARGET=was ist ein ufo, PREDICTED=wie ist
+
+[INFO] Translating idx:  507
+[INFO] SRC=i smell gas, TARGET=ich rieche gas, PREDICTED=es rieche
+
+[INFO] Translating idx:  508
+[INFO] SRC=for what purpose, TARGET=und zu welchem zweck, PREDICTED=fur
+
+[INFO] Translating idx:  509
+[INFO] SRC=it doesnt fit, TARGET=sie passt nicht, PREDICTED=das passt
+
+[INFO] Translating idx:  510
+[INFO] SRC=youre so lazy, TARGET=du bist so faul, PREDICTED=ihr so
+
+[INFO] Translating idx:  511
+[INFO] SRC=im illiterate, TARGET=ich bin analphabetin, PREDICTED=ich vorurteilsfrei
+
+[INFO] Translating idx:  512
+[INFO] SRC=tom is quiet, TARGET=tom ist still, PREDICTED=tom still
+
+[INFO] Translating idx:  513
+[INFO] SRC=he is very fast, TARGET=er ist sehr schnell, PREDICTED=er sehr
+
+[INFO] Translating idx:  514
+[INFO] SRC=the soldier ran, TARGET=der soldat ist gerannt, PREDICTED=das soldat
+
+[INFO] Translating idx:  515
+[INFO] SRC=this is a pen, TARGET=das ist ein kuli, PREDICTED=das ein
+
+[INFO] Translating idx:  516
+[INFO] SRC=ill do that, TARGET=ich werde das machen, PREDICTED=das werde
+
+[INFO] Translating idx:  517
+[INFO] SRC=were very fast, TARGET=wir sind sehr schnell, PREDICTED=uns sind
+
+[INFO] Translating idx:  518
+[INFO] SRC=it was my plan, TARGET=es war meine absicht, PREDICTED=das mein plan
+
+[INFO] Translating idx:  519
+[INFO] SRC=it happened fast, TARGET=es ging schnell, PREDICTED=es schnell
+
+[INFO] Translating idx:  520
+[INFO] SRC=its here, TARGET=es ist hier, PREDICTED=es
+
+[INFO] Translating idx:  521
+[INFO] SRC=even tom cried, TARGET=selbst tom hat geweint, PREDICTED=ignorier tom
+
+[INFO] Translating idx:  522
+[INFO] SRC=does tom like me, TARGET=mag tom mich, PREDICTED=hat mich
+
+[INFO] Translating idx:  523
+[INFO] SRC=she shot him, TARGET=sie schoss auf ihn, PREDICTED=sie ihn
+
+[INFO] Translating idx:  524
+[INFO] SRC=tom saw nothing, TARGET=tom sah nichts, PREDICTED=es sah
+
+[INFO] Translating idx:  525
+[INFO] SRC=is tom drunk, TARGET=ist tom betrunken, PREDICTED=sind tom
+
+[INFO] Translating idx:  526
+[INFO] SRC=ill take that, TARGET=ich nehme das, PREDICTED=das nehme
+
+[INFO] Translating idx:  527
+[INFO] SRC=lets eat, TARGET=essen wir etwas, PREDICTED=lass uns
+
+[INFO] Translating idx:  528
+[INFO] SRC=i have no excuse, TARGET=ich habe keine entschuldigung, PREDICTED=ich kein
+
+[INFO] Translating idx:  529
+[INFO] SRC=tom is a priest, TARGET=tom ist priester, PREDICTED=sie ist
+
+[INFO] Translating idx:  530
+[INFO] SRC=tom looked down, TARGET=tom sah nach unten, PREDICTED=tom sich
+
+[INFO] Translating idx:  531
+[INFO] SRC=were fasting, TARGET=wir fasten gerade, PREDICTED=fantastisch summen
+
+[INFO] Translating idx:  532
+[INFO] SRC=i like that tie, TARGET=die krawatte gefallt mir, PREDICTED=mir mag
+
+[INFO] Translating idx:  533
+[INFO] SRC=go look for it, TARGET=geh es suchen, PREDICTED=geh suchen
+
+[INFO] Translating idx:  534
+[INFO] SRC=tom is skinny, TARGET=tom ist mager, PREDICTED=eos
+
+[INFO] Translating idx:  535
+[INFO] SRC=we trust him, TARGET=wir vertrauen ihm, PREDICTED=wir ihm
+
+[INFO] Translating idx:  536
+[INFO] SRC=this isnt new, TARGET=das ist nicht neu, PREDICTED=dieser ist
+
+[INFO] Translating idx:  537
+[INFO] SRC=nobodys happy, TARGET=keiner ist glucklich, PREDICTED=ein ist
+
+[INFO] Translating idx:  538
+[INFO] SRC=im being honest, TARGET=ich bin ehrlich, PREDICTED=bin bin
+
+[INFO] Translating idx:  539
+[INFO] SRC=come forward, TARGET=meldet euch, PREDICTED=tretet sie
+
+[INFO] Translating idx:  540
+[INFO] SRC=open this door, TARGET=offnet diese tur, PREDICTED=offnen diese
+
+[INFO] Translating idx:  541
+[INFO] SRC=tom is staying, TARGET=tom bleibt, PREDICTED=stirb blutet
+
+[INFO] Translating idx:  542
+[INFO] SRC=ill watch it, TARGET=ich werde es mir ansehen, PREDICTED=schau werde
+
+[INFO] Translating idx:  543
+[INFO] SRC=is your dad here, TARGET=ist dein vater hier, PREDICTED=ist vater
+
+[INFO] Translating idx:  544
+[INFO] SRC=tom is outside, TARGET=tom ist drauen, PREDICTED=tom drauen
+
+[INFO] Translating idx:  545
+[INFO] SRC=my work is done, TARGET=meine arbeit ist getan, PREDICTED=mein ist
+
+[INFO] Translating idx:  546
+[INFO] SRC=what is it for, TARGET=wozu ist es gut, PREDICTED=wofur ist
+
+[INFO] Translating idx:  547
+[INFO] SRC=were even, TARGET=wir sind quitt, PREDICTED=wir erfolgreich
+
+[INFO] Translating idx:  548
+[INFO] SRC=should we worry, TARGET=sollten wir uns sorgen machen, PREDICTED=wasch wir
+
+[INFO] Translating idx:  549
+[INFO] SRC=she looked sad, TARGET=sie sah traurig aus, PREDICTED=sie traurig
+
+[INFO] Translating idx:  550
+[INFO] SRC=keep it on you, TARGET=behaltet es bei euch, PREDICTED=behalt es
+
+[INFO] Translating idx:  551
+[INFO] SRC=who fell, TARGET=wer ist gefallen, PREDICTED=wer entkommen
+
+[INFO] Translating idx:  552
+[INFO] SRC=tom seems tough, TARGET=tom scheint hart zu sein, PREDICTED=tom verargert
+
+[INFO] Translating idx:  553
+[INFO] SRC=it was so simple, TARGET=es war so einfach, PREDICTED=es so
+
+[INFO] Translating idx:  554
+[INFO] SRC=im useless, TARGET=ich bin nutzlos, PREDICTED=ich ein
+
+[INFO] Translating idx:  555
+[INFO] SRC=tom just smiled, TARGET=tom hat nur gelachelt, PREDICTED=tom gerade
+
+[INFO] Translating idx:  556
+[INFO] SRC=explain it to me, TARGET=erklart mir das, PREDICTED=erklaren mir
+
+[INFO] Translating idx:  557
+[INFO] SRC=go back to sleep, TARGET=geh wieder schlafen, PREDICTED=gehe wieder
+
+[INFO] Translating idx:  558
+[INFO] SRC=they canceled, TARGET=sie kundigten, PREDICTED=die sagten
+
+[INFO] Translating idx:  559
+[INFO] SRC=this isnt real, TARGET=das ist nicht wirklich, PREDICTED=es ist
+
+[INFO] Translating idx:  560
+[INFO] SRC=i asked tom, TARGET=ich habe tom gefragt, PREDICTED=hab habe tom
+
+[INFO] Translating idx:  561
+[INFO] SRC=im busy, TARGET=ich habe zu tun, PREDICTED=ich beschaftigt
+
+[INFO] Translating idx:  562
+[INFO] SRC=its very sticky, TARGET=es ist sehr klebrig, PREDICTED=es sehr
+
+[INFO] Translating idx:  563
+[INFO] SRC=i cant hear you, TARGET=ich kann sie nicht horen, PREDICTED=ich sie
+
+[INFO] Translating idx:  564
+[INFO] SRC=how come you ask, TARGET=wie kommt es dass sie fragen, PREDICTED=wie sie
+
+[INFO] Translating idx:  565
+[INFO] SRC=show it to me, TARGET=zeig ihn mir, PREDICTED=zeigt es
+
+[INFO] Translating idx:  566
+[INFO] SRC=my dog bit tom, TARGET=mein hund hat tom gebissen, PREDICTED=mein hund
+
+[INFO] Translating idx:  567
+[INFO] SRC=dont be sad, TARGET=sei nicht traurig, PREDICTED=sei nicht
+
+[INFO] Translating idx:  568
+[INFO] SRC=this is weird, TARGET=das ist komisch, PREDICTED=dies ist
+
+[INFO] Translating idx:  569
+[INFO] SRC=stop that, TARGET=hor mal auf, PREDICTED=unterlasse das
+
+[INFO] Translating idx:  570
+[INFO] SRC=i like spoons, TARGET=ich mag loffel, PREDICTED=ich saschimi
+
+[INFO] Translating idx:  571
+[INFO] SRC=we were wasted, TARGET=wir waren ganz schon besoffen, PREDICTED=wir sternhagelvoll
+
+[INFO] Translating idx:  572
+[INFO] SRC=tom exaggerated, TARGET=tom ubertrieb, PREDICTED=es hat
+
+[INFO] Translating idx:  573
+[INFO] SRC=tom sweated, TARGET=tom hat geschwitzt, PREDICTED=tom
+
+[INFO] Translating idx:  574
+[INFO] SRC=come run with me, TARGET=komm lauf mit mir, PREDICTED=komm mit
+
+[INFO] Translating idx:  575
+[INFO] SRC=dont be crazy, TARGET=seien sie nicht verruckt, PREDICTED=sei verruckt
+
+[INFO] Translating idx:  576
+[INFO] SRC=we miss you, TARGET=wir vermissen dich, PREDICTED=wir sie
+
+[INFO] Translating idx:  577
+[INFO] SRC=whatll tom win, TARGET=was wird tom gewinnen, PREDICTED=wie tom gewinnen
+
+[INFO] Translating idx:  578
+[INFO] SRC=im right, TARGET=ich habe recht, PREDICTED=mir habe
+
+[INFO] Translating idx:  579
+[INFO] SRC=dont break it, TARGET=mach es nicht kaputt, PREDICTED=detailliere nicht nicht
+
+[INFO] Translating idx:  580
+[INFO] SRC=place your bets, TARGET=machen sie ihr spiel, PREDICTED=schlieen sie
+
+[INFO] Translating idx:  581
+[INFO] SRC=mums the word, TARGET=kein wort von mir, PREDICTED=ich es
+
+[INFO] Translating idx:  582
+[INFO] SRC=you are big, TARGET=du bist gro, PREDICTED=ihr bist
+
+[INFO] Translating idx:  583
+[INFO] SRC=i get by, TARGET=ich komme uber die runden, PREDICTED=ich zurecht
+
+[INFO] Translating idx:  584
+[INFO] SRC=im rich, TARGET=ich bin reich, PREDICTED=mir bin
+
+[INFO] Translating idx:  585
+[INFO] SRC=i hate myself, TARGET=ich hasse mich selbst, PREDICTED=habe kann
+
+[INFO] Translating idx:  586
+[INFO] SRC=do you know me, TARGET=kennen sie mich, PREDICTED=kennen kennst
+
+[INFO] Translating idx:  587
+[INFO] SRC=did tom escape, TARGET=ist tom entkommen, PREDICTED=ist geblieben
+
+[INFO] Translating idx:  588
+[INFO] SRC=what do you do, TARGET=was machen sie, PREDICTED=was sie
+
+[INFO] Translating idx:  589
+[INFO] SRC=they went away, TARGET=sie gingen weg, PREDICTED=die gingen
+
+[INFO] Translating idx:  590
+[INFO] SRC=did you do that, TARGET=habt ihr das getan, PREDICTED=sagtest du
+
+[INFO] Translating idx:  591
+[INFO] SRC=youre silly, TARGET=du bist damlich, PREDICTED=sie damlich
+
+[INFO] Translating idx:  592
+[INFO] SRC=i feel bad, TARGET=ich fuhle mich schlecht, PREDICTED=mir fuhle
+
+[INFO] Translating idx:  593
+[INFO] SRC=forget it, TARGET=das kannst du knicken, PREDICTED=es es
+
+[INFO] Translating idx:  594
+[INFO] SRC=i like that one, TARGET=ich mag dieses, PREDICTED=ich den
+
+[INFO] Translating idx:  595
+[INFO] SRC=tom is dead now, TARGET=tom ist jetzt tot, PREDICTED=tom jetzt
+
+[INFO] Translating idx:  596
+[INFO] SRC=i wasnt alone, TARGET=ich war nicht allein, PREDICTED=damals war nicht
+
+[INFO] Translating idx:  597
+[INFO] SRC=i was humiliated, TARGET=ich wurde erniedrigt, PREDICTED=damals war
+
+[INFO] Translating idx:  598
+[INFO] SRC=let tom speak, TARGET=lass tom sprechen, PREDICTED=lasst tom
+
+[INFO] Translating idx:  599
+[INFO] SRC=tom won again, TARGET=tom hat wieder gewonnen, PREDICTED=es hat
+
+[INFO] Translating idx:  600
+[INFO] SRC=im freezing, TARGET=mich friert, PREDICTED=stehenbleiben friere
+
+[INFO] Translating idx:  601
+[INFO] SRC=i didnt scream, TARGET=ich habe nicht geschrien, PREDICTED=ich nicht
+
+[INFO] Translating idx:  602
+[INFO] SRC=continue digging, TARGET=grabt weiter, PREDICTED=fahr sie
+
+[INFO] Translating idx:  603
+[INFO] SRC=you should rest, TARGET=ihr solltet euch ausruhen, PREDICTED=du dich ausruhen
+
+[INFO] Translating idx:  604
+[INFO] SRC=my cat is black, TARGET=meine katze ist schwarz, PREDICTED=meine ist
+
+[INFO] Translating idx:  605
+[INFO] SRC=arent you happy, TARGET=bist du nicht glucklich, PREDICTED=sind nicht
+
+[INFO] Translating idx:  606
+[INFO] SRC=i was coughing, TARGET=ich hustete, PREDICTED=ich
+
+[INFO] Translating idx:  607
+[INFO] SRC=tom seems lost, TARGET=tom scheint verloren zu sein, PREDICTED=es scheint zu
+
+[INFO] Translating idx:  608
+[INFO] SRC=i need money, TARGET=ich brauche geld, PREDICTED=ich geld
+
+[INFO] Translating idx:  609
+[INFO] SRC=im healthy, TARGET=ich bin bei guter gesundheit, PREDICTED=ich gesund
+
+[INFO] Translating idx:  610
+[INFO] SRC=i cant reach it, TARGET=ich kann sie nicht erreichen, PREDICTED=ich ihn
+
+[INFO] Translating idx:  611
+[INFO] SRC=they danced, TARGET=sie tanzten, PREDICTED=sie
+
+[INFO] Translating idx:  612
+[INFO] SRC=i may not come, TARGET=ich darf nicht kommen, PREDICTED=ich vielleicht
+
+[INFO] Translating idx:  613
+[INFO] SRC=hes antisocial, TARGET=er ist unsozial, PREDICTED=er
+
+[INFO] Translating idx:  614
+[INFO] SRC=thats very big, TARGET=das ist sehr gro, PREDICTED=so ist
+
+[INFO] Translating idx:  615
+[INFO] SRC=i talked to her, TARGET=ich habe mit ihr geredet, PREDICTED=ich sie
+
+[INFO] Translating idx:  616
+[INFO] SRC=im thirsty, TARGET=ich bin durstig, PREDICTED=ich durst
+
+[INFO] Translating idx:  617
+[INFO] SRC=youre humming, TARGET=du summst gerade, PREDICTED=du summen
+
+[INFO] Translating idx:  618
+[INFO] SRC=tom hated mary, TARGET=tom hasste mary, PREDICTED=ich hasste
+
+[INFO] Translating idx:  619
+[INFO] SRC=im in bed, TARGET=ich bin im bett, PREDICTED=ich in
+
+[INFO] Translating idx:  620
+[INFO] SRC=im not married, TARGET=ich bin unverheiratet, PREDICTED=ich nicht
+
+[INFO] Translating idx:  621
+[INFO] SRC=she worked hard, TARGET=sie arbeitete hart, PREDICTED=sie angestrengt
+
+[INFO] Translating idx:  622
+[INFO] SRC=forgive tom, TARGET=vergeben sie tom, PREDICTED=beschreibe
+
+[INFO] Translating idx:  623
+[INFO] SRC=just call me tom, TARGET=nenn mich einfach tom, PREDICTED=nenne tom tom
+
+[INFO] Translating idx:  624
+[INFO] SRC=i like astrology, TARGET=ich mag astrologie, PREDICTED=ich saschimi
+
+[INFO] Translating idx:  625
+[INFO] SRC=i said too much, TARGET=ich habe zu viel gesagt, PREDICTED=ich gesagt viel
+
+[INFO] Translating idx:  626
+[INFO] SRC=tom wont sing, TARGET=tom wird nicht singen, PREDICTED=es wird
+
+[INFO] Translating idx:  627
+[INFO] SRC=i could kiss you, TARGET=ich konnte dich kussen, PREDICTED=ich euch kussen
+
+[INFO] Translating idx:  628
+[INFO] SRC=youve tried, TARGET=du hast es versucht, PREDICTED=du haben
+
+[INFO] Translating idx:  629
+[INFO] SRC=he was acquitted, TARGET=er ist freigesprochen worden, PREDICTED=er bekifft
+
+[INFO] Translating idx:  630
+[INFO] SRC=she fooled him, TARGET=sie hat ihn genarrt, PREDICTED=sie ihn
+
+[INFO] Translating idx:  631
+[INFO] SRC=get on with it, TARGET=nun mach schon weiter, PREDICTED=nun schon
+
+[INFO] Translating idx:  632
+[INFO] SRC=im enjoying it, TARGET=ich geniee es, PREDICTED=ich es
+
+[INFO] Translating idx:  633
+[INFO] SRC=you know him, TARGET=du kennst ihn, PREDICTED=sie kennen
+
+[INFO] Translating idx:  634
+[INFO] SRC=im busy now, TARGET=ich bin im moment beschaftigt, PREDICTED=jetzt bin beschaftigt
+
+[INFO] Translating idx:  635
+[INFO] SRC=thatd be nice, TARGET=das ware nett, PREDICTED=das nett
+
+[INFO] Translating idx:  636
+[INFO] SRC=thats not true, TARGET=das ist nicht wahr, PREDICTED=so ist
+
+[INFO] Translating idx:  637
+[INFO] SRC=just be yourself, TARGET=seien sie einfach sie selbst, PREDICTED=sei einfach selbst
+
+[INFO] Translating idx:  638
+[INFO] SRC=is tom crazy, TARGET=ist tom verruckt, PREDICTED=ist verruckt
+
+[INFO] Translating idx:  639
+[INFO] SRC=open this door, TARGET=offne diese tur, PREDICTED=offnen diese
+
+[INFO] Translating idx:  640
+[INFO] SRC=who goes there, TARGET=wer geht dort, PREDICTED=wer
+
+[INFO] Translating idx:  641
+[INFO] SRC=who removed it, TARGET=wer hat es beseitigt, PREDICTED=wer es
+
+[INFO] Translating idx:  642
+[INFO] SRC=whats it for, TARGET=wozu benutzt man das, PREDICTED=was es
+
+[INFO] Translating idx:  643
+[INFO] SRC=is it bad, TARGET=ist es schlimm, PREDICTED=ist schlecht
+
+[INFO] Translating idx:  644
+[INFO] SRC=dont mind tom, TARGET=kummer dich nicht um tom, PREDICTED=beachte tom
+
+[INFO] Translating idx:  645
+[INFO] SRC=lets begin, TARGET=lassen sie uns loslegen, PREDICTED=lasst anfangen
+
+[INFO] Translating idx:  646
+[INFO] SRC=the moon is out, TARGET=der mond ist aufgegangen, PREDICTED=der ist
+
+[INFO] Translating idx:  647
+[INFO] SRC=maybe its tom, TARGET=vielleicht ist es tom, PREDICTED=vielleicht tom
+
+[INFO] Translating idx:  648
+[INFO] SRC=its what i want, TARGET=das ist es was ich will, PREDICTED=das was
+
+[INFO] Translating idx:  649
+[INFO] SRC=i will try, TARGET=ich werde es versuchen, PREDICTED=ich es
+
+[INFO] Translating idx:  650
+[INFO] SRC=i took her home, TARGET=ich habe sie nach hause gebracht, PREDICTED=ich sie
+
+[INFO] Translating idx:  651
+[INFO] SRC=can we sing, TARGET=konnen wir singen, PREDICTED=kann wir
+
+[INFO] Translating idx:  652
+[INFO] SRC=i got an a, TARGET=ich habe eine eins bekommen, PREDICTED=ich ein
+
+[INFO] Translating idx:  653
+[INFO] SRC=i thought hard, TARGET=ich dachte grundlich nach, PREDICTED=ich mich die
+
+[INFO] Translating idx:  654
+[INFO] SRC=i have some food, TARGET=ich habe etwas zu essen, PREDICTED=ich einige
+
+[INFO] Translating idx:  655
+[INFO] SRC=write to me, TARGET=schreib mir, PREDICTED=schreiben mir
+
+[INFO] Translating idx:  656
+[INFO] SRC=who stabbed tom, TARGET=wer hat tom erstochen, PREDICTED=wer tom gestochen gestochen
+
+[INFO] Translating idx:  657
+[INFO] SRC=how do we look, TARGET=wie sieht es fur uns aus, PREDICTED=wie es
+
+[INFO] Translating idx:  658
+[INFO] SRC=youre new here, TARGET=du bist neu hier, PREDICTED=du so
+
+[INFO] Translating idx:  659
+[INFO] SRC=are you here, TARGET=bist du hier, PREDICTED=bist du
+
+[INFO] Translating idx:  660
+[INFO] SRC=let tom answer, TARGET=lass tom antworten, PREDICTED=lassen tom
+
+[INFO] Translating idx:  661
+[INFO] SRC=its unusual, TARGET=es ist ungewohnlich, PREDICTED=das
+
+[INFO] Translating idx:  662
+[INFO] SRC=i saw that too, TARGET=das habe ich auch gesehen, PREDICTED=ich ich
+
+[INFO] Translating idx:  663
+[INFO] SRC=im ready, TARGET=ich bin soweit, PREDICTED=das bin
+
+[INFO] Translating idx:  664
+[INFO] SRC=tom is too busy, TARGET=tom ist zu sehr beschaftigt, PREDICTED=tom zu
+
+[INFO] Translating idx:  665
+[INFO] SRC=i still do that, TARGET=ich tue das immer noch, PREDICTED=ich das
+
+[INFO] Translating idx:  666
+[INFO] SRC=tom got dressed, TARGET=tom zog sich an, PREDICTED=tom sich
+
+[INFO] Translating idx:  667
+[INFO] SRC=be specific, TARGET=seien sie spezifisch, PREDICTED=sei spezifisch
+
+[INFO] Translating idx:  668
+[INFO] SRC=im getting hot, TARGET=mir wird hei, PREDICTED=leider werde
+
+[INFO] Translating idx:  669
+[INFO] SRC=tom is last, TARGET=tom ist der letzte, PREDICTED=war ist
+
+[INFO] Translating idx:  670
+[INFO] SRC=i dont agree, TARGET=ich bin anderer meinung, PREDICTED=ich nicht
+
+[INFO] Translating idx:  671
+[INFO] SRC=im not ashamed, TARGET=ich schame mich nicht, PREDICTED=ich nicht
+
+[INFO] Translating idx:  672
+[INFO] SRC=tom is innocent, TARGET=tom ist unschuldig, PREDICTED=es ist
+
+[INFO] Translating idx:  673
+[INFO] SRC=tom never jokes, TARGET=tom macht keine witze, PREDICTED=tom nie
+
+[INFO] Translating idx:  674
+[INFO] SRC=it was worth it, TARGET=es hat sich gelohnt, PREDICTED=es es
+
+[INFO] Translating idx:  675
+[INFO] SRC=he looks bored, TARGET=er sieht gelangweilt aus, PREDICTED=er sich
+
+[INFO] Translating idx:  676
+[INFO] SRC=tom is dozing, TARGET=tom dost, PREDICTED=tom gerade
+
+[INFO] Translating idx:  677
+[INFO] SRC=he painted a dog, TARGET=er hat einen hund gemalt, PREDICTED=er ein
+
+[INFO] Translating idx:  678
+[INFO] SRC=im toms father, TARGET=ich bin toms vater, PREDICTED=mir bin vater
+
+[INFO] Translating idx:  679
+[INFO] SRC=he is skating, TARGET=er fahrt skateboard, PREDICTED=es ist
+
+[INFO] Translating idx:  680
+[INFO] SRC=youre thorough, TARGET=sie sind grundlich, PREDICTED=ihr seid
+
+[INFO] Translating idx:  681
+[INFO] SRC=tom rushed off, TARGET=tom eilte davon, PREDICTED=tom weg
+
+[INFO] Translating idx:  682
+[INFO] SRC=you are a woman, TARGET=sie sind eine frau, PREDICTED=du eine
+
+[INFO] Translating idx:  683
+[INFO] SRC=shes innocent, TARGET=sie ist unschuldig, PREDICTED=sie unschuldig
+
+[INFO] Translating idx:  684
+[INFO] SRC=ill wash dishes, TARGET=ich werde den abwasch machen, PREDICTED=ich mich
+
+[INFO] Translating idx:  685
+[INFO] SRC=look at this, TARGET=schau dir das an, PREDICTED=betrachte dir
+
+[INFO] Translating idx:  686
+[INFO] SRC=im on my way, TARGET=ich bin unterwegs, PREDICTED=ich auf
+
+[INFO] Translating idx:  687
+[INFO] SRC=tom was here, TARGET=tom war hier, PREDICTED=tom hier
+
+[INFO] Translating idx:  688
+[INFO] SRC=was tom killed, TARGET=wurde tom getotet, PREDICTED=hatte tom
+
+[INFO] Translating idx:  689
+[INFO] SRC=were friends, TARGET=wir sind befreundet, PREDICTED=sind sind
+
+[INFO] Translating idx:  690
+[INFO] SRC=im an officer, TARGET=ich bin ein polizist, PREDICTED=ich ein
+
+[INFO] Translating idx:  691
+[INFO] SRC=did tom pray, TARGET=hat tom gebetet, PREDICTED=ist tom
+
+[INFO] Translating idx:  692
+[INFO] SRC=i couldnt stop, TARGET=ich konnte nicht aufhoren, PREDICTED=ich nicht
+
+[INFO] Translating idx:  693
+[INFO] SRC=anyone can do it, TARGET=das kann jeder, PREDICTED=beweis kann
+
+[INFO] Translating idx:  694
+[INFO] SRC=were busy, TARGET=wir sind beschaftigt, PREDICTED=uns sind
+
+[INFO] Translating idx:  695
+[INFO] SRC=try hard, TARGET=versuch es richtig, PREDICTED=fang sie
+
+[INFO] Translating idx:  696
+[INFO] SRC=boston is boring, TARGET=boston ist langweilig, PREDICTED=boston langweilig
+
+[INFO] Translating idx:  697
+[INFO] SRC=ill ask around, TARGET=ich werde mich umhoren, PREDICTED=werde werde
+
+[INFO] Translating idx:  698
+[INFO] SRC=i wasnt hired, TARGET=ich wurde nicht genommen, PREDICTED=damals wurde nicht
+
+[INFO] Translating idx:  699
+[INFO] SRC=get on with it, TARGET=mach weiter, PREDICTED=nun schon
+
+[INFO] Translating idx:  700
+[INFO] SRC=nobody was home, TARGET=es war niemand zu hause, PREDICTED=niemand zu
+
+[INFO] Translating idx:  701
+[INFO] SRC=tom is talking, TARGET=tom redet, PREDICTED=stirb spricht
+
+[INFO] Translating idx:  702
+[INFO] SRC=here or to go, TARGET=zum mitnehmen oder zum hieressen, PREDICTED=hier mitnehmen
+
+[INFO] Translating idx:  703
+[INFO] SRC=how deep is it, TARGET=wie tief ist das, PREDICTED=wie ist
+
+[INFO] Translating idx:  704
+[INFO] SRC=tom baked bread, TARGET=tom backte brot, PREDICTED=sie hat
+
+[INFO] Translating idx:  705
+[INFO] SRC=did tom respond, TARGET=hat tom geantwortet, PREDICTED=ist tom
+
+[INFO] Translating idx:  706
+[INFO] SRC=they waited, TARGET=sie warteten, PREDICTED=sie
+
+[INFO] Translating idx:  707
+[INFO] SRC=dont remind me, TARGET=erinnern sie mich nicht daran, PREDICTED=erinnere mich
+
+[INFO] Translating idx:  708
+[INFO] SRC=i wasnt pleased, TARGET=ich war nicht erbaut, PREDICTED=damals hatte
+
+[INFO] Translating idx:  709
+[INFO] SRC=didnt tom smile, TARGET=tom lachelte nicht, PREDICTED=hat nicht
+
+[INFO] Translating idx:  710
+[INFO] SRC=i met tom, TARGET=ich habe tom getroffen, PREDICTED=ich tom
+
+[INFO] Translating idx:  711
+[INFO] SRC=suit yourself, TARGET=tu was du willst, PREDICTED=mach
+
+[INFO] Translating idx:  712
+[INFO] SRC=hide the money, TARGET=versteck das geld, PREDICTED=versteckt sie
+
+[INFO] Translating idx:  713
+[INFO] SRC=i miss boston, TARGET=ich vermisse boston, PREDICTED=ich boston
+
+[INFO] Translating idx:  714
+[INFO] SRC=toms wasted, TARGET=tom ist erledigt, PREDICTED=es ist
+
+[INFO] Translating idx:  715
+[INFO] SRC=were staying, TARGET=wir bleiben, PREDICTED=fantastisch schieen
+
+[INFO] Translating idx:  716
+[INFO] SRC=tom wont wait, TARGET=tom wird nicht warten, PREDICTED=vielleicht wird
+
+[INFO] Translating idx:  717
+[INFO] SRC=it wont be easy, TARGET=das wird nicht leicht sein, PREDICTED=es nicht
+
+[INFO] Translating idx:  718
+[INFO] SRC=he just left, TARGET=er ist soeben gegangen, PREDICTED=er gerade
+
+[INFO] Translating idx:  719
+[INFO] SRC=what killed tom, TARGET=was hat tom umgebracht, PREDICTED=was tom
+
+[INFO] Translating idx:  720
+[INFO] SRC=i want to help, TARGET=ich will helfen, PREDICTED=ja will
+
+[INFO] Translating idx:  721
+[INFO] SRC=well stand, TARGET=wir werden stehen, PREDICTED=es werden
+
+[INFO] Translating idx:  722
+[INFO] SRC=im a translator, TARGET=ich bin ubersetzer, PREDICTED=ich jager
+
+[INFO] Translating idx:  723
+[INFO] SRC=i wasnt drunk, TARGET=ich war nicht betrunken, PREDICTED=damals war
+
+[INFO] Translating idx:  724
+[INFO] SRC=what about us, TARGET=was ist mit uns, PREDICTED=was mit
+
+[INFO] Translating idx:  725
+[INFO] SRC=forgive us, TARGET=vergib uns, PREDICTED=bleib uns
+
+[INFO] Translating idx:  726
+[INFO] SRC=tom trusted her, TARGET=tom vertraute ihr, PREDICTED=tom sie
+
+[INFO] Translating idx:  727
+[INFO] SRC=hes a nonsmoker, TARGET=er ist ein nichtraucher, PREDICTED=er fleischhauer
+
+[INFO] Translating idx:  728
+[INFO] SRC=are you certain, TARGET=bist du sicher, PREDICTED=bist sich
+
+[INFO] Translating idx:  729
+[INFO] SRC=tom was unhurt, TARGET=tom war unverletzt, PREDICTED=tom verblufft
+
+[INFO] Translating idx:  730
+[INFO] SRC=why is it dark, TARGET=warum ist es dunkel, PREDICTED=warum sie
+
+[INFO] Translating idx:  731
+[INFO] SRC=dont go tom, TARGET=geh nicht tom, PREDICTED=geh tom
+
+[INFO] Translating idx:  732
+[INFO] SRC=i saw what i saw, TARGET=ich habe gesehen was ich gesehen habe, PREDICTED=auch habe ich habe
+
+[INFO] Translating idx:  733
+[INFO] SRC=youre humming, TARGET=sie summen gerade, PREDICTED=du summen
+
+[INFO] Translating idx:  734
+[INFO] SRC=she got up late, TARGET=sie ist spat aufgestanden, PREDICTED=sie spat aufgestanden
+
+[INFO] Translating idx:  735
+[INFO] SRC=sign here, TARGET=unterschreiben sie hier, PREDICTED=unterschreibe
+
+[INFO] Translating idx:  736
+[INFO] SRC=im my own boss, TARGET=ich bin mein eigener chef, PREDICTED=ich mein
+
+[INFO] Translating idx:  737
+[INFO] SRC=the air is damp, TARGET=die luft ist feucht, PREDICTED=das dach
+
+[INFO] Translating idx:  738
+[INFO] SRC=dont you agree, TARGET=bist du nicht einverstanden, PREDICTED=bist nicht
+
+[INFO] Translating idx:  739
+[INFO] SRC=did i do that, TARGET=habe ich das gemacht, PREDICTED=hat das
+
+[INFO] Translating idx:  740
+[INFO] SRC=can you do this, TARGET=kannst du das machen, PREDICTED=kannst das
+
+[INFO] Translating idx:  741
+[INFO] SRC=my bag is empty, TARGET=meine tasche ist leer, PREDICTED=mein ist
+
+[INFO] Translating idx:  742
+[INFO] SRC=i bought it, TARGET=ich habe es gekauft, PREDICTED=ich ihn
+
+[INFO] Translating idx:  743
+[INFO] SRC=be brief, TARGET=fassen sie sich kurz, PREDICTED=seid sie
+
+[INFO] Translating idx:  744
+[INFO] SRC=show them to me, TARGET=zeigen sie sie mir, PREDICTED=zeigt mir
+
+[INFO] Translating idx:  745
+[INFO] SRC=were hiding, TARGET=wir verstecken uns gerade, PREDICTED=wir uns
+
+[INFO] Translating idx:  746
+[INFO] SRC=this is a trap, TARGET=das ist eine falle, PREDICTED=das eine
+
+[INFO] Translating idx:  747
+[INFO] SRC=tom is a hermit, TARGET=tom ist ein einsiedler, PREDICTED=tom ein
+
+[INFO] Translating idx:  748
+[INFO] SRC=well be there, TARGET=wir werden dort sein, PREDICTED=gut werden sein
+
+[INFO] Translating idx:  749
+[INFO] SRC=rest in peace, TARGET=ruhe in frieden, PREDICTED=lasst zufrieden
+
+[INFO] Translating idx:  750
+[INFO] SRC=i fear so, TARGET=ich furchte ja, PREDICTED=es habe
+
+[INFO] Translating idx:  751
+[INFO] SRC=tom looked back, TARGET=tom schaute zuruck, PREDICTED=tom zuruck
+
+[INFO] Translating idx:  752
+[INFO] SRC=contact tom, TARGET=setzt euch mit tom in verbindung, PREDICTED=lasst sie
+
+[INFO] Translating idx:  753
+[INFO] SRC=wed like that, TARGET=das hatten wir gerne, PREDICTED=wir mogen
+
+[INFO] Translating idx:  754
+[INFO] SRC=we agree, TARGET=wir sind einverstanden, PREDICTED=uns stimmen
+
+[INFO] Translating idx:  755
+[INFO] SRC=open your mouth, TARGET=mach den mund auf, PREDICTED=offnen mund
+
+[INFO] Translating idx:  756
+[INFO] SRC=come tomorrow, TARGET=kommt morgen, PREDICTED=kommen morgen
+
+[INFO] Translating idx:  757
+[INFO] SRC=listen to this, TARGET=hort euch das an, PREDICTED=hor das
+
+[INFO] Translating idx:  758
+[INFO] SRC=tom stopped, TARGET=tom hielt an, PREDICTED=tom angehalten
+
+[INFO] Translating idx:  759
+[INFO] SRC=i wont leave, TARGET=ich werde nicht gehen, PREDICTED=aha werde
+
+[INFO] Translating idx:  760
+[INFO] SRC=i understand you, TARGET=ich verstehe dich, PREDICTED=ich dich
+
+[INFO] Translating idx:  761
+[INFO] SRC=take a seat, TARGET=setz dich hin, PREDICTED=setzen
+
+[INFO] Translating idx:  762
+[INFO] SRC=i made a promise, TARGET=ich habe ein versprechen gegeben, PREDICTED=ich ein
+
+[INFO] Translating idx:  763
+[INFO] SRC=i enjoy chess, TARGET=ich spiele gerne schach, PREDICTED=mir ist
+
+[INFO] Translating idx:  764
+[INFO] SRC=we found it, TARGET=wir haben es gefunden, PREDICTED=jeder haben
+
+[INFO] Translating idx:  765
+[INFO] SRC=dont cry, TARGET=weine nicht, PREDICTED=weinen
+
+[INFO] Translating idx:  766
+[INFO] SRC=theyre coming, TARGET=sie kommen, PREDICTED=die kommen
+
+[INFO] Translating idx:  767
+[INFO] SRC=im doing great, TARGET=mir geht es groartig, PREDICTED=ich gehts
+
+[INFO] Translating idx:  768
+[INFO] SRC=tom needed rest, TARGET=tom musste sich ausruhen, PREDICTED=tom sich
+
+[INFO] Translating idx:  769
+[INFO] SRC=hes a grouch, TARGET=er ist ein miesepeter, PREDICTED=er ein
+
+[INFO] Translating idx:  770
+[INFO] SRC=tom knows best, TARGET=tom wei das am besten, PREDICTED=thomas kennt
+
+[INFO] Translating idx:  771
+[INFO] SRC=tom isnt busy, TARGET=tom ist nicht beschaftigt, PREDICTED=es ist nicht
+
+[INFO] Translating idx:  772
+[INFO] SRC=you hurt him, TARGET=du hast ihm weh getan, PREDICTED=du ihm
+
+[INFO] Translating idx:  773
+[INFO] SRC=ask an expert, TARGET=fragen sie einen fachmann, PREDICTED=fragen einen fachmann
+
+[INFO] Translating idx:  774
+[INFO] SRC=i can name names, TARGET=ich wei die namen, PREDICTED=damals kann
+
+[INFO] Translating idx:  775
+[INFO] SRC=its too hard, TARGET=es ist zu hart, PREDICTED=es zu
+
+[INFO] Translating idx:  776
+[INFO] SRC=tom is scared, TARGET=tom hat angst, PREDICTED=tom es
+
+[INFO] Translating idx:  777
+[INFO] SRC=call home, TARGET=rufen sie zuhause an, PREDICTED=ruf nach
+
+[INFO] Translating idx:  778
+[INFO] SRC=here we go, TARGET=los gehts, PREDICTED=da los
+
+[INFO] Translating idx:  779
+[INFO] SRC=i need a map, TARGET=ich brauche eine karte, PREDICTED=ich eine
+
+[INFO] Translating idx:  780
+[INFO] SRC=it must be true, TARGET=es stimmt wohl, PREDICTED=das muss
+
+[INFO] Translating idx:  781
+[INFO] SRC=i dont want it, TARGET=ich mochte ihn nicht, PREDICTED=ich es nicht
+
+[INFO] Translating idx:  782
+[INFO] SRC=its obsolete, TARGET=das ist veraltet, PREDICTED=das ist
+
+[INFO] Translating idx:  783
+[INFO] SRC=call the fbi, TARGET=ruf das fbi an, PREDICTED=rufen kuchen
+
+[INFO] Translating idx:  784
+[INFO] SRC=that cost a lot, TARGET=das kostete eine menge, PREDICTED=die ist
+
+[INFO] Translating idx:  785
+[INFO] SRC=i went there, TARGET=ich ging hin, PREDICTED=damals bin
+
+[INFO] Translating idx:  786
+[INFO] SRC=tom dug a hole, TARGET=tom grub ein loch, PREDICTED=tom ein
+
+[INFO] Translating idx:  787
+[INFO] SRC=tom is skittish, TARGET=tom ist ubermutig, PREDICTED=stirb ist
+
+[INFO] Translating idx:  788
+[INFO] SRC=tom is boring, TARGET=tom ist langweilig, PREDICTED=tom langweilig
+
+[INFO] Translating idx:  789
+[INFO] SRC=wheres tom now, TARGET=wo ist tom jetzt, PREDICTED=wo tom
+
+[INFO] Translating idx:  790
+[INFO] SRC=contact tom, TARGET=setzen sie sich mit tom in verbindung, PREDICTED=lasst sie
+
+[INFO] Translating idx:  791
+[INFO] SRC=everyone stood, TARGET=alle standen, PREDICTED=alle
+
+[INFO] Translating idx:  792
+[INFO] SRC=it is no joke, TARGET=das ist kein witz, PREDICTED=es ist scherz
+
+[INFO] Translating idx:  793
+[INFO] SRC=wholl succeed, TARGET=wer wird erfolg haben, PREDICTED=wer erfolgreich
+
+[INFO] Translating idx:  794
+[INFO] SRC=keep it quiet, TARGET=behaltet es fur euch, PREDICTED=behalte sie
+
+[INFO] Translating idx:  795
+[INFO] SRC=beat it, TARGET=zisch ab, PREDICTED=mach
+
+[INFO] Translating idx:  796
+[INFO] SRC=i like him, TARGET=ich mag ihn, PREDICTED=ich ihn
+
+[INFO] Translating idx:  797
+[INFO] SRC=im years old, TARGET=ich bin, PREDICTED=ich jahre
+
+[INFO] Translating idx:  798
+[INFO] SRC=i am not sure, TARGET=ich bin mir nicht sicher, PREDICTED=mir bin nicht
+
+[INFO] Translating idx:  799
+[INFO] SRC=is it too salty, TARGET=ist es versalzen, PREDICTED=ist versalzen
+
+[INFO] Translating idx:  800
+[INFO] SRC=he must not live, TARGET=er darf nicht leben, PREDICTED=er nicht
+
+[INFO] Translating idx:  801
+[INFO] SRC=i am undressing, TARGET=ich entkleide mich, PREDICTED=ich mich
+
+[INFO] Translating idx:  802
+[INFO] SRC=i hope its true, TARGET=ich hoffe das stimmt, PREDICTED=ich es
+
+[INFO] Translating idx:  803
+[INFO] SRC=he loves trains, TARGET=er liebt zuge, PREDICTED=er tierlieb
+
+[INFO] Translating idx:  804
+[INFO] SRC=tomll speak, TARGET=tom wird sprechen, PREDICTED=es wird
+
+[INFO] Translating idx:  805
+[INFO] SRC=we laugh a lot, TARGET=wir lachen viel, PREDICTED=gluck haben
+
+[INFO] Translating idx:  806
+[INFO] SRC=just try it out, TARGET=probiere es einfach aus, PREDICTED=probier es
+
+[INFO] Translating idx:  807
+[INFO] SRC=tom has scurvy, TARGET=tom hat skorbut, PREDICTED=tom schon
+
+[INFO] Translating idx:  808
+[INFO] SRC=youre polite, TARGET=du bist hoflich, PREDICTED=sie hoflich
+
+[INFO] Translating idx:  809
+[INFO] SRC=catch tom, TARGET=fang tom, PREDICTED=fangen tom
+
+[INFO] Translating idx:  810
+[INFO] SRC=open the doors, TARGET=offne die turen, PREDICTED=offnen die
+
+[INFO] Translating idx:  811
+[INFO] SRC=we are happy, TARGET=wir sind glucklich, PREDICTED=wir glucklich
+
+[INFO] Translating idx:  812
+[INFO] SRC=its all i need, TARGET=das ist alles was ich brauche, PREDICTED=sie ist
+
+[INFO] Translating idx:  813
+[INFO] SRC=do you work here, TARGET=arbeitet ihr hier, PREDICTED=arbeitest du
+
+[INFO] Translating idx:  814
+[INFO] SRC=tom was sweet, TARGET=tom war ganz reizend, PREDICTED=tom ganz
+
+[INFO] Translating idx:  815
+[INFO] SRC=toms canadian, TARGET=tom ist kanadier, PREDICTED=das ist
+
+[INFO] Translating idx:  816
+[INFO] SRC=tom knows, TARGET=tom wei es, PREDICTED=tom
+
+[INFO] Translating idx:  817
+[INFO] SRC=i hate my life, TARGET=ich hasse mein leben, PREDICTED=ich mein
+
+[INFO] Translating idx:  818
+[INFO] SRC=i disagree, TARGET=ich bin anderer meinung, PREDICTED=das bin
+
+[INFO] Translating idx:  819
+[INFO] SRC=im not alone, TARGET=ich bin nicht allein, PREDICTED=ich nicht
+
+[INFO] Translating idx:  820
+[INFO] SRC=tom has a gun, TARGET=tom hat eine waffe, PREDICTED=tom eine
+
+[INFO] Translating idx:  821
+[INFO] SRC=hold this, TARGET=halten sie das, PREDICTED=augenblick sie
+
+[INFO] Translating idx:  822
+[INFO] SRC=smoking stinks, TARGET=rauchen ist schadlich, PREDICTED=nur
+
+[INFO] Translating idx:  823
+[INFO] SRC=be merciful, TARGET=seid gnadig, PREDICTED=entspann
+
+[INFO] Translating idx:  824
+[INFO] SRC=the birds sang, TARGET=die vogel sangen, PREDICTED=der ist
+
+[INFO] Translating idx:  825
+[INFO] SRC=life is crazy, TARGET=das leben ist verruckt, PREDICTED=das ist
+
+[INFO] Translating idx:  826
+[INFO] SRC=turn it up, TARGET=mach es lauter, PREDICTED=mach es
+
+[INFO] Translating idx:  827
+[INFO] SRC=ill follow, TARGET=ich werde folgen, PREDICTED=ich mal
+
+[INFO] Translating idx:  828
+[INFO] SRC=tom is cranky, TARGET=tom ist unleidlich, PREDICTED=war ist
+
+[INFO] Translating idx:  829
+[INFO] SRC=start now, TARGET=fang jetzt an, PREDICTED=beginnen sie
+
+[INFO] Translating idx:  830
+[INFO] SRC=i have pneumonia, TARGET=ich habe eine lungenentzundung, PREDICTED=aha habe
+
+[INFO] Translating idx:  831
+[INFO] SRC=i miss you guys, TARGET=ich vermisse euch, PREDICTED=ich sie
+
+[INFO] Translating idx:  832
+[INFO] SRC=i know the area, TARGET=ich kenne die gegend, PREDICTED=ich den
+
+[INFO] Translating idx:  833
+[INFO] SRC=did tom approve, TARGET=hat tom zugestimmt, PREDICTED=ist tom
+
+[INFO] Translating idx:  834
+[INFO] SRC=keep paddling, TARGET=paddel weiter, PREDICTED=ubt
+
+[INFO] Translating idx:  835
+[INFO] SRC=hes a lawyer, TARGET=er ist rechtsanwalt, PREDICTED=das ist
+
+[INFO] Translating idx:  836
+[INFO] SRC=men are greedy, TARGET=menschen sind habgierig, PREDICTED=menschen sind
+
+[INFO] Translating idx:  837
+[INFO] SRC=all is quiet, TARGET=alles ist ruhig, PREDICTED=deine ist
+
+[INFO] Translating idx:  838
+[INFO] SRC=get to the point, TARGET=zur sache, PREDICTED=steige in
+
+[INFO] Translating idx:  839
+[INFO] SRC=you run, TARGET=du laufst, PREDICTED=du
+
+[INFO] Translating idx:  840
+[INFO] SRC=get started, TARGET=fangt an, PREDICTED=komm sie
+
+[INFO] Translating idx:  841
+[INFO] SRC=i need help, TARGET=ich brauche hilfe, PREDICTED=ich hilfe
+
+[INFO] Translating idx:  842
+[INFO] SRC=how tall is he, TARGET=wie gro ist er, PREDICTED=wie ist
+
+[INFO] Translating idx:  843
+[INFO] SRC=it isnt mine, TARGET=das ist nicht meins, PREDICTED=das nicht
+
+[INFO] Translating idx:  844
+[INFO] SRC=i bike to work, TARGET=ich fahre mit dem rad zur arbeit, PREDICTED=ja fahre
+
+[INFO] Translating idx:  845
+[INFO] SRC=tom sneezed, TARGET=tom nieste, PREDICTED=tom sich
+
+[INFO] Translating idx:  846
+[INFO] SRC=tom wants to go, TARGET=tom mochte gehen, PREDICTED=tom weggehen
+
+[INFO] Translating idx:  847
+[INFO] SRC=i believe in god, TARGET=ich glaube an gott, PREDICTED=ich auf
+
+[INFO] Translating idx:  848
+[INFO] SRC=vote for me, TARGET=gib mir deine stimme, PREDICTED=wahlt
+
+[INFO] Translating idx:  849
+[INFO] SRC=look at that, TARGET=sieh dir das an, PREDICTED=schau dir
+
+[INFO] Translating idx:  850
+[INFO] SRC=i like girls, TARGET=ich mag madchen, PREDICTED=ich saschimi
+
+[INFO] Translating idx:  851
+[INFO] SRC=she might come, TARGET=sie wird vielleicht kommen, PREDICTED=vielleicht kommt
+
+[INFO] Translating idx:  852
+[INFO] SRC=just relax, TARGET=entspann dich einfach, PREDICTED=mach sie
+
+[INFO] Translating idx:  853
+[INFO] SRC=i am not kidding, TARGET=kein schei, PREDICTED=ich ich
+
+[INFO] Translating idx:  854
+[INFO] SRC=you missed, TARGET=sie haben nicht getroffen, PREDICTED=du nicht
+
+[INFO] Translating idx:  855
+[INFO] SRC=ill go get it, TARGET=ich werde es holen, PREDICTED=das geh und
+
+[INFO] Translating idx:  856
+[INFO] SRC=is tom lonely, TARGET=ist tom einsam, PREDICTED=ist allein
+
+[INFO] Translating idx:  857
+[INFO] SRC=im a man, TARGET=ich bin ein mann, PREDICTED=ich ein
+
+[INFO] Translating idx:  858
+[INFO] SRC=id leave, TARGET=ich wurde gehen, PREDICTED=tom wurde
+
+[INFO] Translating idx:  859
+[INFO] SRC=ill come alone, TARGET=ich werde allein kommen, PREDICTED=werde werde
+
+[INFO] Translating idx:  860
+[INFO] SRC=were at war, TARGET=wir sind im krieg, PREDICTED=uns sind
+
+[INFO] Translating idx:  861
+[INFO] SRC=tom is wrong, TARGET=tom hat unrecht, PREDICTED=es irrt
+
+[INFO] Translating idx:  862
+[INFO] SRC=i will learn, TARGET=ich werde es lernen, PREDICTED=ich lernen
+
+[INFO] Translating idx:  863
+[INFO] SRC=hold this, TARGET=haltet das, PREDICTED=augenblick sie
+
+[INFO] Translating idx:  864
+[INFO] SRC=do you have time, TARGET=habt ihr zeit, PREDICTED=macht ihr
+
+[INFO] Translating idx:  865
+[INFO] SRC=take it down, TARGET=nimm es runter, PREDICTED=nehmt es
+
+[INFO] Translating idx:  866
+[INFO] SRC=whats your job, TARGET=was machen sie beruflich, PREDICTED=was deine
+
+[INFO] Translating idx:  867
+[INFO] SRC=you know me, TARGET=du kennst mich, PREDICTED=sie weit
+
+[INFO] Translating idx:  868
+[INFO] SRC=youre so lazy, TARGET=du bist ja so faul, PREDICTED=ihr so
+
+[INFO] Translating idx:  869
+[INFO] SRC=i like your car, TARGET=mir gefallt dein auto, PREDICTED=ich gefallt
+
+[INFO] Translating idx:  870
+[INFO] SRC=im very hungry, TARGET=ich bin sehr hungrig, PREDICTED=ich sehr
+
+[INFO] Translating idx:  871
+[INFO] SRC=she went home, TARGET=sie ist nach hause gegangen, PREDICTED=sie nach
+
+[INFO] Translating idx:  872
+[INFO] SRC=i cant tell yet, TARGET=ich kann es noch nicht sagen, PREDICTED=ich es
+
+[INFO] Translating idx:  873
+[INFO] SRC=im your father, TARGET=ich bin dein vater, PREDICTED=ich dein
+
+[INFO] Translating idx:  874
+[INFO] SRC=tom trusts you, TARGET=tom vertraut ihnen, PREDICTED=thomas vertraut
+
+[INFO] Translating idx:  875
+[INFO] SRC=ive lost it, TARGET=ich spinne, PREDICTED=ich es
+
+[INFO] Translating idx:  876
+[INFO] SRC=i read his book, TARGET=ich lese sein buch, PREDICTED=ich er
+
+[INFO] Translating idx:  877
+[INFO] SRC=how rich is tom, TARGET=wie reich ist tom, PREDICTED=was er tom
+
+[INFO] Translating idx:  878
+[INFO] SRC=shes mine, TARGET=sie gehort mir, PREDICTED=sie mir
+
+[INFO] Translating idx:  879
+[INFO] SRC=its clear, TARGET=es ist klar, PREDICTED=das ist
+
+[INFO] Translating idx:  880
+[INFO] SRC=we ignored tom, TARGET=wir haben tom ignoriert, PREDICTED=alle sehen bitten
+
+[INFO] Translating idx:  881
+[INFO] SRC=tom enjoys that, TARGET=tom geniet das, PREDICTED=tom das
+
+[INFO] Translating idx:  882
+[INFO] SRC=did tom see it, TARGET=hat tom das gesehen, PREDICTED=hat das
+
+[INFO] Translating idx:  883
+[INFO] SRC=i never bet, TARGET=ich wette nie, PREDICTED=man habe
+
+[INFO] Translating idx:  884
+[INFO] SRC=wholl start, TARGET=wer wird anfangen, PREDICTED=wer an
+
+[INFO] Translating idx:  885
+[INFO] SRC=its his, TARGET=es ist seins, PREDICTED=das ist
+
+[INFO] Translating idx:  886
+[INFO] SRC=this is my doll, TARGET=das ist meine puppe, PREDICTED=dies ist
+
+[INFO] Translating idx:  887
+[INFO] SRC=its for tom, TARGET=das ist fur tom, PREDICTED=es fur
+
+[INFO] Translating idx:  888
+[INFO] SRC=youre young, TARGET=sie sind jung, PREDICTED=du jung
+
+[INFO] Translating idx:  889
+[INFO] SRC=well chance it, TARGET=wir riskieren es, PREDICTED=wir es
+
+[INFO] Translating idx:  890
+[INFO] SRC=my names tom, TARGET=ich heie tom, PREDICTED=ich tom
+
+[INFO] Translating idx:  891
+[INFO] SRC=wonderful, TARGET=wunderbar, PREDICTED=fantastisch
+
+[INFO] Translating idx:  892
+[INFO] SRC=ive got a plan, TARGET=ich habe einen plan, PREDICTED=ich ein
+
+[INFO] Translating idx:  893
+[INFO] SRC=leave it there, TARGET=lasst es dort, PREDICTED=lassen es
+
+[INFO] Translating idx:  894
+[INFO] SRC=that isnt fair, TARGET=das ist ungerecht, PREDICTED=das fair
+
+[INFO] Translating idx:  895
+[INFO] SRC=they wont know, TARGET=sie werden es nicht wissen, PREDICTED=das wird nicht
+
+[INFO] Translating idx:  896
+[INFO] SRC=may i ask why, TARGET=darf ich fragen warum, PREDICTED=darf nach
+
+[INFO] Translating idx:  897
+[INFO] SRC=follow behind me, TARGET=folgen sie mir, PREDICTED=folge mir
+
+[INFO] Translating idx:  898
+[INFO] SRC=i trust you, TARGET=ich verlasse mich auf dich, PREDICTED=ich dich
+
+[INFO] Translating idx:  899
+[INFO] SRC=its what i want, TARGET=ich will das so, PREDICTED=das was
+
+[INFO] Translating idx:  900
+[INFO] SRC=just follow tom, TARGET=folge einfach tom, PREDICTED=folge tom
+
+[INFO] Translating idx:  901
+[INFO] SRC=get off of me, TARGET=runter von mir, PREDICTED=geh in mir
+
+[INFO] Translating idx:  902
+[INFO] SRC=are you busy now, TARGET=seid ihr gerade beschaftigt, PREDICTED=sind du
+
+[INFO] Translating idx:  903
+[INFO] SRC=no means no, TARGET=nein heit nein, PREDICTED=das keine
+
+[INFO] Translating idx:  904
+[INFO] SRC=lets cross here, TARGET=lasst uns hier rubergehen, PREDICTED=lass uns
+
+[INFO] Translating idx:  905
+[INFO] SRC=i appreciate it, TARGET=ich wei das zu schatzen, PREDICTED=ich es
+
+[INFO] Translating idx:  906
+[INFO] SRC=i was shy, TARGET=ich war schuchtern, PREDICTED=ich schuchtern
+
+[INFO] Translating idx:  907
+[INFO] SRC=trust is earned, TARGET=vertrauen muss man sich verdienen, PREDICTED=vertrauen
+
+[INFO] Translating idx:  908
+[INFO] SRC=a beer please, TARGET=ein bier bitte, PREDICTED=einen bier
+
+[INFO] Translating idx:  909
+[INFO] SRC=tom cant walk, TARGET=tom kann nicht gehen, PREDICTED=vielleicht kann
+
+[INFO] Translating idx:  910
+[INFO] SRC=im a bit drunk, TARGET=ich bin etwas beschwipst, PREDICTED=ich etwas
+
+[INFO] Translating idx:  911
+[INFO] SRC=arent you tom, TARGET=bist du nicht tom, PREDICTED=bist nicht
+
+[INFO] Translating idx:  912
+[INFO] SRC=i am fat, TARGET=ich bin dick, PREDICTED=ich dick
+
+[INFO] Translating idx:  913
+[INFO] SRC=i miss it, TARGET=ich vermisse es, PREDICTED=mir fehlt
+
+[INFO] Translating idx:  914
+[INFO] SRC=dont go in, TARGET=geh nicht rein, PREDICTED=rase nicht
+
+[INFO] Translating idx:  915
+[INFO] SRC=i feel terrible, TARGET=ich fuhle mich schrecklich, PREDICTED=mir fuhle
+
+[INFO] Translating idx:  916
+[INFO] SRC=i am tired, TARGET=ich bin mude, PREDICTED=ich mude
+
+[INFO] Translating idx:  917
+[INFO] SRC=i need a cab, TARGET=ich brauche ein taxi, PREDICTED=ich ein
+
+[INFO] Translating idx:  918
+[INFO] SRC=im eating, TARGET=ich esse, PREDICTED=aha esse
+
+[INFO] Translating idx:  919
+[INFO] SRC=im from america, TARGET=ich komme aus amerika, PREDICTED=mir bin
+
+[INFO] Translating idx:  920
+[INFO] SRC=just let tom go, TARGET=lass tom einfach gehen, PREDICTED=lasst tom
+
+[INFO] Translating idx:  921
+[INFO] SRC=we had to stop, TARGET=wir mussten anhalten, PREDICTED=wir aufhoren
+
+[INFO] Translating idx:  922
+[INFO] SRC=lets get inside, TARGET=lass uns hineingehen, PREDICTED=lass hinein
+
+[INFO] Translating idx:  923
+[INFO] SRC=let him do it, TARGET=lass es ihn machen, PREDICTED=uberlass das
+
+[INFO] Translating idx:  924
+[INFO] SRC=keep singing, TARGET=singen sie weiter, PREDICTED=sing weiter
+
+[INFO] Translating idx:  925
+[INFO] SRC=tom gave blood, TARGET=tom hat mit blut bezahlt, PREDICTED=tom blut
+
+[INFO] Translating idx:  926
+[INFO] SRC=business is slow, TARGET=das geschaft lauft nicht gut, PREDICTED=einen ist
+
+[INFO] Translating idx:  927
+[INFO] SRC=say goodbye, TARGET=verabschiede dich, PREDICTED=sag auf
+
+[INFO] Translating idx:  928
+[INFO] SRC=what did he say, TARGET=was hat er gesagt, PREDICTED=was er
+
+[INFO] Translating idx:  929
+[INFO] SRC=tom has it made, TARGET=tom hat ausgesorgt, PREDICTED=tom es
+
+[INFO] Translating idx:  930
+[INFO] SRC=tom dozed, TARGET=tom doste, PREDICTED=tom
+
+[INFO] Translating idx:  931
+[INFO] SRC=did you say, TARGET=sagtest du dreiig, PREDICTED=sagtet dreiig
+
+[INFO] Translating idx:  932
+[INFO] SRC=i hate politics, TARGET=ich hasse politik, PREDICTED=ich juristen
+
+[INFO] Translating idx:  933
+[INFO] SRC=i hate riddles, TARGET=ich hasse ratsel, PREDICTED=ich juristen
+
+[INFO] Translating idx:  934
+[INFO] SRC=now do you see, TARGET=begreifst du jetzt, PREDICTED=jetzt sie
+
+[INFO] Translating idx:  935
+[INFO] SRC=im saying no, TARGET=ich sage nein, PREDICTED=ich kein
+
+[INFO] Translating idx:  936
+[INFO] SRC=i need that tape, TARGET=ich brauche dieses band, PREDICTED=ich das
+
+[INFO] Translating idx:  937
+[INFO] SRC=i love to dance, TARGET=ich liebe es zu tanzen, PREDICTED=ich gerne
+
+[INFO] Translating idx:  938
+[INFO] SRC=tom was with me, TARGET=tom war bei mir, PREDICTED=tom auf
+
+[INFO] Translating idx:  939
+[INFO] SRC=its hot in here, TARGET=es ist hei hier drinnen, PREDICTED=er ist
+
+[INFO] Translating idx:  940
+[INFO] SRC=ill do it, TARGET=ich werde es tun, PREDICTED=ich es
+
+[INFO] Translating idx:  941
+[INFO] SRC=tom is abroad, TARGET=tom ist im ausland, PREDICTED=es ist
+
+[INFO] Translating idx:  942
+[INFO] SRC=keep talking, TARGET=red weiter, PREDICTED=ubt weiter
+
+[INFO] Translating idx:  943
+[INFO] SRC=i have a date, TARGET=ich habe eine verabredung, PREDICTED=ich ein
+
+[INFO] Translating idx:  944
+[INFO] SRC=ill be good, TARGET=ich werde brav sein, PREDICTED=ich brav
+
+[INFO] Translating idx:  945
+[INFO] SRC=can you help, TARGET=konnt ihr helfen, PREDICTED=kannst helfen
+
+[INFO] Translating idx:  946
+[INFO] SRC=nobody lied, TARGET=niemand hat gelogen, PREDICTED=niemand
+
+[INFO] Translating idx:  947
+[INFO] SRC=tom had a plan, TARGET=tom hatte einen plan, PREDICTED=tom ein
+
+[INFO] Translating idx:  948
+[INFO] SRC=was tom annoyed, TARGET=war tom genervt, PREDICTED=war verargert
+
+[INFO] Translating idx:  949
+[INFO] SRC=hes studying, TARGET=er lernt gerade, PREDICTED=fantastisch studiert
+
+[INFO] Translating idx:  950
+[INFO] SRC=tom deserves it, TARGET=tom hat es verdient, PREDICTED=tom es
+
+[INFO] Translating idx:  951
+[INFO] SRC=is he a teacher, TARGET=ist er lehrer, PREDICTED=ist lehrer
+
+[INFO] Translating idx:  952
+[INFO] SRC=theyre in love, TARGET=sie sind verliebt, PREDICTED=die sind
+
+[INFO] Translating idx:  953
+[INFO] SRC=my hip hurts, TARGET=mir tut die hufte weh, PREDICTED=mein habe weh
+
+[INFO] Translating idx:  954
+[INFO] SRC=how about a walk, TARGET=wie wars mit einem spaziergang, PREDICTED=wie es
+
+[INFO] Translating idx:  955
+[INFO] SRC=im an old woman, TARGET=ich bin eine alte frau, PREDICTED=mir bin frau
+
+[INFO] Translating idx:  956
+[INFO] SRC=tom seems happy, TARGET=tom scheint glucklich, PREDICTED=es scheint glucklich
+
+[INFO] Translating idx:  957
+[INFO] SRC=youre wicked, TARGET=ihr seid niedertrachtig, PREDICTED=sie bist
+
+[INFO] Translating idx:  958
+[INFO] SRC=im a student, TARGET=ich bin schulerin, PREDICTED=ich schuler
+
+[INFO] Translating idx:  959
+[INFO] SRC=who saw you, TARGET=wer hat sie gesehen, PREDICTED=wer dich
+
+[INFO] Translating idx:  960
+[INFO] SRC=tom is grounded, TARGET=tom steht mit beiden beinen auf dem boden, PREDICTED=es hat
+
+[INFO] Translating idx:  961
+[INFO] SRC=tom blacked out, TARGET=tom fiel in ohnmacht, PREDICTED=es hat
+
+[INFO] Translating idx:  962
+[INFO] SRC=tomll wait, TARGET=tom wird warten, PREDICTED=sie wird
+
+[INFO] Translating idx:  963
+[INFO] SRC=did tom object, TARGET=hatte tom etwas einzuwenden, PREDICTED=hat tom
+
+[INFO] Translating idx:  964
+[INFO] SRC=he doesnt sleep, TARGET=er schlaft nicht, PREDICTED=er nicht
+
+[INFO] Translating idx:  965
+[INFO] SRC=he can run fast, TARGET=er kann schnell laufen, PREDICTED=er schnell
+
+[INFO] Translating idx:  966
+[INFO] SRC=drive carefully, TARGET=fahren sie vorsichtig, PREDICTED=fahre vorsichtig
+
+[INFO] Translating idx:  967
+[INFO] SRC=wake tom up, TARGET=wecke tom, PREDICTED=steh auf
+
+[INFO] Translating idx:  968
+[INFO] SRC=why is this, TARGET=woran liegt das, PREDICTED=warum das
+
+[INFO] Translating idx:  969
+[INFO] SRC=she cant swim, TARGET=sie kann nicht schwimmen, PREDICTED=sie nicht
+
+[INFO] Translating idx:  970
+[INFO] SRC=its a plant, TARGET=das ist eine pflanze, PREDICTED=es ein
+
+[INFO] Translating idx:  971
+[INFO] SRC=well cooperate, TARGET=wir werden kooperieren, PREDICTED=wir mitarbeiten
+
+[INFO] Translating idx:  972
+[INFO] SRC=they didnt run, TARGET=sie rannten nicht, PREDICTED=sie nicht
+
+[INFO] Translating idx:  973
+[INFO] SRC=men should work, TARGET=manner sollten arbeiten, PREDICTED=manner arbeiten
+
+[INFO] Translating idx:  974
+[INFO] SRC=youre the best, TARGET=ihr seid die besten, PREDICTED=sie der
+
+[INFO] Translating idx:  975
+[INFO] SRC=tom is joking, TARGET=tom macht witze, PREDICTED=tom weg
+
+[INFO] Translating idx:  976
+[INFO] SRC=i told you so, TARGET=das habe ich doch gleich gesagt, PREDICTED=ich es
+
+[INFO] Translating idx:  977
+[INFO] SRC=i built it, TARGET=ich habe sie gebaut, PREDICTED=das habe
+
+[INFO] Translating idx:  978
+[INFO] SRC=i can try it, TARGET=ich kann es mal versuchen, PREDICTED=ich es
+
+[INFO] Translating idx:  979
+[INFO] SRC=i might be wrong, TARGET=vielleicht habe ich ja unrecht, PREDICTED=eventuell konnte nicht
+
+[INFO] Translating idx:  980
+[INFO] SRC=i gave up on tom, TARGET=ich hab tom aufgegeben, PREDICTED=tom gab auf
+
+[INFO] Translating idx:  981
+[INFO] SRC=which is mine, TARGET=welches ist meine, PREDICTED=hol ist
+
+[INFO] Translating idx:  982
+[INFO] SRC=i was off duty, TARGET=ich hatte frei, PREDICTED=damals war
+
+[INFO] Translating idx:  983
+[INFO] SRC=he is his friend, TARGET=er ist sein freund, PREDICTED=er er
+
+[INFO] Translating idx:  984
+[INFO] SRC=what is this, TARGET=was ist das fur ein ding, PREDICTED=fur ist
+
+[INFO] Translating idx:  985
+[INFO] SRC=she hated him, TARGET=sie konnte ihn nicht leiden, PREDICTED=sie ihn
+
+[INFO] Translating idx:  986
+[INFO] SRC=how clever, TARGET=wie klug, PREDICTED=wie scharfsinnig
+
+[INFO] Translating idx:  987
+[INFO] SRC=cut that out, TARGET=hor auf, PREDICTED=mach das
+
+[INFO] Translating idx:  988
+[INFO] SRC=see you at, TARGET=wir sehen uns um uhr, PREDICTED=wir sehen
+
+[INFO] Translating idx:  989
+[INFO] SRC=im fasting, TARGET=ich faste, PREDICTED=ich gerade
+
+[INFO] Translating idx:  990
+[INFO] SRC=come home at six, TARGET=komm um sechs heim, PREDICTED=kommen um
+
+[INFO] Translating idx:  991
+[INFO] SRC=ive lost it, TARGET=ich habe ihn verloren, PREDICTED=ich es
+
+[INFO] Translating idx:  992
+[INFO] SRC=i am a bit drunk, TARGET=ich bin ein bisschen betrunken, PREDICTED=ich ein
+
+[INFO] Translating idx:  993
+[INFO] SRC=tom is shaking, TARGET=tom zittert, PREDICTED=es ist
+
+[INFO] Translating idx:  994
+[INFO] SRC=tom is a maniac, TARGET=tom ist ein verruckter, PREDICTED=sie ist
+
+[INFO] Translating idx:  995
+[INFO] SRC=were hot, TARGET=uns ist hei, PREDICTED=uns sind
+
+[INFO] Translating idx:  996
+[INFO] SRC=watch my back, TARGET=gib mir ruckendeckung, PREDICTED=schau auf
+
+[INFO] Translating idx:  997
+[INFO] SRC=im a lawyer, TARGET=ich bin rechtsanwalt, PREDICTED=ich lehrer
+
+[INFO] Translating idx:  998
+[INFO] SRC=its my book, TARGET=das ist mein buch, PREDICTED=das mein
+
+[INFO] Translating idx:  999
+[INFO] SRC=hes autistic, TARGET=er ist autist, PREDICTED=ein ist
+
+BLEU-1: 0.2528
+BLEU-2: 0.0610
+BLEU-3: 0.0000
+BLEU-4: 0.0000
