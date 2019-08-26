@@ -32,10 +32,11 @@ class AttentionLayer(Layer):
 
         super(AttentionLayer, self).build(input_shape)  # Be sure to call this at the end
 
-    def call(self, inputs, verbose=False):
+    def call(self, inputs, mask=None, verbose=False):
         """
         inputs: [encoder_output_sequence, decoder_output_sequence]
         """
+
         assert type(inputs) == list
         encoder_out_seq, decoder_out_seq = inputs
         if verbose:
@@ -109,6 +110,9 @@ class AttentionLayer(Layer):
 
         """ Computing energy outputs """
         # e_outputs => (batch_size, de_seq_len, en_seq_len)
+        # We can also pass mask input arg from above into the K.rnn function below
+        # ie K.rnn(..., mask=mask, ...)
+        # Degrades the overall accuracy so not recommended...
         last_out, e_outputs, _ = K.rnn(
             energy_step, decoder_out_seq, [fake_state_e],
         )
@@ -119,6 +123,12 @@ class AttentionLayer(Layer):
         )
 
         return c_outputs, e_outputs
+
+    # To allow for layers that support masking to pass its masks
+    # to this layer e.g. word embedding layers.
+    # We're ignoring the mask in this layer and passing it downstream...
+    def compute_mask(self, inputs, mask):
+        return None
 
     def compute_output_shape(self, input_shape):
         """ Outputs produced by the layer """

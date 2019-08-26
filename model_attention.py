@@ -14,7 +14,7 @@ def attention_model(src_vocab, target_vocab, src_timesteps, target_timesteps, un
 
   decoder_inputs = Input(shape=(target_timesteps - 1, target_vocab), name='decoder_inputs')
 
-  embedding = Embedding(src_vocab, units, input_length=src_timesteps, name='enc_embedding')
+  embedding = Embedding(src_vocab, units, input_length=src_timesteps, name='enc_embedding', mask_zero=True)
 
   encoder_lstm = Bidirectional(LSTM(units, return_sequences=True, return_state=True, name='encoder_lstm'), name='bidirectional_encoder')
 
