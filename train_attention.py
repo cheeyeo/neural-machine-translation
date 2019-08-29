@@ -36,6 +36,7 @@ def data_generator(lines, eng_tokenizer, eng_length, fr_tokenizer, fr_length, sr
 ap = argparse.ArgumentParser()
 ap.add_argument("-e", "--epochs", type=int, required=True, help="Number of epochs to train for")
 ap.add_argument("-b", "--batch", type=int, required=False, default=64, help="Batch size")
+ap.add_argument("-m", "--model", type=str, required=False, default="attention_model.h5", help="Model name to save to.")
 args = vars(ap.parse_args())
 
 dataset = np.array(load_saved_lines('eng-german-both.pkl'))
@@ -68,7 +69,7 @@ plot_model(encoder_model, to_file='artifacts/encoder_model.png', show_shapes=Tru
 plot_model(decoder_model, to_file='artifacts/decoder_model.png', show_shapes=True)
 
 model.summary()
-checkpoint = create_checkpoint(model_name='attention_model.h5')
+checkpoint = create_checkpoint(model_name=args["model"])
 
 epochs = args["epochs"]
 batch_size = args["batch"]
@@ -90,3 +91,8 @@ H = model.fit_generator(
   callbacks=[checkpoint])
 
 plot_training(H, epochs, plot_path_loss='training_loss_attention_model.png', plot_path_acc='training_acc_attention_model.png')
+
+# Saving model architecture
+architecture = model.to_json()
+with open('attention_model.json', 'wt') as f:
+  f.write(architecture)

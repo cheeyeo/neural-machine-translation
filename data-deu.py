@@ -32,7 +32,12 @@ dataset[:, 1] = add_delimiters_to_lines(dataset[:, 1])
 np.random.shuffle(dataset)
 
 # TODO: Remove hard-code values here
-train, dev, test = dataset[:13000], dataset[13000:14000], dataset[14000:15000]
+train_size = int(args["limit"] * 0.9)
+remainder = args["limit"] - train_size
+dev_size = int(remainder/2)
+test_size = int(remainder/2)
+print("[INFO] Train {:d}, Dev {:d}, Test {:d}".format(train_size, dev_size, test_size))
+train, dev, test = dataset[:train_size], dataset[train_size:train_size+dev_size], dataset[train_size+dev_size:train_size+remainder]
 
 save_clean_lines(dataset, 'eng-german-both.pkl')
 save_clean_lines(train, 'eng-german-train.pkl')
