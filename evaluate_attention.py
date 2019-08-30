@@ -6,9 +6,9 @@ from keras.models import load_model
 from keras.preprocessing.sequence import pad_sequences
 import numpy as np
 from sklearn.metrics import classification_report
-from model_attention import attention_model
+from model_attention import attention_model, attention_model_new_arch
 from keras.utils import to_categorical
-from heapq import nlargest
+from keras.models import model_from_json
 from math import log
 
 def id_for_word(word, tokenizer):
@@ -167,7 +167,7 @@ print('[INFO] Ger Max length: {:d}'.format(ger_length))
 
 testX = encode_sequences(eng_tokenizer, eng_length, test[:, 0], padding_type='pre')
 
-model, encoder_model, decoder_model = attention_model(eng_vocab_size, ger_vocab_size, eng_length, ger_length, 512)
+model, encoder_model, decoder_model = attention_model_new_arch(eng_vocab_size, ger_vocab_size, eng_length, ger_length, 512)
 model.summary()
 model.load_weights(args["model"])
 

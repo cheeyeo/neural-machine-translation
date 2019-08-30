@@ -204,25 +204,50 @@ From the above, we can see that increasing the dataset to 25,000 gives the lowes
 
 The plot of the validation loss still indicates that the model is overfitting from the gap between the training and validation losses and also the sudden increase in loss from epoch 5 onwards.
 
+The BLEU scores on evaluation are:
+```
+BLEU-1: 0.6196
+BLEU-2: 0.4945
+BLEU-3: 0.4304
+BLEU-4: 0.2860
+```
+
+All the BLEU scores show an increase apart from the BLEU-3 scores which might indicate an issue with shorter phrases that would require further investigation.
+
 ## 5.5 Addressing Variance / Overfitting - Architecture Search
-( IN PROGRES )
 
-Trying different model architecture:
+Doubled the number of decoder LSTM units to match the bi-directional LSTM units from 512 to 1024 and removed the time distributed layer.
 
-* Concat the encoder states; remove time distributed layer
+The validation loss increased to `0.84758`. This indicates that regularization is needed as the model is overfit.
 
 
 ## 5.6 Addressing Variance / Overfitting - Regularization
-( TODO )
+( IN PROGRESS )
+
 Study effect of using regularization such as dropout:
 
 * Dropout layer after lstm encoder
+  Validation loss: `0.86515`
+
+* Dropout after embedding layer:
+  Loss: `0.844667`
+
+* Dropout on embedding and FC layer:
+  Loss: `0.80030`
+
+  BLEU scores:
+  ```
+  BLEU-1: 0.6251
+	BLEU-2: 0.5034
+	BLEU-3: 0.4422
+	BLEU-4: 0.2973
+  ```
+
+* Weight regularization using kera's weight regularizer
 
 * LSTM encoder layer dropout
 
 * LSTM encoder layer recurrent_dropout
-
-* Weight regularization using kera's weight regularizer
 
 
 ## 6. Final Model

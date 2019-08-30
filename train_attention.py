@@ -1,5 +1,5 @@
 # Training file for Attention model
-from model_attention import attention_model
+from model_attention import attention_model, attention_model_new_arch
 from model import create_checkpoint, create_tokenizer, encode_sequences, encode_output
 import argparse
 import numpy as np
@@ -62,11 +62,11 @@ print('[INFO] Ger Vocab size: {:d}'.format(ger_vocab_size))
 print('[INFO] Ger Max length: {:d}'.format(ger_length))
 
 print('[INFO] Defining model...')
-model, encoder_model, decoder_model = attention_model(eng_vocab_size, ger_vocab_size, eng_length, ger_length, 512)
+model, encoder_model, decoder_model = attention_model_new_arch(eng_vocab_size, ger_vocab_size, eng_length, ger_length, 512)
 
-plot_model(model, to_file='artifacts/attention_model.png', show_shapes=True)
-plot_model(encoder_model, to_file='artifacts/encoder_model.png', show_shapes=True)
-plot_model(decoder_model, to_file='artifacts/decoder_model.png', show_shapes=True)
+plot_model(model, to_file='artifacts/attention_model_new_arch.png', show_shapes=True)
+plot_model(encoder_model, to_file='artifacts/encoder_model_new_arch.png', show_shapes=True)
+plot_model(decoder_model, to_file='artifacts/decoder_model_new_arch.png', show_shapes=True)
 
 model.summary()
 checkpoint = create_checkpoint(model_name=args["model"])
@@ -90,9 +90,4 @@ H = model.fit_generator(
   verbose=1,
   callbacks=[checkpoint])
 
-plot_training(H, epochs, plot_path_loss='training_loss_attention_model.png', plot_path_acc='training_acc_attention_model.png')
-
-# Saving model architecture
-architecture = model.to_json()
-with open('attention_model.json', 'wt') as f:
-  f.write(architecture)
+plot_training(H, epochs, plot_path_loss='training_loss_attention_model_new_arch.png', plot_path_acc='training_acc_attention_model_new_arch.png')
