@@ -260,6 +260,8 @@ Given the model's configuration to date, adopting early stopping helps to shorte
 
 Experiment with adding weight constraints to the LSTM layers.
 
+Weight constraints work well with other regularization techniques such as dropout.
+
 Weight constraints penalizes large weights during update and imposes a penalty on the loss function, which in turn causes the weights to be small and helps prevent overfitting.
 
 The weight constraints are applied to the input connections using `kernel_constraint` or recurrent connections `recurrent_constraint` for the LSTM layers. 
@@ -449,6 +451,10 @@ It is decided to keep the model's configuration and not apply dropout on the LST
 ## 7. Extensions
 
 ( Describes areas that were considered but not addressed in the project that could be explored in the future. )
+
+* Remove duplicate sentences from dataset
+
+* Truncate the vocab by removing words with low occurences and replacing them with `UNK`
 
 ## 8. Resources
 * [Deep Learning with NLP](https://machinelearningmastery.com/deep-learning-for-nlp/)
