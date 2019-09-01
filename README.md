@@ -163,29 +163,7 @@ BLEU-3: 0.4552
 BLEU-4: 0.3046
 ```
 
-## 5.3 Architecture Search
-
-The encoder uses a bi-directional LSTM layer but the decoder is just uni-directional with the same number of units.
-
-I doubled the capacity of the decoder to match that of the encoder to 1024 units.
-
-The aim is to increase the representational capacity of the decoder in order to improve the learning behaviour of the model.
-
-The model is trained again on 30 epochs with batch size of 32.
-
-The overall loss has decreased to `0.89137` but the same overfitting is seen from the loss curve where the validation loss starts to increase from epoch 10 onwards.
-
-The BLEU scores on evaluation are close to the above:
-```
-BLEU-1: 0.6069
-BLEU-2: 0.4945
-BLEU-3: 0.4314
-BLEU-4: 0.2718
-```
-
-The results suggest that increasing the number of units in the decoder layer does not contribute to improving the overall accuracy of the model.
-
-## 5.4 Addressing Variance / Overfitting - More training data
+## 5.3 Addressing Variance / Overfitting - More training data
 
 Increase the training data set size in increments of 5000 and observe the effects on the validation loss and when it starts to overfit...
 
@@ -214,47 +192,259 @@ BLEU-4: 0.2860
 
 All the BLEU scores show an increase apart from the BLEU-3 scores which might indicate an issue with shorter phrases that would require further investigation.
 
-## 5.5 Addressing Variance / Overfitting - Architecture Search
+## 5.4 Addressing Variance - Dropout Regularization
 
-Doubled the number of decoder LSTM units to match the bi-directional LSTM units from 512 to 1024 and removed the time distributed layer.
+[attention_model_dropout]: artifacts/attention_model_dropout.png
+[training_loss_dropout]: artifacts/training_loss_attention_model_new_arch_dropout.png
 
-The validation loss increased to `0.84758`. This indicates that regularization is needed as the model is overfit.
+![attention model with dropout][attention_model_dropout]
 
+Experiment with adding dropout layers in the following scenarios:
 
-## 5.6 Addressing Variance / Overfitting - Regularization
-( IN PROGRESS )
+* Adding dropout layer after LSTM encoder
 
-Study effect of using regularization such as dropout:
+* Adding dropout layer after embedding layer
 
-* Dropout layer after lstm encoder
-  Validation loss: `0.86515`
+* Adding dropout layer after embedding and FC layers
 
-* Dropout after embedding layer:
-  Loss: `0.844667`
+The validation loss increased to `0.86515` with dropout applied to after the LSTM encoder layer.
 
-* Dropout on embedding and FC layer:
-  Loss: `0.80030`
+The validation loss decreased to `0.844667` with dropout applied to after the embedding layer which is still higher than in section 5.4
 
-  BLEU scores:
+Applying dropout to after both the embedding and FC layers achieved a much lower validation loss of `0.80030`
+
+![Validation loss of attention model with dropout][training_loss_dropout]
+
+The validation loss curve still shows inflections of increase in the loss values rather than a gradual decline. This suggests that more regularization is needed.
+
+The BLEU scores do show an improvement during evaluation:
   ```
   BLEU-1: 0.6251
-	BLEU-2: 0.5034
-	BLEU-3: 0.4422
-	BLEU-4: 0.2973
+  BLEU-2: 0.5034
+  BLEU-3: 0.4422
+  BLEU-4: 0.2973
   ```
 
-* Weight regularization using kera's weight regularizer
+The use of dropout will be applied to the model and further regularization techniques will be used to further reduce the validation loss.
 
-* LSTM encoder layer dropout
 
-* LSTM encoder layer recurrent_dropout
+## 5.5 Addressing Variance - Architecture Search
+
+[attention_model_new_arch]: artifacts/attention_new_arch.png
+[training_loss_new_arch]: artifacts/training_loss_attention_model_new_arch.png
+
+![Attention model with dropout and double decoder units][attention_model_new_arch]
+
+The number of decoder LSTM units are doubled from 512 to 1024 to match the number of bi-directional LSTM units. The time distributed layer is also removed in the FC layers.
+
+![Training loss with dropout and larger decoder layer][training_loss_new_arch]
+
+The validation loss increased to `0.84758` compared to 5.4.
+
+The loss curves show that the validation loss still has inflection points where the loss values increase.
+
+This indicates that further regularization is needed as the model is overfit.
+
+
+## 5.6 Addressing Variance - Early Stopping
+
+Based on the observations in the training curves, the model starts to overfit after certain epochs. By training the model long enough to learn the mapping from inputs to outputs and not too long to overfit on the training data, we aim to derive a better model which generalizes better.
+
+Early stopping is implemented as a callback which monitors the validation loss and stops the training process once the loss stops decreasing. A `patience` threshold of 2 is set to allow the model to continue training for an additional 2 epochs in case the loss is at a plateau and a lower value can be derived.
+
+The model checkpoint is still used as a callback which is invoked after early stopping. It saves the model's weights with the lowest validation loss once training stops.
+
+Given the model's configuration to date, adopting early stopping helps to shorten the training time but the validation loss is still unchanged as in 5.5.
+
+## 5.7 Addressing Variance - Weight constraints
+
+Experiment with adding weight constraints to the LSTM layers.
+
+Weight constraints penalizes large weights during update and imposes a penalty on the loss function, which in turn causes the weights to be small and helps prevent overfitting.
+
+The weight constraints are applied to the input connections using `kernel_constraint` or recurrent connections `recurrent_constraint` for the LSTM layers. 
+
+We will consider only two types of norms, `unit_norm` and `max_norm`
+
+`unit_norm` forces weights to have a magnitude of 1.0.
+
+`max_norm` forces weights to have magnitude at or below a given value.
+
+The weight constraints are applied to both the encoder and decoder LSTM layers.
+
+Adding `kernel_constraint` to `unit_norm` to the encoder achieves a validation loss of `0.82301`
+
+Adding `kernel_constraint` to `unit_norm` to the encoder and decoder achieves a higher validation loss of `0.9813`
+
+[training_loss_new_arch_unitnorm]: artifacts/training_loss_attention_model_new_arch_unitnorm.png
+
+[training_acc_new_arch_unitnorm]: artifacts/training_acc_attention_model_new_arch_unitnorm.png
+
+![Training loss with unit_norm applied to LSTM Layers][training_loss_new_arch_unitnorm]
+
+![Training acc with unit_norm applied to LSTM Layers][training_acc_new_arch_unitnorm]
+
+In both instances, the validation loss curve above still show inflection points where the loss values increase. This is confirmed in the training accuracy curves where the training accuracy starts to decrease after epoch `7.5`
+
+Based on the above, adding weight constraints to the encoder only seem to derive lower validation loss.
+
+Adding `max_norm` to `kernel_constraint` to the encoder only achieves a lower loss of `0.80447`
+
+The training log below shows that early stopping kicked in, stopping the training process at epoch 7
+
+```
+702/703 [============================>.] - ETA: 0s - loss: 1.9844 - acc: 0.7183         
+Epoch 00001: val_loss improved from inf to 1.44963, saving model to attention_model_new_arch_maxnorm.h5
+703/703 [==============================] - 196s 278ms/step - loss: 1.9835 - acc: 0.7185 - val_loss: 1.4496 - val_acc: 0.7862
+Epoch 2/30
+702/703 [============================>.] - ETA: 0s - loss: 1.2442 - acc: 0.8025  
+Epoch 00002: val_loss improved from 1.44963 to 1.11857, saving model to attention_model_new_arch_maxnorm.h5
+703/703 [==============================] - 191s 272ms/step - loss: 1.2439 - acc: 0.8025 - val_loss: 1.1186 - val_acc: 0.8174
+Epoch 3/30
+702/703 [============================>.] - ETA: 0s - loss: 0.9168 - acc: 0.8349  
+Epoch 00003: val_loss improved from 1.11857 to 0.95122, saving model to attention_model_new_arch_maxnorm.h5
+703/703 [==============================] - 198s 282ms/step - loss: 0.9167 - acc: 0.8349 - val_loss: 0.9512 - val_acc: 0.8401
+Epoch 4/30
+702/703 [============================>.] - ETA: 0s - loss: 0.6970 - acc: 0.8601  
+Epoch 00004: val_loss improved from 0.95122 to 0.86415, saving model to attention_model_new_arch_maxnorm.h5
+703/703 [==============================] - 192s 273ms/step - loss: 0.6967 - acc: 0.8601 - val_loss: 0.8642 - val_acc: 0.8527
+Epoch 5/30
+702/703 [============================>.] - ETA: 0s - loss: 0.5359 - acc: 0.8811  
+Epoch 00005: val_loss improved from 0.86415 to 0.81453, saving model to attention_model_new_arch_maxnorm.h5
+703/703 [==============================] - 200s 284ms/step - loss: 0.5358 - acc: 0.8811 - val_loss: 0.8145 - val_acc: 0.8618
+Epoch 6/30
+702/703 [============================>.] - ETA: 0s - loss: 0.4124 - acc: 0.8982  
+Epoch 00006: val_loss improved from 0.81453 to 0.80447, saving model to attention_model_new_arch_maxnorm.h5
+703/703 [==============================] - 195s 278ms/step - loss: 0.4122 - acc: 0.8982 - val_loss: 0.8045 - val_acc: 0.8693
+Epoch 7/30
+702/703 [============================>.] - ETA: 0s - loss: 0.3316 - acc: 0.9128  
+Epoch 00007: val_loss did not improve from 0.80447
+703/703 [==============================] - 195s 278ms/step - loss: 0.3315 - acc: 0.9128 - val_loss: 0.8135 - val_acc: 0.8704
+Epoch 8/30
+702/703 [============================>.] - ETA: 0s - loss: 0.2805 - acc: 0.9236  
+Epoch 00008: val_loss did not improve from 0.80447
+703/703 [==============================] - 194s 276ms/step - loss: 0.2804 - acc: 0.9236 - val_loss: 0.8202 - val_acc: 0.8711
+Epoch 00008: early stopping
+[INFO] Early stopping at epoch: 7
+```
+
+[training_acc_new_arch_maxnorm]: artifacts/training_acc_attention_model_new_arch_maxnorm.png
+
+[training_acc_new_arch_maxnorm2]: artifacts/training_acc_attention_model_new_arch_maxnorm_kernel_recurrent.png
+
+![Training loss with max_norm applied to LSTM encoder][training_acc_new_arch_maxnorm]
+
+The validation loss curve shows a gradual decrease in the validation loss without any inflection points.
+
+![Training loss with max_norm applied to input and recurrent weights on LSTM encoder][training_acc_new_arch_maxnorm2]
+
+Adding `max_norm` to both `kernel_constraint` and `recurrent_constraint` to the encoder layer achieves a lower loss of `0.79374`.
+
+The validation loss curve shows a gradual decline in the loss values without any inflection points.
+
+The training log below shows that the model is trained up to 7 epochs:
+```
+...
+
+Epoch 5/30
+702/703 [============================>.] - ETA: 0s - loss: 0.5287 - acc: 0.8818  
+Epoch 00005: val_loss improved from 0.84816 to 0.80906, saving model to attention_model_new_arch_maxnorm2.h5
+703/703 [==============================] - 195s 278ms/step - loss: 0.5286 - acc: 0.8818 - val_loss: 0.8091 - val_acc: 0.8615
+Epoch 6/30
+702/703 [============================>.] - ETA: 0s - loss: 0.4146 - acc: 0.8986  
+Epoch 00006: val_loss improved from 0.80906 to 0.79374, saving model to attention_model_new_arch_maxnorm2.h5
+703/703 [==============================] - 196s 279ms/step - loss: 0.4144 - acc: 0.8986 - val_loss: 0.7937 - val_acc: 0.8683
+Epoch 7/30
+702/703 [============================>.] - ETA: 0s - loss: 0.3335 - acc: 0.9124  
+Epoch 00007: val_loss did not improve from 0.79374
+703/703 [==============================] - 195s 278ms/step - loss: 0.3334 - acc: 0.9124 - val_loss: 0.8006 - val_acc: 0.8689
+Epoch 8/30
+702/703 [============================>.] - ETA: 0s - loss: 0.2773 - acc: 0.9235  
+Epoch 00008: val_loss did not improve from 0.79374
+703/703 [==============================] - 194s 276ms/step - loss: 0.2771 - acc: 0.9235 - val_loss: 0.8167 - val_acc: 0.8705
+Epoch 00008: early stopping
+```
+The evaluation BLEU scores indicate an improvement compared with only dropout applied as in section 5.5:
+```
+BLEU-1: 0.6297
+BLEU-2: 0.5091
+BLEU-3: 0.4467
+BLEU-4: 0.3035
+```
+
+## 5.8 Addressing Variance - Dropout on LSTM layer
+
+[training_loss_new_arch_lstm_dropout]: artifacts/training_loss_attention_model_new_arch_lstm_dropout.png
+
+Dropout is applied to the LSTM encoder layer via the `dropout` option. This applies dropout to only the incoming inputs.
+
+The validation loss is slightly higher at `0.815`.
+
+The BLEU scores are lower compared to section 5.7:
+```
+BLEU-1: 0.6231
+BLEU-2: 0.5033
+BLEU-3: 0.4424
+BLEU-4: 0.3002
+```
+
+The training log indicates that the model can be trained longer, stopping at epoch 10, with a higher validation accuracy of `0.8723` but a higher validation loss of `0.8151`
+
+```
+702/703 [============================>.] - ETA: 0s - loss: 2.0339 - acc: 0.7113         
+Epoch 00001: val_loss improved from inf to 1.49787, saving model to attention_model_new_arch_dropout.h5
+703/703 [==============================] - 196s 279ms/step - loss: 2.0331 - acc: 0.7114 - val_loss: 1.4979 - val_acc: 0.7796
+Epoch 2/30
+702/703 [============================>.] - ETA: 0s - loss: 1.3341 - acc: 0.7928  
+Epoch 00002: val_loss improved from 1.49787 to 1.19328, saving model to attention_model_new_arch_dropout.h5
+703/703 [==============================] - 186s 265ms/step - loss: 1.3338 - acc: 0.7928 - val_loss: 1.1933 - val_acc: 0.8103
+Epoch 3/30
+702/703 [============================>.] - ETA: 0s - loss: 1.0325 - acc: 0.8214  
+Epoch 00003: val_loss improved from 1.19328 to 1.01167, saving model to attention_model_new_arch_dropout.h5
+703/703 [==============================] - 186s 265ms/step - loss: 1.0325 - acc: 0.8215 - val_loss: 1.0117 - val_acc: 0.8327
+Epoch 4/30
+702/703 [============================>.] - ETA: 0s - loss: 0.8133 - acc: 0.8449  
+Epoch 00004: val_loss improved from 1.01167 to 0.90642, saving model to attention_model_new_arch_dropout.h5
+703/703 [==============================] - 186s 265ms/step - loss: 0.8130 - acc: 0.8450 - val_loss: 0.9064 - val_acc: 0.8489
+Epoch 5/30
+702/703 [============================>.] - ETA: 0s - loss: 0.6493 - acc: 0.8642  
+Epoch 00005: val_loss improved from 0.90642 to 0.85643, saving model to attention_model_new_arch_dropout.h5
+703/703 [==============================] - 185s 263ms/step - loss: 0.6493 - acc: 0.8643 - val_loss: 0.8564 - val_acc: 0.8562
+Epoch 6/30
+702/703 [============================>.] - ETA: 0s - loss: 0.5247 - acc: 0.8801  
+Epoch 00006: val_loss improved from 0.85643 to 0.83234, saving model to attention_model_new_arch_dropout.h5
+703/703 [==============================] - 185s 263ms/step - loss: 0.5245 - acc: 0.8801 - val_loss: 0.8323 - val_acc: 0.8617
+Epoch 7/30
+702/703 [============================>.] - ETA: 0s - loss: 0.4310 - acc: 0.8944  
+Epoch 00007: val_loss improved from 0.83234 to 0.82469, saving model to attention_model_new_arch_dropout.h5
+703/703 [==============================] - 185s 263ms/step - loss: 0.4310 - acc: 0.8944 - val_loss: 0.8247 - val_acc: 0.8656
+Epoch 8/30
+702/703 [============================>.] - ETA: 0s - loss: 0.3658 - acc: 0.9054  
+Epoch 00008: val_loss improved from 0.82469 to 0.81841, saving model to attention_model_new_arch_dropout.h5
+703/703 [==============================] - 185s 263ms/step - loss: 0.3656 - acc: 0.9054 - val_loss: 0.8184 - val_acc: 0.8698
+Epoch 9/30
+702/703 [============================>.] - ETA: 0s - loss: 0.3118 - acc: 0.9161  
+Epoch 00009: val_loss improved from 0.81841 to 0.81515, saving model to attention_model_new_arch_dropout.h5
+703/703 [==============================] - 185s 263ms/step - loss: 0.3118 - acc: 0.9161 - val_loss: 0.8151 - val_acc: 0.8723
+Epoch 10/30
+702/703 [============================>.] - ETA: 0s - loss: 0.2758 - acc: 0.9235  
+Epoch 00010: val_loss did not improve from 0.81515
+703/703 [==============================] - 185s 263ms/step - loss: 0.2757 - acc: 0.9235 - val_loss: 0.8305 - val_acc: 0.8718
+Epoch 11/30
+702/703 [============================>.] - ETA: 0s - loss: 0.2453 - acc: 0.9307  
+Epoch 00011: val_loss did not improve from 0.81515
+703/703 [==============================] - 185s 263ms/step - loss: 0.2452 - acc: 0.9307 - val_loss: 0.8375 - val_acc: 0.8726
+Epoch 00011: early stopping
+[INFO] Early stopping at epoch: 10
+```
+
+It is decided to keep the model's configuration and not apply dropout on the LSTM encoder layer.
 
 
 ## 6. Final Model
 
 ( Describes the choice of a final model, including configuration and performance. It is a good idea to demonstrate saving and loading the model and demonstrate the ability to make predictions on a holdout dataset. )
 
-[IN PROGRESS]
 
 ## 7. Extensions
 

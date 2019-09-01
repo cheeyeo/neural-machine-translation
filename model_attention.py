@@ -8,6 +8,8 @@ from layers.attention import AttentionLayer
 from tensorflow.python.keras.layers import Input, LSTM, Dense, Concatenate, TimeDistributed, Bidirectional, Embedding, Dropout
 from tensorflow.python.keras.models import Model
 import numpy as np
+from tensorflow.python.keras.constraints import max_norm, unit_norm
+from tensorflow.python.keras.optimizers import Adam, SGD
 
 def attention_model(src_vocab, target_vocab, src_timesteps, target_timesteps, units):
   encoder_inputs = Input(shape=(src_timesteps,), name='encoder_inputs')
@@ -68,7 +70,7 @@ def attention_model(src_vocab, target_vocab, src_timesteps, target_timesteps, un
 
   return model, encoder_model, decoder_model
 
-def attention_model_new_arch(src_vocab, target_vocab, src_timesteps, target_timesteps, units):
+def attention_model_new_arch(src_vocab, target_vocab, src_timesteps, target_timesteps, units, epochs=30):
   encoder_inputs = Input(shape=(src_timesteps,), name='encoder_inputs')
 
   decoder_inputs = Input(shape=(target_timesteps - 1, target_vocab), name='decoder_inputs')
@@ -77,7 +79,7 @@ def attention_model_new_arch(src_vocab, target_vocab, src_timesteps, target_time
 
   embedding2 = Dropout(0.5)(embedding(encoder_inputs))
 
-  encoder_lstm = Bidirectional(LSTM(units, return_sequences=True, return_state=True, name='encoder_lstm'), name='bidirectional_encoder')
+  encoder_lstm = Bidirectional(LSTM(units, return_sequences=True, return_state=True, kernel_constraint=max_norm(3.0), recurrent_constraint=max_norm(3.0), name='encoder_lstm'), name='bidirectional_encoder')
 
   encoder_out, forward_h, forward_c, backward_h, backward_c = encoder_lstm(embedding2)
 
@@ -102,6 +104,10 @@ def attention_model_new_arch(src_vocab, target_vocab, src_timesteps, target_time
   decoder_pred = decoder_dense(tst) 
 
   model = Model(inputs=[encoder_inputs, decoder_inputs], outputs=decoder_pred)
+
+  # opt = SGD(lr=1e-1, decay=1e-1 / epochs)
+  # model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy'])
+
   model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
   # Inference models
@@ -140,5 +146,5 @@ def attention_model_new_arch(src_vocab, target_vocab, src_timesteps, target_time
 
 
 if __name__ == "__main__":
-  m, _, _ = attention_model_new_arch(3022, 4747, 5, 12, 256)
+  m, _, _ = attention_model_new_arch(3022, 4747, 5, 12, 256, 30)
   m.summary()

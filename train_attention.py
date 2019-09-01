@@ -1,6 +1,6 @@
 # Training file for Attention model
 from model_attention import attention_model, attention_model_new_arch
-from model import create_checkpoint, create_tokenizer, encode_sequences, encode_output
+from model import create_checkpoint, create_earlystopping, create_tokenizer, encode_sequences, encode_output
 import argparse
 import numpy as np
 from utils import load_saved_lines, sentence_length, plot_training
@@ -22,7 +22,7 @@ def data_generator(lines, eng_tokenizer, eng_length, fr_tokenizer, fr_length, sr
         input_seq.append(eng)
         output_seq.append(fr)
       input_seq = encode_sequences(eng_tokenizer, eng_length, input_seq, padding_type='pre')
-      output_seq = encode_sequences(fr_tokenizer, fr_length, output_seq)
+      output_seq = encode_sequences(fr_tokenizer, fr_length, output_seq, padding_type='post')
       output_seq = encode_output(output_seq, vocab_size)
 
       count = count + batch_size
@@ -62,17 +62,19 @@ print('[INFO] Ger Vocab size: {:d}'.format(ger_vocab_size))
 print('[INFO] Ger Max length: {:d}'.format(ger_length))
 
 print('[INFO] Defining model...')
-model, encoder_model, decoder_model = attention_model_new_arch(eng_vocab_size, ger_vocab_size, eng_length, ger_length, 512)
+epochs = args["epochs"]
+batch_size = args["batch"]
+
+model, encoder_model, decoder_model = attention_model_new_arch(eng_vocab_size, ger_vocab_size, eng_length, ger_length, 512, epochs=epochs)
 
 plot_model(model, to_file='artifacts/attention_model_new_arch.png', show_shapes=True)
 plot_model(encoder_model, to_file='artifacts/encoder_model_new_arch.png', show_shapes=True)
 plot_model(decoder_model, to_file='artifacts/decoder_model_new_arch.png', show_shapes=True)
 
 model.summary()
-checkpoint = create_checkpoint(model_name=args["model"])
 
-epochs = args["epochs"]
-batch_size = args["batch"]
+earlystopping = create_earlystopping(patience=2)
+checkpoint = create_checkpoint(model_name=args["model"])
 
 train_steps = len(train) // batch_size
 val_steps = len(dev) // batch_size
@@ -88,6 +90,12 @@ H = model.fit_generator(
   validation_steps=val_steps,
   epochs=epochs,
   verbose=1,
-  callbacks=[checkpoint])
+  callbacks=[earlystopping, checkpoint])
 
-plot_training(H, epochs, plot_path_loss='training_loss_attention_model_new_arch.png', plot_path_acc='training_acc_attention_model_new_arch.png')
+stopped_epoch = earlystopping.stopped_epoch
+print('[INFO] Early stopping at epoch: {:d}'.format(stopped_epoch))
+
+
+plot_training(H, stopped_epoch, plot_path_loss='training_loss_attention_model_new_arch.png', plot_path_acc='training_acc_attention_model_new_arch.png')
+
+# plot_training(H, epochs, plot_path_loss='training_loss_attention_model_new_arch.png', plot_path_acc='training_acc_attention_model_new_arch.png')
