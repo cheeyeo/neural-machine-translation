@@ -378,69 +378,71 @@ BLEU-4: 0.3035
 
 [training_loss_new_arch_lstm_dropout]: artifacts/training_loss_attention_model_new_arch_lstm_dropout.png
 
-Dropout is applied to the LSTM encoder layer via the `dropout` option. This applies dropout to only the incoming inputs.
+Dropout is applied to the LSTM encoder layer via the `dropout` and `recurrent_dropout` option. This applies dropout to the incoming and recurrent inputs.
 
-The validation loss is slightly higher at `0.815`.
+The validation loss is slightly higher at `0.80123`.
 
-The BLEU scores are lower compared to section 5.7:
+The training logs indicate that training stopped at 
+
+The BLEU scores are slightly lower compared to section 5.7:
 ```
-BLEU-1: 0.6231
-BLEU-2: 0.5033
-BLEU-3: 0.4424
-BLEU-4: 0.3002
+BLEU-1: 0.6289
+BLEU-2: 0.5087
+BLEU-3: 0.4467
+BLEU-4: 0.3025
 ```
 
-The training log indicates that the model can be trained longer, stopping at epoch 10, with a higher validation accuracy of `0.8723` but a higher validation loss of `0.8151`
+The training log indicates that the model can be trained longer, stopping at epoch 8, with a higher validation accuracy of `0.8710` but a higher validation loss of `0.8012`
 
 ```
-702/703 [============================>.] - ETA: 0s - loss: 2.0339 - acc: 0.7113         
-Epoch 00001: val_loss improved from inf to 1.49787, saving model to attention_model_new_arch_dropout.h5
-703/703 [==============================] - 196s 279ms/step - loss: 2.0331 - acc: 0.7114 - val_loss: 1.4979 - val_acc: 0.7796
+702/703 [============================>.] - ETA: 0s - loss: 2.0271 - acc: 0.7138         
+Epoch 00001: val_loss improved from inf to 1.48493, saving model to attention_model_new_arch_dropout.h5
+703/703 [==============================] - 191s 271ms/step - loss: 2.0262 - acc: 0.7139 - val_loss: 1.4849 - val_acc: 0.7806
 Epoch 2/30
-702/703 [============================>.] - ETA: 0s - loss: 1.3341 - acc: 0.7928  
-Epoch 00002: val_loss improved from 1.49787 to 1.19328, saving model to attention_model_new_arch_dropout.h5
-703/703 [==============================] - 186s 265ms/step - loss: 1.3338 - acc: 0.7928 - val_loss: 1.1933 - val_acc: 0.8103
+702/703 [============================>.] - ETA: 0s - loss: 1.3136 - acc: 0.7950  
+Epoch 00002: val_loss improved from 1.48493 to 1.17590, saving model to attention_model_new_arch_dropout.h5
+703/703 [==============================] - 184s 262ms/step - loss: 1.3134 - acc: 0.7951 - val_loss: 1.1759 - val_acc: 0.8120
 Epoch 3/30
-702/703 [============================>.] - ETA: 0s - loss: 1.0325 - acc: 0.8214  
-Epoch 00003: val_loss improved from 1.19328 to 1.01167, saving model to attention_model_new_arch_dropout.h5
-703/703 [==============================] - 186s 265ms/step - loss: 1.0325 - acc: 0.8215 - val_loss: 1.0117 - val_acc: 0.8327
+702/703 [============================>.] - ETA: 0s - loss: 1.0189 - acc: 0.8240  
+Epoch 00003: val_loss improved from 1.17590 to 0.99810, saving model to attention_model_new_arch_dropout.h5
+703/703 [==============================] - 184s 262ms/step - loss: 1.0188 - acc: 0.8240 - val_loss: 0.9981 - val_acc: 0.8332
 Epoch 4/30
-702/703 [============================>.] - ETA: 0s - loss: 0.8133 - acc: 0.8449  
-Epoch 00004: val_loss improved from 1.01167 to 0.90642, saving model to attention_model_new_arch_dropout.h5
-703/703 [==============================] - 186s 265ms/step - loss: 0.8130 - acc: 0.8450 - val_loss: 0.9064 - val_acc: 0.8489
+702/703 [============================>.] - ETA: 0s - loss: 0.7901 - acc: 0.8485  
+Epoch 00004: val_loss improved from 0.99810 to 0.88836, saving model to attention_model_new_arch_dropout.h5
+703/703 [==============================] - 185s 263ms/step - loss: 0.7898 - acc: 0.8486 - val_loss: 0.8884 - val_acc: 0.8500
 Epoch 5/30
-702/703 [============================>.] - ETA: 0s - loss: 0.6493 - acc: 0.8642  
-Epoch 00005: val_loss improved from 0.90642 to 0.85643, saving model to attention_model_new_arch_dropout.h5
-703/703 [==============================] - 185s 263ms/step - loss: 0.6493 - acc: 0.8643 - val_loss: 0.8564 - val_acc: 0.8562
+702/703 [============================>.] - ETA: 0s - loss: 0.6235 - acc: 0.8686  
+Epoch 00005: val_loss improved from 0.88836 to 0.82984, saving model to attention_model_new_arch_dropout.h5
+703/703 [==============================] - 184s 261ms/step - loss: 0.6234 - acc: 0.8686 - val_loss: 0.8298 - val_acc: 0.8605
 Epoch 6/30
-702/703 [============================>.] - ETA: 0s - loss: 0.5247 - acc: 0.8801  
-Epoch 00006: val_loss improved from 0.85643 to 0.83234, saving model to attention_model_new_arch_dropout.h5
-703/703 [==============================] - 185s 263ms/step - loss: 0.5245 - acc: 0.8801 - val_loss: 0.8323 - val_acc: 0.8617
+702/703 [============================>.] - ETA: 0s - loss: 0.4995 - acc: 0.8850  
+Epoch 00006: val_loss improved from 0.82984 to 0.80134, saving model to attention_model_new_arch_dropout.h5
+703/703 [==============================] - 184s 261ms/step - loss: 0.4994 - acc: 0.8850 - val_loss: 0.8013 - val_acc: 0.8680
 Epoch 7/30
-702/703 [============================>.] - ETA: 0s - loss: 0.4310 - acc: 0.8944  
-Epoch 00007: val_loss improved from 0.83234 to 0.82469, saving model to attention_model_new_arch_dropout.h5
-703/703 [==============================] - 185s 263ms/step - loss: 0.4310 - acc: 0.8944 - val_loss: 0.8247 - val_acc: 0.8656
+702/703 [============================>.] - ETA: 0s - loss: 0.4073 - acc: 0.8997  
+Epoch 00007: val_loss improved from 0.80134 to 0.80123, saving model to attention_model_new_arch_dropout.h5
+703/703 [==============================] - 185s 263ms/step - loss: 0.4072 - acc: 0.8998 - val_loss: 0.8012 - val_acc: 0.8710
 Epoch 8/30
-702/703 [============================>.] - ETA: 0s - loss: 0.3658 - acc: 0.9054  
-Epoch 00008: val_loss improved from 0.82469 to 0.81841, saving model to attention_model_new_arch_dropout.h5
-703/703 [==============================] - 185s 263ms/step - loss: 0.3656 - acc: 0.9054 - val_loss: 0.8184 - val_acc: 0.8698
+702/703 [============================>.] - ETA: 0s - loss: 0.3425 - acc: 0.9106  
+Epoch 00008: val_loss did not improve from 0.80123
+703/703 [==============================] - 184s 262ms/step - loss: 0.3423 - acc: 0.9106 - val_loss: 0.8020 - val_acc: 0.8738
 Epoch 9/30
-702/703 [============================>.] - ETA: 0s - loss: 0.3118 - acc: 0.9161  
-Epoch 00009: val_loss improved from 0.81841 to 0.81515, saving model to attention_model_new_arch_dropout.h5
-703/703 [==============================] - 185s 263ms/step - loss: 0.3118 - acc: 0.9161 - val_loss: 0.8151 - val_acc: 0.8723
-Epoch 10/30
-702/703 [============================>.] - ETA: 0s - loss: 0.2758 - acc: 0.9235  
-Epoch 00010: val_loss did not improve from 0.81515
-703/703 [==============================] - 185s 263ms/step - loss: 0.2757 - acc: 0.9235 - val_loss: 0.8305 - val_acc: 0.8718
-Epoch 11/30
-702/703 [============================>.] - ETA: 0s - loss: 0.2453 - acc: 0.9307  
-Epoch 00011: val_loss did not improve from 0.81515
-703/703 [==============================] - 185s 263ms/step - loss: 0.2452 - acc: 0.9307 - val_loss: 0.8375 - val_acc: 0.8726
-Epoch 00011: early stopping
-[INFO] Early stopping at epoch: 10
+702/703 [============================>.] - ETA: 0s - loss: 0.2913 - acc: 0.9210  
+Epoch 00009: val_loss did not improve from 0.80123
+703/703 [==============================] - 183s 260ms/step - loss: 0.2912 - acc: 0.9211 - val_loss: 0.8020 - val_acc: 0.8754
+Epoch 00009: early stopping
+[INFO] Early stopping at epoch: 8
 ```
 
-It is decided to keep the model's configuration and not apply dropout on the LSTM encoder layer.
+From the results above, it is decided to keep the model's configuration and not apply dropout on the LSTM encoder layer since it doesn't appear to make much difference to model's performance.
+
+## 5.9 Adjust Learning Rate
+
+( IN PROGRESS )
+
+By using weight constraints, we are able to use larger learning rates during training.
+
+Experiment with different learning rate and schedules.
 
 
 ## 6. Final Model
