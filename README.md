@@ -382,8 +382,6 @@ Dropout is applied to the LSTM encoder layer via the `dropout` and `recurrent_dr
 
 The validation loss is slightly higher at `0.80123`.
 
-The training logs indicate that training stopped at 
-
 The BLEU scores are slightly lower compared to section 5.7:
 ```
 BLEU-1: 0.6289
@@ -436,13 +434,72 @@ Epoch 00009: early stopping
 
 From the results above, it is decided to keep the model's configuration and not apply dropout on the LSTM encoder layer since it doesn't appear to make much difference to model's performance.
 
-## 5.9 Adjust Learning Rate
+## 5.9 Beam Search
 
 ( IN PROGRESS )
 
-By using weight constraints, we are able to use larger learning rates during training.
+Getting the maximum of a prediction from the decoder may not always return the best translation as it does not consider other available options in its search space.
 
-Experiment with different learning rate and schedules.
+Beam search helps to improve upon this by considering k possible combinations of the predictions set by a beam width value and only keeping those predictions with high probabilities.
+
+Given that beam search was used initially, the instability of the model architecture meant that we don't have a stable baseline to evaluate it properly from. Also, the initial implementation was incorrect.
+
+Below are the changes made to the original implementation:
+
+* Use the last token as most recent input to be fed back into decoder
+
+* Add probs from prediction using log of preds
+
+* Sentence normalization
+
+Running without beam search (picking prob with max value ):
+```
+BLEU-1: 0.6367
+BLEU-2: 0.5202
+BLEU-3: 0.4605
+BLEU-4: 0.3100
+```
+
+Evaluate with beam width of 1 ( greedy search ):
+```
+BLEU-1: 0.6367
+BLEU-2: 0.5202
+BLEU-3: 0.4605
+BLEU-4: 0.3100
+```
+
+The results above indicate no change between using beam search and greedy search, which is a good baseline for the algorithm to iterate from.
+
+When running with beam width of 2 or more, the performance of the algorithm starts to degrade, as shown in the BLEU scores below.
+
+Re-run evaluation using beam width of 2:
+```
+BLEU-1: 0.3734
+BLEU-2: 0.1589
+BLEU-3: 0.0674
+BLEU-4: 0.0000
+```
+
+Evaluation using beam width of 3:
+```
+BLEU-1: 0.2716
+BLEU-2: 0.1010
+BLEU-3: 0.0381
+BLEU-4: 0.0000
+```
+
+This indicates that either there is an issue with the implementation of the beam search algorithm itself or the way the inputs are fed into the decoder. 
+
+This would require further work on error analysis between the beam search algo and the LSTM errors.
+
+For the time being, it is recommended to revert to using greedy search.
+
+
+## 5.10 Add more training data
+
+(TODO)
+
+Increase training data to 50_000 and observe the effects on model performance
 
 
 ## 6. Final Model

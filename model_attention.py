@@ -105,7 +105,7 @@ def attention_model_new_arch(src_vocab, target_vocab, src_timesteps, target_time
 
   model = Model(inputs=[encoder_inputs, decoder_inputs], outputs=decoder_pred)
 
-  # opt = SGD(lr=1e-1, decay=1e-1 / epochs)
+  # opt = Adam(lr=1e-2)
   # model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy'])
 
   model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])

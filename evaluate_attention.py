@@ -1,6 +1,6 @@
 from model import create_tokenizer, encode_sequences, encode_output
 import argparse
-from utils import load_saved_lines, sentence_length
+from utils import load_saved_lines, sentence_length, load_tokenizer
 from nltk.translate.bleu_score import corpus_bleu
 from keras.models import load_model
 from keras.preprocessing.sequence import pad_sequences
@@ -54,10 +54,8 @@ def predict_attention_sequence(decoder_model, enc_outs, dec_fwd_state, dec_back_
 
   return predicted_text
 
-def beam_search(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, target_vocab_size, target_length, beam_index, sentence_normalization=False):
-
-  norm = 1./target_length ** 0.7
-
+def beam_search(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, target_vocab_size, target_length, beam_index):
+  # Set none to create encoded seq of single integer
   seq = encode_sequences(target_tokenizer, None, ['sos'])
   
   in_text = [[seq[0], 0.0]]
@@ -66,7 +64,10 @@ def beam_search(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, 
     tempList = []
 
     for seq in in_text:
-      target = np.expand_dims(to_categorical(seq[0], num_classes=target_vocab_size), 1)
+      # Use last word in seq?
+      recent_word = [seq[0][-1]]
+      # recent_word = seq[0]
+      target = np.expand_dims(to_categorical(recent_word, num_classes=target_vocab_size), 1)
       
       dec_out, _, dec_fwd_state, dec_back_state = dec.predict(
           [enc_outs, dec_fwd_state, dec_back_state, target])
@@ -74,22 +75,19 @@ def beam_search(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, 
 
       # top_preds return indices of largest prob values...
       top_preds = np.argsort(preds)[-beam_index:]
-      probs = [preds[i] for i in top_preds]
+      # print('TOP PREDS: ', top_preds)
+      # probs = [preds[i] for i in top_preds]
 
       for word in top_preds:
         next_seq, prob = seq[0][:], seq[1]
         next_seq = np.append(next_seq, word)
-        if sentence_normalization is True:
-          new_prob = norm * (prob + np.log(preds[word]))
-          tempList.append([next_seq, new_prob])
-        else:
-          prob += preds[word]
-          tempList.append([next_seq, prob])
+        prob += np.log(preds[word])
+        tempList.append([next_seq, prob])
     in_text = tempList
-    in_text = sorted(in_text, reverse=False, key=lambda l: l[1])
+    in_text = sorted(in_text, reverse=False, key=lambda l: l[1] / target_length)
     in_text = in_text[-beam_index:]
   
-  in_text = in_text[-1][0]
+  in_text = in_text[0][0]
   final_caption_raw = [word_for_id(i, target_tokenizer) for i in in_text]
   final_caption = []
   for word in final_caption_raw:
@@ -99,6 +97,7 @@ def beam_search(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, 
       final_caption.append(word)
   final_caption.append('eos')
   return ' '.join(final_caption)
+
 
 def evaluate_attention_model(enc, dec, sources, raw_dataset, target_tokenizer, target_vocab_size, target_length, beam_index):
   actual, predicted = list(), list()
@@ -120,7 +119,7 @@ def evaluate_attention_model(enc, dec, sources, raw_dataset, target_tokenizer, t
     if beam_index is None:
       translation = predict_attention_sequence(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, target_vocab_size, target_length, onehot_seq)
     else:
-      translation = beam_search(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, target_vocab_size, target_length, beam_index, sentence_normalization=args["normalization"])
+      translation = beam_search(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, target_vocab_size, target_length, beam_index)
 
     translation = cleanup_sentence(translation)
 
@@ -145,21 +144,24 @@ def evaluate_attention_model(enc, dec, sources, raw_dataset, target_tokenizer, t
 ap = argparse.ArgumentParser()
 ap.add_argument("-m", "--model", type=str, required=True, help="Path to model file for evaluation")
 ap.add_argument("-k", "--beam", type=int, required=False, help="Beam width for beam search")
-ap.add_argument("-sl", "--normalization", action="store_true", required=False, help="Turn on sentence normalization for beam search")
 args = vars(ap.parse_args())
 
 dataset = np.array(load_saved_lines('eng-german-both.pkl'))
 test = np.array(load_saved_lines('eng-german-test.pkl'))
 
+# Load tokenizer
+
 # Load eng tokenizer
-eng_tokenizer = create_tokenizer(dataset[:, 0])
+# eng_tokenizer = create_tokenizer(dataset[:, 0])
+eng_tokenizer = load_tokenizer('eng_tokenizer.pkl')
 eng_vocab_size = len(eng_tokenizer.word_index) + 1
 eng_length = sentence_length(dataset[:, 0])
 print('[INFO] English Vocab size: {:d}'.format(eng_vocab_size))
 print('[INFO] English Max length: {:d}'.format(eng_length))
 
 # Load ger tokenizer
-ger_tokenizer = create_tokenizer(dataset[:, 1])
+# ger_tokenizer = create_tokenizer(dataset[:, 1])
+ger_tokenizer = load_tokenizer('ger_tokenizer.pkl')
 ger_vocab_size = len(ger_tokenizer.word_index) + 1
 ger_length = sentence_length(dataset[:, 1])
 print('[INFO] Ger Vocab size: {:d}'.format(ger_vocab_size))
@@ -168,7 +170,7 @@ print('[INFO] Ger Max length: {:d}'.format(ger_length))
 testX = encode_sequences(eng_tokenizer, eng_length, test[:, 0], padding_type='pre')
 
 model, encoder_model, decoder_model = attention_model_new_arch(eng_vocab_size, ger_vocab_size, eng_length, ger_length, 512)
-model.summary()
+# model.summary()
 model.load_weights(args["model"])
 
 print('[INFO] Evaluating model {}'.format(args["model"]))

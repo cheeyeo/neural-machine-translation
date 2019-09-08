@@ -16,8 +16,8 @@ def plot_training(H, N, plot_path_loss="training_loss.png", plot_path_acc="train
   plt.title("Training Loss")
   plt.xlabel("Epoch #")
   plt.ylabel("Loss")
-  plt.plot(np.arange(0, N+1), H.history["loss"], label="train_loss")
-  plt.plot(np.arange(0, N+1), H.history["val_loss"], label="val_loss")
+  plt.plot(np.arange(0, N), H.history["loss"], label="train_loss")
+  plt.plot(np.arange(0, N), H.history["val_loss"], label="val_loss")
   plt.legend(loc="lower left")
   plt.savefig(plot_path_loss)
 
@@ -26,8 +26,8 @@ def plot_training(H, N, plot_path_loss="training_loss.png", plot_path_acc="train
   plt.title("Training Acc")
   plt.xlabel("Epoch #")
   plt.ylabel("Acc")
-  plt.plot(np.arange(0, N+1), H.history["acc"], label="train_acc")
-  plt.plot(np.arange(0, N+1), H.history["val_acc"], label="val_acc")
+  plt.plot(np.arange(0, N), H.history["acc"], label="train_acc")
+  plt.plot(np.arange(0, N), H.history["val_acc"], label="val_acc")
   plt.legend(loc="lower left")
   plt.savefig(plot_path_acc)
 
@@ -82,6 +82,10 @@ def save_clean_lines(sentences, filename):
 def save_tokenizer(tokenizer, filename):
   pickle.dump(tokenizer, open(filename, 'wb'))
   print('[INFO] Saved tokenizer: {}'.format(filename))
+
+def load_tokenizer(filename):
+  with open(filename, 'rb') as f:
+    return pickle.load(f)
 
 def load_doc(filename):
   """

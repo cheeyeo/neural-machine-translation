@@ -3,7 +3,7 @@ from model_attention import attention_model, attention_model_new_arch
 from model import create_checkpoint, create_earlystopping, create_tokenizer, encode_sequences, encode_output
 import argparse
 import numpy as np
-from utils import load_saved_lines, sentence_length, plot_training
+from utils import load_saved_lines, sentence_length, plot_training, save_tokenizer
 from keras.utils import plot_model
 
 def data_generator(lines, eng_tokenizer, eng_length, fr_tokenizer, fr_length, src_vocab_size, vocab_size, batch_size=64):
@@ -61,6 +61,9 @@ ger_length = sentence_length(dataset[:, 1])
 print('[INFO] Ger Vocab size: {:d}'.format(ger_vocab_size))
 print('[INFO] Ger Max length: {:d}'.format(ger_length))
 
+save_tokenizer(eng_tokenizer, 'eng_tokenizer.pkl')
+save_tokenizer(ger_tokenizer, 'ger_tokenizer.pkl')
+
 print('[INFO] Defining model...')
 epochs = args["epochs"]
 batch_size = args["batch"]
@@ -96,6 +99,6 @@ stopped_epoch = earlystopping.stopped_epoch
 print('[INFO] Early stopping at epoch: {:d}'.format(stopped_epoch))
 
 
-plot_training(H, stopped_epoch, plot_path_loss='training_loss_attention_model_new_arch.png', plot_path_acc='training_acc_attention_model_new_arch.png')
+plot_training(H, stopped_epoch + 1, plot_path_loss='training_loss_attention_model_new_arch.png', plot_path_acc='training_acc_attention_model_new_arch.png')
 
 # plot_training(H, epochs, plot_path_loss='training_loss_attention_model_new_arch.png', plot_path_acc='training_acc_attention_model_new_arch.png')
