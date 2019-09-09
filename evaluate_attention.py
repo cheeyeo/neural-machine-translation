@@ -57,36 +57,61 @@ def predict_attention_sequence(decoder_model, enc_outs, dec_fwd_state, dec_back_
 def beam_search(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, target_vocab_size, target_length, beam_index):
   # Set none to create encoded seq of single integer
   seq = encode_sequences(target_tokenizer, None, ['sos'])
-  
-  in_text = [[seq[0], 0.0]]
+  in_text = [[seq[0], 1.0]]
 
+  step = 0
   while len(in_text[0][0]) < target_length:
+    # print('CURRENT STEP: {}'.format(step))
+
     tempList = []
+
+    # print('SORTED IN_TEXT: ', in_text)
 
     for seq in in_text:
       # Use last word in seq?
       recent_word = [seq[0][-1]]
       # recent_word = seq[0]
+      # print('RECENT WORD: ', recent_word)
       target = np.expand_dims(to_categorical(recent_word, num_classes=target_vocab_size), 1)
       
       dec_out, _, dec_fwd_state, dec_back_state = dec.predict(
           [enc_outs, dec_fwd_state, dec_back_state, target])
-      preds = dec_out[0][0]
+      # preds = dec_out[0][0]
+
+      # Log softmax output
+      logits = dec_out[0][0]
+      preds = logits - np.log(np.sum(logits, axis=-1))
 
       # top_preds return indices of largest prob values...
       top_preds = np.argsort(preds)[-beam_index:]
-      # print('TOP PREDS: ', top_preds)
-      # probs = [preds[i] for i in top_preds]
+
+      # for x in top_preds:
+      #   print('ID: {}, WORD: {}, PRED: {}'.format(x, word_for_id(x, target_tokenizer), np.log(preds[x])))
 
       for word in top_preds:
         next_seq, prob = seq[0][:], seq[1]
         next_seq = np.append(next_seq, word)
-        prob += np.log(preds[word])
+        # Add length penalty calculation in prob
+        alpha = 0.7
+        prev_length_p = (5 + step -1) ** alpha / (5 + 1) ** alpha
+        prev_length_p = prev_length_p * (step != 1) + (step == 1)
+        scores = prob * prev_length_p
+        # print('Scores: ', scores)
+        lp = (5 + step) ** alpha / (5 + 1) ** alpha
+        prob = (np.log(preds[word]) + scores) / lp
         tempList.append([next_seq, prob])
+
+    # print('TEMPLIST: ', tempList)
+    # print()
+
     in_text = tempList
-    in_text = sorted(in_text, reverse=False, key=lambda l: l[1] / target_length)
-    in_text = in_text[-beam_index:]
+    # TODO: Prune entries by removing hypotheses with low scores below certain threshold?
+    in_text = sorted(in_text, reverse=True, key=lambda l: l[1])
+    # print('TEMPLIST AFTER SORT: ', in_text)
+    in_text = in_text[:beam_index]
+    step += 1
   
+  # print('AFTER WHILE LOOP, IN_TEXT: ', in_text)
   in_text = in_text[0][0]
   final_caption_raw = [word_for_id(i, target_tokenizer) for i in in_text]
   final_caption = []
@@ -177,4 +202,4 @@ print('[INFO] Evaluating model {}'.format(args["model"]))
 
 print('[INFO] Evaluation Set: {}'.format(len(test)))
 
-evaluate_attention_model(encoder_model, decoder_model, testX, test, ger_tokenizer, ger_vocab_size, ger_length, args["beam"])
+evaluate_attention_model(encoder_model, decoder_model, testX, test, ger_tokenizer, ger_vocab_size, 6, args["beam"])

@@ -444,13 +444,20 @@ Beam search helps to improve upon this by considering k possible combinations of
 
 Given that beam search was used initially, the instability of the model architecture meant that we don't have a stable baseline to evaluate it properly from. Also, the initial implementation was incorrect.
 
+The changes are adopted from the 2016 paper entitled 'Google's Neural Machine Translation System: Briding the gap between human and machine translation' by Yonghui Wu et al
+
+Under the section titled 'Decoder', they highlight an approach on length normalization on the standard decoder outputs which is being adopted in the beam search code.
+
 Below are the changes made to the original implementation:
 
-* Use the last token as most recent input to be fed back into decoder
+* Apply normalization to the decoder outputs by applying log softmax
 
-* Add probs from prediction using log of preds
+* Apply length penalty as a form of length normalization
 
-* Sentence normalization
+* Looking into pruning mechanisms for the beam search hypotheses to retain better quality results
+
+* Add coverage penalty by adding attention outputs from the decoder
+
 
 Running without beam search (picking prob with max value ):
 ```
@@ -470,23 +477,35 @@ BLEU-4: 0.3100
 
 The results above indicate no change between using beam search and greedy search, which is a good baseline for the algorithm to iterate from.
 
-When running with beam width of 2 or more, the performance of the algorithm starts to degrade, as shown in the BLEU scores below.
-
 Re-run evaluation using beam width of 2:
 ```
-BLEU-1: 0.3734
-BLEU-2: 0.1589
-BLEU-3: 0.0674
-BLEU-4: 0.0000
+BLEU-1: 0.4328
+BLEU-2: 0.3234
+BLEU-3: 0.1780
+BLEU-4: 0.0577
 ```
 
 Evaluation using beam width of 3:
 ```
-BLEU-1: 0.2716
-BLEU-2: 0.1010
-BLEU-3: 0.0381
+BLEU-1: 0.3349
+BLEU-2: 0.2706
+BLEU-3: 0.0929
 BLEU-4: 0.0000
 ```
+
+Evaluation using beam width of 4:
+```
+BLEU-1: 0.3167
+BLEU-2: 0.2613
+BLEU-3: 0.0823
+BLEU-4: 0.0000
+```
+
+The results above show that the BLEU scores start to degrade with higher beam width values.
+
+The translations returned are truncated with the last word missing for shorter sentences and incomplete translations for longer sentences.
+
+On debugging, the probabilities for the returned incorrect translations differ from the correct ones by a small margin.
 
 This indicates that either there is an issue with the implementation of the beam search algorithm itself or the way the inputs are fed into the decoder. 
 

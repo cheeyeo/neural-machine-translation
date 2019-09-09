@@ -9,7 +9,6 @@ from tensorflow.python.keras.layers import Input, LSTM, Dense, Concatenate, Time
 from tensorflow.python.keras.models import Model
 import numpy as np
 from tensorflow.python.keras.constraints import max_norm, unit_norm
-from tensorflow.python.keras.optimizers import Adam, SGD
 
 def attention_model(src_vocab, target_vocab, src_timesteps, target_timesteps, units):
   encoder_inputs = Input(shape=(src_timesteps,), name='encoder_inputs')
@@ -104,9 +103,6 @@ def attention_model_new_arch(src_vocab, target_vocab, src_timesteps, target_time
   decoder_pred = decoder_dense(tst) 
 
   model = Model(inputs=[encoder_inputs, decoder_inputs], outputs=decoder_pred)
-
-  # opt = Adam(lr=1e-2)
-  # model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy'])
 
   model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
