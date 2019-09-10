@@ -40,9 +40,7 @@ def predict_attention_sequence(decoder_model, enc_outs, dec_fwd_state, dec_back_
               [enc_outs, dec_fwd_state, dec_back_state, onehot_seq], verbose=0)
 
     dec_ind = np.argmax(dec_out, axis=-1)[0, 0]
-    # print(dec_ind)
     word = word_for_id(dec_ind, target_tokenizer)
-    # print('WORD: ', word)
 
     if word == None or word == "eos":
       break
@@ -61,12 +59,9 @@ def beam_search(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, 
 
   step = 0
   while len(in_text[0][0]) < target_length:
-    # print('CURRENT STEP: {}'.format(step))
-
     tempList = []
 
     # print('SORTED IN_TEXT: ', in_text)
-
     for seq in in_text:
       # Use last word in seq?
       recent_word = [seq[0][-1]]
@@ -74,30 +69,34 @@ def beam_search(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, 
       # print('RECENT WORD: ', recent_word)
       target = np.expand_dims(to_categorical(recent_word, num_classes=target_vocab_size), 1)
       
-      dec_out, _, dec_fwd_state, dec_back_state = dec.predict(
+      dec_out, attn, dec_fwd_state, dec_back_state = dec.predict(
           [enc_outs, dec_fwd_state, dec_back_state, target])
-      # preds = dec_out[0][0]
-
-      # Log softmax output
-      logits = dec_out[0][0]
-      preds = logits - np.log(np.sum(logits, axis=-1))
+      preds = dec_out[0][0]
 
       # top_preds return indices of largest prob values...
       top_preds = np.argsort(preds)[-beam_index:]
-
       # for x in top_preds:
       #   print('ID: {}, WORD: {}, PRED: {}'.format(x, word_for_id(x, target_tokenizer), np.log(preds[x])))
+
+      alpha = 0.7
+      beta = 0.2
 
       for word in top_preds:
         next_seq, prob = seq[0][:], seq[1]
         next_seq = np.append(next_seq, word)
+
         # Add length penalty calculation in prob
-        alpha = 0.7
         prev_length_p = (5 + step -1) ** alpha / (5 + 1) ** alpha
         prev_length_p = prev_length_p * (step != 1) + (step == 1)
         scores = prob * prev_length_p
-        # print('Scores: ', scores)
         lp = (5 + step) ** alpha / (5 + 1) ** alpha
+
+        # Calculate coverage penalty
+        # TODO: Check that this is correct??
+        cp = np.min([np.sum(attn[0][0] + preds[word]), 1.0])
+        cp = np.log(cp)
+        cp = beta * cp
+
         prob = (np.log(preds[word]) + scores) / lp
         tempList.append([next_seq, prob])
 
@@ -105,7 +104,6 @@ def beam_search(dec, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, 
     # print()
 
     in_text = tempList
-    # TODO: Prune entries by removing hypotheses with low scores below certain threshold?
     in_text = sorted(in_text, reverse=True, key=lambda l: l[1])
     # print('TEMPLIST AFTER SORT: ', in_text)
     in_text = in_text[:beam_index]
@@ -202,4 +200,4 @@ print('[INFO] Evaluating model {}'.format(args["model"]))
 
 print('[INFO] Evaluation Set: {}'.format(len(test)))
 
-evaluate_attention_model(encoder_model, decoder_model, testX, test, ger_tokenizer, ger_vocab_size, 6, args["beam"])
+evaluate_attention_model(encoder_model, decoder_model, testX, test, ger_tokenizer, ger_vocab_size, ger_length, args["beam"])

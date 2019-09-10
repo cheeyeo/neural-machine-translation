@@ -434,7 +434,33 @@ Epoch 00009: early stopping
 
 From the results above, it is decided to keep the model's configuration and not apply dropout on the LSTM encoder layer since it doesn't appear to make much difference to model's performance.
 
-## 5.9 Beam Search
+
+## 5.9 Add more training data
+
+[training_acc_more_data]: artifacts/training_acc_attention_model_more_data.png
+[training_loss_more_data]: artifacts/training_loss_attention_model_more_data.png
+
+The training set size is increased to 50,000 with 45,000 for training; 2500 for dev; 2500 for test set.
+
+The training process is ran for 30 epochs with batch size of 64.
+
+![Training loss with increased training set][training_loss_more_data]
+
+The validation loss has decreased to `0.46` with early stopping kicking in at epoch 9. The validation loss curve indicate that it has a gradual decline without any inflection points. However, the loss plateaus after epoch 3 without any sign of further decrease. 
+
+![Training accuracy with increased training set][training_acc_more_data]
+
+The validation accuracy shows an increase to `0.92`.
+
+Overall the BLEU scores on the dev set also increased significantly, compared to 5.8:
+```
+BLEU-1: 0.7313
+BLEU-2: 0.6352
+BLEU-3: 0.5790
+BLEU-4: 0.4596
+```
+
+## 5.10 Beam Search
 
 ( IN PROGRESS )
 
@@ -450,13 +476,9 @@ Under the section titled 'Decoder', they highlight an approach on length normali
 
 Below are the changes made to the original implementation:
 
-* Apply normalization to the decoder outputs by applying log softmax
-
 * Apply length penalty as a form of length normalization
 
-* Looking into pruning mechanisms for the beam search hypotheses to retain better quality results
-
-* Add coverage penalty by adding attention outputs from the decoder
+* Apply coverage penalty using attention weights
 
 
 Running without beam search (picking prob with max value ):
@@ -514,13 +536,6 @@ This would require further work on error analysis between the beam search algo a
 For the time being, it is recommended to revert to using greedy search.
 
 
-## 5.10 Add more training data
-
-(TODO)
-
-Increase training data to 50_000 and observe the effects on model performance
-
-
 ## 6. Final Model
 
 ( Describes the choice of a final model, including configuration and performance. It is a good idea to demonstrate saving and loading the model and demonstrate the ability to make predictions on a holdout dataset. )
@@ -533,6 +548,9 @@ Increase training data to 50_000 and observe the effects on model performance
 * Remove duplicate sentences from dataset
 
 * Truncate the vocab by removing words with low occurences and replacing them with `UNK`
+
+* Add another LSTM layer to decoder to see if it improves model's performance.
+
 
 ## 8. Resources
 * [Deep Learning with NLP](https://machinelearningmastery.com/deep-learning-for-nlp/)
