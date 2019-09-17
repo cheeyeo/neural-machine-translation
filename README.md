@@ -476,64 +476,52 @@ Under the section titled 'Decoder', they highlight an approach on length normali
 
 Below are the changes made to the original implementation:
 
-* Apply length penalty as a form of length normalization
-
-* Apply coverage penalty using attention weights
+* Apply length penalty as documented in the paper as a form of length normalization
 
 
 Running without beam search (picking prob with max value ):
 ```
-BLEU-1: 0.6367
-BLEU-2: 0.5202
-BLEU-3: 0.4605
-BLEU-4: 0.3100
+BLEU-1: 0.6932
+BLEU-2: 0.5796
+BLEU-3: 0.5202
+BLEU-4: 0.3928
 ```
 
 Evaluate with beam width of 1 ( greedy search ):
 ```
-BLEU-1: 0.6367
-BLEU-2: 0.5202
-BLEU-3: 0.4605
-BLEU-4: 0.3100
+BLEU-1: 0.6932
+BLEU-2: 0.5796
+BLEU-3: 0.5202
+BLEU-4: 0.3928
 ```
 
 The results above indicate no change between using beam search and greedy search, which is a good baseline for the algorithm to iterate from.
 
 Re-run evaluation using beam width of 2:
 ```
-BLEU-1: 0.4328
-BLEU-2: 0.3234
-BLEU-3: 0.1780
-BLEU-4: 0.0577
+BLEU-1: 0.4949
+BLEU-2: 0.3814
+BLEU-3: 0.2739
+BLEU-4: 0.1189
 ```
 
 Evaluation using beam width of 3:
 ```
-BLEU-1: 0.3349
-BLEU-2: 0.2706
-BLEU-3: 0.0929
-BLEU-4: 0.0000
-```
-
-Evaluation using beam width of 4:
-```
-BLEU-1: 0.3167
-BLEU-2: 0.2613
-BLEU-3: 0.0823
+BLEU-1: 0.3515
+BLEU-2: 0.2776
+BLEU-3: 0.1368
 BLEU-4: 0.0000
 ```
 
 The results above show that the BLEU scores start to degrade with higher beam width values.
 
-The translations returned are truncated with the last word missing for shorter sentences and incomplete translations for longer sentences.
+The translations returned are truncated, with the last word missing for some shorter sentences and incomplete translations for longer sentences.
 
 On debugging, the probabilities for the returned incorrect translations differ from the correct ones by a small margin.
 
 This indicates that either there is an issue with the implementation of the beam search algorithm itself or the way the inputs are fed into the decoder. 
 
 This would require further work on error analysis between the beam search algo and the LSTM errors.
-
-For the time being, it is recommended to revert to using greedy search.
 
 
 ## 6. Final Model
