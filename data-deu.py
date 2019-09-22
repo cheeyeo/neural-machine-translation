@@ -30,8 +30,8 @@ for i in range(10):
 dataset = cleaned[:n_sentences, :]
 dataset[:, 1] = add_delimiters_to_lines(dataset[:, 1])
 np.random.shuffle(dataset)
+print('[INFO] Total dataset size: {:d}'.format(len(dataset)))
 
-# TODO: Remove hard-code values here
 train_size = int(args["limit"] * 0.9)
 remainder = args["limit"] - train_size
 dev_size = int(remainder/2)

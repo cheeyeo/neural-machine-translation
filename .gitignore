@@ -7,3 +7,4 @@ test.py
 test.hdf5
 models/
 *.h5
+*.json

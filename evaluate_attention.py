@@ -2,13 +2,11 @@ from model import create_tokenizer, encode_sequences, encode_output
 import argparse
 from utils import load_saved_lines, sentence_length, load_tokenizer
 from nltk.translate.bleu_score import corpus_bleu
-from keras.models import load_model
 from keras.preprocessing.sequence import pad_sequences
 import numpy as np
 from sklearn.metrics import classification_report
 from model_attention import attention_model, attention_model_new_arch
 from keras.utils import to_categorical
-from keras.models import model_from_json
 from math import log
 
 def id_for_word(word, tokenizer):

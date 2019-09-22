@@ -444,9 +444,58 @@ The training set size is increased to 50,000 with 45,000 for training; 2500 for 
 
 The training process is ran for 30 epochs with batch size of 64.
 
+Below is an excerpt of the training log:
+```
+702/703 [============================>.] - ETA: 1s - loss: 1.4966 - acc: 0.7946         
+Epoch 00001: val_loss improved from inf to 1.07001, saving model to attention_model_more_data.h5
+703/703 [==============================] - 935s 1s/step - loss: 1.4959 - acc: 0.7947 - val_loss: 1.0700 - val_acc: 0.8400
+Epoch 2/30
+702/703 [============================>.] - ETA: 1s - loss: 0.9206 - acc: 0.8548   
+Epoch 00002: val_loss improved from 1.07001 to 0.76976, saving model to attention_model_more_data.h5
+703/703 [==============================] - 927s 1s/step - loss: 0.9203 - acc: 0.8549 - val_loss: 0.7698 - val_acc: 0.8740
+Epoch 3/30
+702/703 [============================>.] - ETA: 1s - loss: 0.6825 - acc: 0.8802   
+Epoch 00003: val_loss improved from 0.76976 to 0.60291, saving model to attention_model_more_data.h5
+703/703 [==============================] - 918s 1s/step - loss: 0.6825 - acc: 0.8802 - val_loss: 0.6029 - val_acc: 0.8959
+Epoch 4/30
+702/703 [============================>.] - ETA: 1s - loss: 0.5035 - acc: 0.9027   
+Epoch 00004: val_loss improved from 0.60291 to 0.51316, saving model to attention_model_more_data.h5
+703/703 [==============================] - 913s 1s/step - loss: 0.5035 - acc: 0.9027 - val_loss: 0.5132 - val_acc: 0.9082
+Epoch 5/30
+702/703 [============================>.] - ETA: 1s - loss: 0.3873 - acc: 0.9175   
+Epoch 00005: val_loss improved from 0.51316 to 0.46587, saving model to attention_model_more_data.h5
+703/703 [==============================] - 908s 1s/step - loss: 0.3872 - acc: 0.9175 - val_loss: 0.4659 - val_acc: 0.9160
+Epoch 6/30
+702/703 [============================>.] - ETA: 1s - loss: 0.3078 - acc: 0.9289   
+Epoch 00006: val_loss improved from 0.46587 to 0.44613, saving model to attention_model_more_data.h5
+703/703 [==============================] - 909s 1s/step - loss: 0.3078 - acc: 0.9289 - val_loss: 0.4461 - val_acc: 0.9189
+Epoch 7/30
+702/703 [============================>.] - ETA: 1s - loss: 0.2540 - acc: 0.9371   
+Epoch 00007: val_loss improved from 0.44613 to 0.42919, saving model to attention_model_more_data.h5
+703/703 [==============================] - 897s 1s/step - loss: 0.2539 - acc: 0.9371 - val_loss: 0.4292 - val_acc: 0.9226
+Epoch 8/30
+702/703 [============================>.] - ETA: 1s - loss: 0.2128 - acc: 0.9443   
+Epoch 00008: val_loss did not improve from 0.42919
+703/703 [==============================] - 880s 1s/step - loss: 0.2127 - acc: 0.9443 - val_loss: 0.4314 - val_acc: 0.9234
+Epoch 9/30
+702/703 [============================>.] - ETA: 1s - loss: 0.1832 - acc: 0.9502   
+Epoch 00009: val_loss improved from 0.42919 to 0.42088, saving model to attention_model_more_data.h5
+703/703 [==============================] - 882s 1s/step - loss: 0.1831 - acc: 0.9502 - val_loss: 0.4209 - val_acc: 0.9266
+Epoch 10/30
+702/703 [============================>.] - ETA: 1s - loss: 0.1587 - acc: 0.9553   
+Epoch 00010: val_loss did not improve from 0.42088
+703/703 [==============================] - 883s 1s/step - loss: 0.1586 - acc: 0.9553 - val_loss: 0.4273 - val_acc: 0.9269
+Epoch 11/30
+702/703 [============================>.] - ETA: 1s - loss: 0.1445 - acc: 0.9585   
+Epoch 00011: val_loss did not improve from 0.42088
+703/703 [==============================] - 914s 1s/step - loss: 0.1445 - acc: 0.9586 - val_loss: 0.4282 - val_acc: 0.9273
+Epoch 00011: early stopping
+[INFO] Early stopping at epoch: 10
+```
+
 ![Training loss with increased training set][training_loss_more_data]
 
-The validation loss has decreased to `0.46` with early stopping kicking in at epoch 9. The validation loss curve indicate that it has a gradual decline without any inflection points. However, the loss plateaus after epoch 3 without any sign of further decrease. 
+The validation loss has decreased to `0.42` with early stopping kicking in at epoch 10. The validation loss curve indicate that it has a gradual decline without any inflection points. However, the loss plateaus after epoch 3 without any sign of further decrease. 
 
 ![Training accuracy with increased training set][training_acc_more_data]
 
@@ -454,91 +503,88 @@ The validation accuracy shows an increase to `0.92`.
 
 Overall the BLEU scores on the dev set also increased significantly, compared to 5.8:
 ```
-BLEU-1: 0.7313
-BLEU-2: 0.6352
-BLEU-3: 0.5790
-BLEU-4: 0.4596
+BLEU-1: 0.6778
+BLEU-2: 0.5673
+BLEU-3: 0.5162
+BLEU-4: 0.3978
 ```
-
-## 5.10 Beam Search
-
-( IN PROGRESS )
-
-Getting the maximum of a prediction from the decoder may not always return the best translation as it does not consider other available options in its search space.
-
-Beam search helps to improve upon this by considering k possible combinations of the predictions set by a beam width value and only keeping those predictions with high probabilities.
-
-Given that beam search was used initially, the instability of the model architecture meant that we don't have a stable baseline to evaluate it properly from. Also, the initial implementation was incorrect.
-
-The changes are adopted from the 2016 paper entitled 'Google's Neural Machine Translation System: Briding the gap between human and machine translation' by Yonghui Wu et al
-
-Under the section titled 'Decoder', they highlight an approach on length normalization on the standard decoder outputs which is being adopted in the beam search code.
-
-Below are the changes made to the original implementation:
-
-* Apply length penalty as documented in the paper as a form of length normalization
-
-
-Running without beam search (picking prob with max value ):
-```
-BLEU-1: 0.6932
-BLEU-2: 0.5796
-BLEU-3: 0.5202
-BLEU-4: 0.3928
-```
-
-Evaluate with beam width of 1 ( greedy search ):
-```
-BLEU-1: 0.6932
-BLEU-2: 0.5796
-BLEU-3: 0.5202
-BLEU-4: 0.3928
-```
-
-The results above indicate no change between using beam search and greedy search, which is a good baseline for the algorithm to iterate from.
-
-Re-run evaluation using beam width of 2:
-```
-BLEU-1: 0.4949
-BLEU-2: 0.3814
-BLEU-3: 0.2739
-BLEU-4: 0.1189
-```
-
-Evaluation using beam width of 3:
-```
-BLEU-1: 0.3515
-BLEU-2: 0.2776
-BLEU-3: 0.1368
-BLEU-4: 0.0000
-```
-
-The results above show that the BLEU scores start to degrade with higher beam width values.
-
-The translations returned are truncated, with the last word missing for some shorter sentences and incomplete translations for longer sentences.
-
-On debugging, the probabilities for the returned incorrect translations differ from the correct ones by a small margin.
-
-This indicates that either there is an issue with the implementation of the beam search algorithm itself or the way the inputs are fed into the decoder. 
-
-This would require further work on error analysis between the beam search algo and the LSTM errors.
-
 
 ## 6. Final Model
 
 ( Describes the choice of a final model, including configuration and performance. It is a good idea to demonstrate saving and loading the model and demonstrate the ability to make predictions on a holdout dataset. )
+
+The table below summarizes the model's configuration in creating the final model:
+
+| Hyperparameter   		| Value           	|
+|--------------------	|-------------------|
+| Encoder depth 			| 1 								|
+| Encoder type 				| Bi-directional    |
+| Decoder type 				| Uni-directional 	|
+| Decoder depth 			| 1 								|
+| Word embedding size | 512 							|
+| Encoder size 				| 512 							|
+| Decoder size 				| 1024 							|
+| Attention type 			| Bahdanau 					|
+| Dropout 						| 0.5 							|
+| Weight constraint   | 3.0 							|
+
+The model's configuration is the same as in section 5.9.
+
+Dropout is applied to after the word embedding layer and before the final softmax layer to reduce overfitting.
+
+Weight constraints in the form of max norm are set on the encoder LSTM for both incoming and recurrent connections to a maximum value of 3.0. Previous experiments on using layer dropout did not contribute to any improvements.
+
+The model is trained with all the training data at 50,000 without any splits for 6 epochs with mini-batch size of 64. 6 epochs were chosen based on the previous training log, which shows that the model starts to overfit beyond epoch 6.
+
+The training log for the final model shows that the model has a final loss value of `0.26` and an accuracy of `0.93`:
+```
+781/781 [==============================] - 1083s 1s/step - loss: 1.4017 - acc: 0.8048   
+Epoch 2/6
+781/781 [==============================] - 1071s 1s/step - loss: 0.8210 - acc: 0.8644
+Epoch 3/6
+781/781 [==============================] - 1057s 1s/step - loss: 0.5762 - acc: 0.8923
+Epoch 4/6
+781/781 [==============================] - 1047s 1s/step - loss: 0.4244 - acc: 0.9117
+Epoch 5/6
+781/781 [==============================] - 1044s 1s/step - loss: 0.3293 - acc: 0.9246
+Epoch 6/6
+781/781 [==============================] - 1047s 1s/step - loss: 0.2617 - acc: 0.9347
+```
+
+The model's weights are saved in a separate file using `save_weights` API in Keras.
+
+The model structure is loaded at runtime and the saved weights loaded using `load_weights`.
+
+The final model's accuracy is evaluated against an unseen test set, with the following BLEU scores:
+```
+BLEU-1: 0.6630
+BLEU-2: 0.5516
+BLEU-3: 0.4999
+BLEU-4: 0.3797
+```
+
+The BLEU scores are lower to the development model in section 5.9. 
+
+( TODO - on building predict.py script )
+
+https://github.com/keras-team/keras/issues/9914
+
+https://github.com/keras-team/keras/blob/master/examples/lstm_seq2seq_restore.py
 
 
 ## 7. Extensions
 
 ( Describes areas that were considered but not addressed in the project that could be explored in the future. )
 
+* Increase the number of layers for the encoder and decoder to create more representational capacity.
+
+* Try reducing the validation loss by using more regularization techniques such as gradient clipping; different learning rate.
+
 * Remove duplicate sentences from dataset
 
 * Truncate the vocab by removing words with low occurences and replacing them with `UNK`
 
-* Add another LSTM layer to decoder to see if it improves model's performance.
-
+* Try a different network architecture i.e. GMNT
 
 ## 8. Resources
 * [Deep Learning with NLP](https://machinelearningmastery.com/deep-learning-for-nlp/)

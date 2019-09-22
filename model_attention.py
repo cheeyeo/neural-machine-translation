@@ -100,7 +100,7 @@ def attention_model_new_arch(src_vocab, target_vocab, src_timesteps, target_time
   # FC layer
   tst = Dropout(0.5)(decoder_output_concat)
   decoder_dense = Dense(target_vocab, activation='softmax')
-  decoder_pred = decoder_dense(tst) 
+  decoder_pred = decoder_dense(tst)
 
   model = Model(inputs=[encoder_inputs, decoder_inputs], outputs=decoder_pred)
 

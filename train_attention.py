@@ -37,10 +37,12 @@ ap = argparse.ArgumentParser()
 ap.add_argument("-e", "--epochs", type=int, required=True, help="Number of epochs to train for")
 ap.add_argument("-b", "--batch", type=int, required=False, default=64, help="Batch size")
 ap.add_argument("-m", "--model", type=str, required=False, default="attention_model.h5", help="Model name to save to.")
+ap.add_argument("-f", "--final_model", action="store_true", help="Create final model.")
 args = vars(ap.parse_args())
 
 dataset = np.array(load_saved_lines('eng-german-both.pkl'))
 train = np.array(load_saved_lines('eng-german-train.pkl'))
+
 for i in range(5):
   print(train[i])
 dev = np.array(load_saved_lines('eng-german-dev.pkl'))
@@ -70,35 +72,53 @@ batch_size = args["batch"]
 
 model, encoder_model, decoder_model = attention_model_new_arch(eng_vocab_size, ger_vocab_size, eng_length, ger_length, 512, epochs=epochs)
 
-plot_model(model, to_file='artifacts/attention_model_new_arch.png', show_shapes=True)
-plot_model(encoder_model, to_file='artifacts/encoder_model_new_arch.png', show_shapes=True)
-plot_model(decoder_model, to_file='artifacts/decoder_model_new_arch.png', show_shapes=True)
+plot_model(model, to_file='artifacts/final_model.png', show_shapes=True)
+plot_model(encoder_model, to_file='artifacts/final_model_encoder.png', show_shapes=True)
+plot_model(decoder_model, to_file='artifacts/final_model_decoder.png', show_shapes=True)
 
 model.summary()
 
 earlystopping = create_earlystopping(patience=2)
 checkpoint = create_checkpoint(model_name=args["model"])
 
-train_steps = len(train) // batch_size
-val_steps = len(dev) // batch_size
+if not args["final_model"]:
+  train_steps = len(train) // batch_size
+  val_steps = len(dev) // batch_size
 
-train_generator = data_generator(train, eng_tokenizer, eng_length, ger_tokenizer, ger_length, eng_vocab_size, ger_vocab_size, batch_size=batch_size)
+  train_generator = data_generator(train, eng_tokenizer, eng_length, ger_tokenizer, ger_length, eng_vocab_size, ger_vocab_size, batch_size=batch_size)
 
-val_generator = data_generator(dev, eng_tokenizer, eng_length, ger_tokenizer, ger_length, eng_vocab_size, ger_vocab_size, batch_size=batch_size)
+  val_generator = data_generator(dev, eng_tokenizer, eng_length, ger_tokenizer, ger_length, eng_vocab_size, ger_vocab_size, batch_size=batch_size)
 
-H = model.fit_generator(
-  train_generator,
-  steps_per_epoch=train_steps,
-  validation_data=val_generator,
-  validation_steps=val_steps,
-  epochs=epochs,
-  verbose=1,
-  callbacks=[earlystopping, checkpoint])
+  H = model.fit_generator(
+    train_generator,
+    steps_per_epoch=train_steps,
+    validation_data=val_generator,
+    validation_steps=val_steps,
+    epochs=epochs,
+    verbose=1,
+    callbacks=[earlystopping, checkpoint])
 
-stopped_epoch = earlystopping.stopped_epoch
-print('[INFO] Early stopping at epoch: {:d}'.format(stopped_epoch))
+  stopped_epoch = earlystopping.stopped_epoch
+  print('[INFO] Early stopping at epoch: {:d}'.format(stopped_epoch))
 
+  plot_training(H, stopped_epoch + 1, plot_path_loss='training_loss_attention_model_new_arch.png', plot_path_acc='training_acc_attention_model_new_arch.png')
 
-plot_training(H, stopped_epoch + 1, plot_path_loss='training_loss_attention_model_new_arch.png', plot_path_acc='training_acc_attention_model_new_arch.png')
+  # plot_training(H, epochs, plot_path_loss='training_loss_attention_model_new_arch.png', plot_path_acc='training_acc_attention_model_new_arch.png')
+else:
+  # Use both train and dev sets to train final model
+  final_dataset = np.concatenate((train, dev))
+  print('[INFO] Building final model with dataset size: {:d}'.format(len(final_dataset)))
+  steps = len(final_dataset) // batch_size
+  train_generator = data_generator(final_dataset, eng_tokenizer, eng_length, ger_tokenizer, ger_length, eng_vocab_size, ger_vocab_size, batch_size=batch_size)
 
-# plot_training(H, epochs, plot_path_loss='training_loss_attention_model_new_arch.png', plot_path_acc='training_acc_attention_model_new_arch.png')
+  H = model.fit_generator(
+    train_generator,
+    steps_per_epoch=steps,
+    epochs=epochs,
+    verbose=1)
+
+  # Save model weights for evaluation
+  model.save_weights(args["model"])
+  with open('final_model.json', 'wt') as f:
+    arch = model.to_json()
+    f.write(arch)
