@@ -9,6 +9,11 @@ from keras.layers import Embedding
 from keras.layers import RepeatVector
 from keras.layers import TimeDistributed
 from keras.callbacks import ModelCheckpoint
+from keras.callbacks import EarlyStopping
+
+def show_model_weights(model):
+  for layer in model.layers:
+    print(layer.get_config(), layer.get_weights())
 
 def data_generator(lines, eng_tokenizer, eng_length, fr_tokenizer, fr_length, vocab_size, batch_size=64):
 
@@ -38,16 +43,19 @@ def data_generator(lines, eng_tokenizer, eng_length, fr_tokenizer, fr_length, vo
 
 
 def create_checkpoint(model_name='model.h5'):
-  return ModelCheckpoint(model_name, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
+  return ModelCheckpoint(model_name, monitor='val_loss', verbose=1, save_best_only=True, mode='min', save_weights_only=True)
+
+def create_earlystopping(patience=5):
+  return EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=patience)
 
 def create_tokenizer(lines):
   tokenizer = Tokenizer()
   tokenizer.fit_on_texts(lines)
   return tokenizer
 
-def encode_sequences(tokenizer, length, lines):
+def encode_sequences(tokenizer, length, lines, padding_type='post'):
   X = tokenizer.texts_to_sequences(lines)
-  X = pad_sequences(X, maxlen=length, padding='post')
+  X = pad_sequences(X, maxlen=length, padding=padding_type)
   return X
 
 def encode_output(sequences, vocab_size):

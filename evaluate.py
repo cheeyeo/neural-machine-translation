@@ -5,6 +5,8 @@ from nltk.translate.bleu_score import corpus_bleu
 from keras.models import load_model
 from keras.preprocessing.sequence import pad_sequences
 import numpy as np
+from sklearn.metrics import classification_report
+from model_attention import attention_model
 
 def word_for_id(integer, tokenizer):
   for word, index in tokenizer.word_index.items():
@@ -25,8 +27,7 @@ def predict_sequence(model, tokenizer, source):
 
   return ' '.join(target)
 
-
-def evaluate_model(model, sources, raw_dataset, fr_tokenizer, beam_index=3):
+def evaluate_model(model, sources, raw_dataset, fr_tokenizer):
   actual, predicted = list(), list()
   for i, source in enumerate(sources):
     source = source.reshape((1, source.shape[0]))
@@ -50,7 +51,6 @@ def evaluate_model(model, sources, raw_dataset, fr_tokenizer, beam_index=3):
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-m", "--model", type=str, required=True, help="Path to model file for evaluation")
-ap.add_argument("-k", "--beam", type=int, required=False, default=3, help="Beam width for beam search")
 args = vars(ap.parse_args())
 
 dataset = np.array(load_saved_lines('eng-german-both.pkl'))
@@ -63,17 +63,17 @@ eng_length = sentence_length(dataset[:, 0])
 print('[INFO] English Vocab size: {:d}'.format(eng_vocab_size))
 print('[INFO] English Max length: {:d}'.format(eng_length))
 
-# Load fr tokenizer
-fr_tokenizer = create_tokenizer(dataset[:, 1])
-fr_vocab_size = len(fr_tokenizer.word_index) + 1
-fr_length = sentence_length(dataset[:, 1])
-print('[INFO] Ger Vocab size: {:d}'.format(fr_vocab_size))
-print('[INFO] Ger Max length: {:d}'.format(fr_length))
+# Load ger tokenizer
+ger_tokenizer = create_tokenizer(dataset[:, 1])
+ger_vocab_size = len(ger_tokenizer.word_index) + 1
+ger_length = sentence_length(dataset[:, 1])
+print('[INFO] Ger Vocab size: {:d}'.format(ger_vocab_size))
+print('[INFO] Ger Max length: {:d}'.format(ger_length))
 
 testX = encode_sequences(eng_tokenizer, eng_length, test[:, 0])
 
 model = load_model(args["model"])
 
-print('[INFO] Evaluating model {} with beam width {:d}'.format(args["model"], args["beam"]))
+print('[INFO] Evaluating model {}'.format(args["model"]))
 
-evaluate_model(model, testX, test, fr_tokenizer)
+evaluate_model(model, testX, test, ger_tokenizer)

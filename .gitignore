@@ -5,5 +5,6 @@ __pycache__
 NOTES.md
 test.py
 test.hdf5
-layers/
 models/
+*.h5
+*.json
