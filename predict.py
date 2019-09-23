@@ -2,8 +2,7 @@
 import argparse
 import numpy as np
 # Using the tensorflow version of load_model as custom AttentionLayer was built using TF
-from tensorflow.python.keras.models import model_from_json, Model
-from tensorflow.python.keras.layers import Input, Concatenate
+from tensorflow.python.keras.models import model_from_json
 from layers.attention import AttentionLayer
 from keras.utils import to_categorical
 from utils import load_saved_lines, sentence_length, clean_lines
