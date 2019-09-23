@@ -230,7 +230,7 @@ The use of dropout will be applied to the model and further regularization techn
 
 ## 5.5 Addressing Variance - Architecture Search
 
-[attention_model_new_arch]: artifacts/attention_new_arch.png
+[attention_model_new_arch]: artifacts/attention_model_new_arch.png
 [training_loss_new_arch]: artifacts/training_loss_attention_model_new_arch.png
 
 ![Attention model with dropout and double decoder units][attention_model_new_arch]
@@ -330,15 +330,9 @@ Epoch 00008: early stopping
 [INFO] Early stopping at epoch: 7
 ```
 
-[training_acc_new_arch_maxnorm]: artifacts/training_acc_attention_model_new_arch_maxnorm.png
+[training_loss_new_arch_maxnorm]: artifacts/training_loss_attention_model_new_arch_maxnorm_kernel_recurrent.png
 
-[training_acc_new_arch_maxnorm2]: artifacts/training_acc_attention_model_new_arch_maxnorm_kernel_recurrent.png
-
-![Training loss with max_norm applied to LSTM encoder][training_acc_new_arch_maxnorm]
-
-The validation loss curve shows a gradual decrease in the validation loss without any inflection points.
-
-![Training loss with max_norm applied to input and recurrent weights on LSTM encoder][training_acc_new_arch_maxnorm2]
+![Training loss with max_norm applied to input and recurrent weights on LSTM encoder][training_loss_new_arch_maxnorm]
 
 Adding `max_norm` to both `kernel_constraint` and `recurrent_constraint` to the encoder layer achieves a lower loss of `0.79374`.
 
@@ -377,6 +371,8 @@ BLEU-4: 0.3035
 ## 5.8 Addressing Variance - Dropout on LSTM layer
 
 [training_loss_new_arch_lstm_dropout]: artifacts/training_loss_attention_model_new_arch_lstm_dropout.png
+
+![Training loss with dropout applied to LSTM layer][training_loss_new_arch_lstm_dropout]
 
 Dropout is applied to the LSTM encoder layer via the `dropout` and `recurrent_dropout` option. This applies dropout to the incoming and recurrent inputs.
 
@@ -528,7 +524,10 @@ The table below summarizes the model's configuration in creating the final model
 | Dropout 						| 0.5 							|
 | Weight constraint   | 3.0 							|
 
-The model's configuration is the same as in section 5.9.
+[final_model_arch]: artifacts/final_model.png
+
+![Final model architecture][final_model_arch]
+The model's architecture is shown in the diagram above.
 
 Dropout is applied to after the word embedding layer and before the final softmax layer to reduce overfitting.
 
@@ -551,9 +550,7 @@ Epoch 6/6
 781/781 [==============================] - 1047s 1s/step - loss: 0.2617 - acc: 0.9347
 ```
 
-The model's weights are saved in a separate file using `save_weights` API in Keras.
-
-The model structure is loaded at runtime and the saved weights loaded using `load_weights`.
+The model's weights are saved in a separate file using `save_weights` API in Keras. The model structure is serialized to JSON file format using `model.to_json()`. The model is de-serialized using `model_from_json` after reading in the architecture file and the weights loaded using `model.load_weights`. Both are demonstrated in `predict.py`
 
 The final model's accuracy is evaluated against an unseen test set, with the following BLEU scores:
 ```
@@ -565,16 +562,19 @@ BLEU-4: 0.3797
 
 The BLEU scores are lower to the development model in section 5.9. 
 
-( TODO - on building predict.py script )
-
-https://github.com/keras-team/keras/issues/9914
-
-https://github.com/keras-team/keras/blob/master/examples/lstm_seq2seq_restore.py
+The `predict.py` script can produce translations from a given input sentence e.g
+```
+python predict.py -m final_model.h5 -s 'My name is Tom.'
+```
 
 
 ## 7. Extensions
 
 ( Describes areas that were considered but not addressed in the project that could be explored in the future. )
+
+* The models are tied to specific input lengths based on the dataset. Try to include longer sentences in the training dataset.
+
+* Try a different network architecture i.e. GMNT; different attention mechanism
 
 * Increase the number of layers for the encoder and decoder to create more representational capacity.
 
@@ -584,7 +584,6 @@ https://github.com/keras-team/keras/blob/master/examples/lstm_seq2seq_restore.py
 
 * Truncate the vocab by removing words with low occurences and replacing them with `UNK`
 
-* Try a different network architecture i.e. GMNT
 
 ## 8. Resources
 * [Deep Learning with NLP](https://machinelearningmastery.com/deep-learning-for-nlp/)
