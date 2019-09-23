@@ -140,6 +140,43 @@ def attention_model_new_arch(src_vocab, target_vocab, src_timesteps, target_time
 
   return model, encoder_model, decoder_model
 
+# Return encoder/decoder model from a given model
+def build_inference_models(src_length, target_vocab_size, model):
+  # Encoder inference model
+  encoder_inf_inputs = Input(batch_shape=(1, src_length,), name='encoder_inf_inputs')
+  encoder_lstm = model.get_layer('bidirectional_encoder')
+  embedding = model.get_layer('enc_embedding')
+  # Infer latent dim from the embedding shape
+  _, _, units = embedding.output_shape
+
+  encoder_inf_out, encoder_inf_fwd_h, encoder_inf_fwd_c, encoder_inf_back_h, encoder_inf_back_c = encoder_lstm(embedding(encoder_inf_inputs))
+
+  encoder_inf_h = Concatenate()([encoder_inf_fwd_h, encoder_inf_back_h])
+  encoder_inf_c = Concatenate()([encoder_inf_fwd_c, encoder_inf_back_c])
+  encoder_model = Model(inputs=encoder_inf_inputs, outputs=[encoder_inf_out, encoder_inf_h, encoder_inf_c])
+
+  encoder_inf_states = Input(batch_shape=(1, src_length, 2*units), name='encoder_inf_states')
+
+  decoder_inf_inputs = Input(batch_shape=(1, 1, target_vocab_size), name='decoder_word_inputs')
+
+  decoder_init_fwd_state = Input(batch_shape=(1, units*2), name='decoder_fwd_init')
+  decoder_init_back_state = Input(batch_shape=(1, units*2), name='decoder_back_init')
+  decoder_states_inputs = [decoder_init_fwd_state, decoder_init_back_state]
+
+  decoder_lstm = model.get_layer('decoder_lstm')
+  decoder_inf_out, decoder_inf_fwd_state, decoder_inf_back_state = decoder_lstm(decoder_inf_inputs, initial_state=decoder_states_inputs)
+
+  attn_layer = model.get_layer('attention_layer')
+  attn_inf_out, attn_inf_states = attn_layer([encoder_inf_states, decoder_inf_out])
+
+  decoder_inf_concat = Concatenate(axis=-1, name='concat')([decoder_inf_out, attn_inf_out])
+
+  decoder_dense = model.layers[-1]
+  decoder_inf_pred = decoder_dense(decoder_inf_concat)
+
+  decoder_model = Model(inputs=[encoder_inf_states, decoder_init_fwd_state, decoder_init_back_state, decoder_inf_inputs], outputs=[decoder_inf_pred, attn_inf_states, decoder_inf_fwd_state, decoder_inf_back_state])
+
+  return encoder_model, decoder_model
 
 if __name__ == "__main__":
   m, _, _ = attention_model_new_arch(3022, 4747, 5, 12, 256, 30)

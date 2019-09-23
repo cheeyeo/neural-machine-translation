@@ -8,6 +8,7 @@ from layers.attention import AttentionLayer
 from keras.utils import to_categorical
 from utils import load_saved_lines, sentence_length, clean_lines
 from model import create_tokenizer, encode_sequences, encode_output
+from model_attention import build_inference_models
 from evaluation_utils import predict_attention_sequence, cleanup_sentence
 
 ap = argparse.ArgumentParser()
@@ -32,54 +33,20 @@ print('[INFO] Ger Vocab size: {:d}'.format(ger_vocab_size))
 print('[INFO] Ger Max length: {:d}'.format(ger_length))
 
 # Load model
-arch_file = args["model"].split(".")[0] + '.json'
+arch_file = args['model'].split('.')[0] + '.json'
 with open('final_model.json', 'rt') as f:
 	arch = f.read()
 
 model = model_from_json(arch, custom_objects={'AttentionLayer': AttentionLayer})
-model.load_weights(args["model"])
-
+model.load_weights(args['model'])
 # model.summary()
-# TODO: Infer nos of units from model arch!
-units = 512
 
-# Encoder inference model
-encoder_inf_inputs = Input(batch_shape=(1, eng_length,), name='encoder_inf_inputs')
-encoder_lstm = model.get_layer('bidirectional_encoder')
-embedding = model.get_layer('enc_embedding')
-encoder_inf_out, encoder_inf_fwd_h, encoder_inf_fwd_c, encoder_inf_back_h, encoder_inf_back_c = encoder_lstm(embedding(encoder_inf_inputs))
-
-encoder_inf_h = Concatenate()([encoder_inf_fwd_h, encoder_inf_back_h])
-encoder_inf_c = Concatenate()([encoder_inf_fwd_c, encoder_inf_back_c])
-encoder_model = Model(inputs=encoder_inf_inputs, outputs=[encoder_inf_out, encoder_inf_h, encoder_inf_c])
+encoder_model, decoder_model = build_inference_models(eng_length, ger_vocab_size, model)
 # encoder_model.summary()
-
-# Decoder inference model
-encoder_inf_states = Input(batch_shape=(1, eng_length, 2*units), name='encoder_inf_states')
-
-decoder_inf_inputs = Input(batch_shape=(1, 1, ger_vocab_size), name='decoder_word_inputs')
-
-decoder_init_fwd_state = Input(batch_shape=(1, units*2), name='decoder_fwd_init')
-decoder_init_back_state = Input(batch_shape=(1, units*2), name='decoder_back_init')
-decoder_states_inputs = [decoder_init_fwd_state, decoder_init_back_state]
-
-decoder_lstm = model.get_layer('decoder_lstm')
-decoder_inf_out, decoder_inf_fwd_state, decoder_inf_back_state = decoder_lstm(decoder_inf_inputs, initial_state=decoder_states_inputs)
-
-attn_layer = model.get_layer('attention_layer')
-attn_inf_out, attn_inf_states = attn_layer([encoder_inf_states, decoder_inf_out])
-
-decoder_inf_concat = Concatenate(axis=-1, name='concat')([decoder_inf_out, attn_inf_out])
-
-decoder_dense = model.layers[-1]
-decoder_inf_pred = decoder_dense(decoder_inf_concat)
-
-decoder_model = Model(inputs=[encoder_inf_states, decoder_init_fwd_state, decoder_init_back_state, decoder_inf_inputs], outputs=[decoder_inf_pred, attn_inf_states, decoder_inf_fwd_state, decoder_inf_back_state])
-
 # decoder_model.summary()
 
 # Preprocess input data same as in data-deu.py
-source = [args["source"]]
+source = [args['source']]
 source = clean_lines(source)
 source = encode_sequences(eng_tokenizer, eng_length, source, padding_type='pre')
 
