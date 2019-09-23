@@ -1,55 +1,14 @@
 # Use final model to make predictions on unseen text
 import argparse
+import numpy as np
 # Using the tensorflow version of load_model as custom AttentionLayer was built using TF
 from tensorflow.python.keras.models import model_from_json, Model
-import numpy as np
-from utils import load_saved_lines, sentence_length
-from model import create_tokenizer, encode_sequences, encode_output
-from layers.attention import AttentionLayer
 from tensorflow.python.keras.layers import Input, Concatenate
-from utils import clean_lines
+from layers.attention import AttentionLayer
 from keras.utils import to_categorical
-
-def id_for_word(word, tokenizer):
-  for w,index in tokenizer.word_index.items():
-    if w == word:
-      return index
-  return None
-
-def word_for_id(integer, tokenizer):
-  for word, index in tokenizer.word_index.items():
-    if index == integer:
-      return word
-  return None
-
-def cleanup_sentence(sentence):
-  index = sentence.find('sos ')
-  if index > -1:
-    sentence = sentence[len('sos '):]
-  index = sentence.find(' eos')
-  if index > -1:
-    sentence = sentence[:index]
-  return sentence
-
-def predict_attention_sequence(decoder_model, enc_outs, dec_fwd_state, dec_back_state, target_tokenizer, target_vocab_size, target_length, onehot_seq):
-  predicted_text = ''
-
-  for i in range(target_length):
-    dec_out, attention, dec_fwd_state, dec_back_state = decoder_model.predict(
-              [enc_outs, dec_fwd_state, dec_back_state, onehot_seq], verbose=0)
-
-    dec_ind = np.argmax(dec_out, axis=-1)[0, 0]
-    word = word_for_id(dec_ind, target_tokenizer)
-
-    if word == None or word == "eos":
-      break
-
-    seq = encode_sequences(ger_tokenizer, None, [word])
-    onehot_seq = np.expand_dims(to_categorical(seq, num_classes=target_vocab_size), 1)
-
-    predicted_text += word + ' '
-
-  return predicted_text
+from utils import load_saved_lines, sentence_length, clean_lines
+from model import create_tokenizer, encode_sequences, encode_output
+from evaluation_utils import predict_attention_sequence, cleanup_sentence
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-m", "--model", type=str, required=True, help="Path to model.")
@@ -127,8 +86,6 @@ source = encode_sequences(eng_tokenizer, eng_length, source, padding_type='pre')
 seq = encode_sequences(ger_tokenizer, None, ['sos'])
 onehot_seq = np.expand_dims(to_categorical(seq, num_classes=ger_vocab_size), 1)
 
-
-# source = source.reshape((1, source.shape[0]))
 enc_outs, enc_fwd_state, enc_back_state = encoder_model.predict(source)
 dec_fwd_state, dec_back_state = enc_fwd_state, enc_back_state
 

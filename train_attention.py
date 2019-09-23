@@ -63,9 +63,6 @@ ger_length = sentence_length(dataset[:, 1])
 print('[INFO] Ger Vocab size: {:d}'.format(ger_vocab_size))
 print('[INFO] Ger Max length: {:d}'.format(ger_length))
 
-save_tokenizer(eng_tokenizer, 'eng_tokenizer.pkl')
-save_tokenizer(ger_tokenizer, 'ger_tokenizer.pkl')
-
 print('[INFO] Defining model...')
 epochs = args["epochs"]
 batch_size = args["batch"]
