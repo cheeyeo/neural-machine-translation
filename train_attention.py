@@ -4,7 +4,7 @@ from model import create_checkpoint, create_earlystopping, create_tokenizer, enc
 import argparse
 import numpy as np
 from utils import load_saved_lines, sentence_length, plot_training, save_tokenizer
-from keras.utils import plot_model
+from tensorflow.keras.utils import plot_model
 
 def data_generator(lines, eng_tokenizer, eng_length, fr_tokenizer, fr_length, src_vocab_size, vocab_size, batch_size=64):
 
@@ -31,7 +31,7 @@ def data_generator(lines, eng_tokenizer, eng_length, fr_tokenizer, fr_length, sr
       output_seq = np.array(output_seq)
       decoder_inputs = output_seq[:, :-1, :]
       decoder_outputs = output_seq[:, 1:, :]
-      yield [[input_seq, decoder_inputs], decoder_outputs]
+      yield ([input_seq, decoder_inputs], decoder_outputs)
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-e", "--epochs", type=int, required=True, help="Number of epochs to train for")
